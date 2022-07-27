@@ -3,7 +3,7 @@ package com.ssafy.db.entity;
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
 import com.querydsl.core.types.dsl.*;
-
+import com.ssafy.db.qentity.QBaseEntity;
 import com.querydsl.core.types.PathMetadata;
 import javax.annotation.Generated;
 import com.querydsl.core.types.Path;

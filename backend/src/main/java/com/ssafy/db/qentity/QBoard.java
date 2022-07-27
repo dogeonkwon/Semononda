@@ -24,8 +24,8 @@ public class QBoard extends EntityPathBase<Board> {
 	private static final long serialVersionUID = 846542477L;
 
 	public final NumberPath<Integer> uid = createNumber("uid", Integer.class);
+	public final NumberPath<Integer> userUid = createNumber("userUid", Integer.class);
 
-	public final StringPath nickname = createString("nickname");
 
 	public final NumberPath<Integer> categoryLarge = createNumber("categoryLarge", Integer.class);
 	public final NumberPath<Integer> categoryMiddle = createNumber("categoryMiddle", Integer.class);

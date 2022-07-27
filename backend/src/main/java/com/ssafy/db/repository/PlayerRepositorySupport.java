@@ -1,9 +1,10 @@
 package com.ssafy.db.repository;
 
+import com.querydsl.jpa.JPQLQueryFactory;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.db.entity.Player;
-import com.ssafy.db.entity.QPlayer;
-import com.ssafy.db.entity.QUser;
+import com.ssafy.db.qentity.QPlayer;
+import com.ssafy.db.qentity.QUser;
 import com.ssafy.db.entity.User;
 
 import java.util.Optional;
@@ -19,10 +20,11 @@ public class PlayerRepositorySupport {
     @Autowired
     private JPAQueryFactory jpaQueryFactory;
     QPlayer qPlayer = QPlayer.player;
-
+    QUser qUser = QUser.user;
     public Optional<Player> findPlayerByUserId(String userId) {
+    	long userUid = jpaQueryFactory.select(qUser.uid).from(qUser).where((qUser.id).eq(userId)).fetchOne();
         Player player = jpaQueryFactory.select(qPlayer).from(qPlayer)
-                .where(qPlayer.usersUid.eq(Long.parseLong(userId))).fetchOne();
+                .where(qPlayer.usersUid.eq(userUid)).fetchOne();
         if(player == null) return Optional.empty();
         return Optional.ofNullable(player);
     }

@@ -24,7 +24,4 @@ public class SelectedTopic extends BaseEntity{
 	
 	@Column(name="game_category_topics_uid")
 	int gameCategoryTopicsUid;
-	
-	@Column(name="is_selected")
-	boolean isSelected;
 }

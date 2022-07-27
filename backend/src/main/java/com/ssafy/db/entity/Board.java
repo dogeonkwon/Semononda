@@ -26,7 +26,8 @@ public class Board extends BaseEntity implements Serializable {
 	int uid;
 
 	@Id
-	String nickname;
+	@Column(name="user_uid")
+	int userUid;
 
 	@Column(name = "category_large")
 	int categoryLarge;

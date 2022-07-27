@@ -26,10 +26,13 @@ public class Player extends BaseEntity{
 	int gameConferenceRoomUid;
 	
 	int goldfinch;
-	String role;
+	
+	@Column(name="role_uid")
+	int roleUid;
 	
 	@Column(name="king_count")
 	int kingCount;
+	
 	String team;
 	
 	@Column(name="accusation_count")

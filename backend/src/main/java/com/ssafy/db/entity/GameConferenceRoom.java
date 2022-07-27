@@ -22,8 +22,18 @@ public class GameConferenceRoom extends BaseEntity{
 	@Column(name = "is_normal")
 	boolean isNormal;
 	
-
-	int subject;
+	@Column(name= "game_categories_uid")
+	int gameCategoriesUid;
+	
+	@Column(name="game_category_topics_uid")
+	int gameCategoryTopicsUid;
+	
+	
+	@Column(name="room_admin_user_uid")
+	int roomAdminUserUid;
+	
+	@Column(name="conference_room_url")
+	String conferenceRoomUrl;
 	
 	@Column(name="start_time")
 	Date startTime;
@@ -34,18 +44,18 @@ public class GameConferenceRoom extends BaseEntity{
 	@Column(name="custom_passworrd")
 	int customPassword;
 	
-	@Column(name="room_admin")
-	String roomAdmin;
+
 	
 	@Column(name="title")
 	String title;
 	
-	@Column(name="custom_topic_A")
-	String customTopicA;
-	
-	@Column(name="custom_topic_B")
-	String customTopicB;
-	
-	@Column(name="game_category_topics_uid")
-	int gameCategoryTopicsUid;
+	@Column(name="custom_topic")
+	String customTopic;
+
+	@Column(name="custom_answer_A")
+	String customAnswerA;
+
+	@Column(name="custom_answer_B")
+	String customAnswerB;
+
 }

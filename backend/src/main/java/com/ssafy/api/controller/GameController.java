@@ -10,12 +10,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ssafy.api.request.UserIdReq;
+import com.ssafy.api.request.UserRequest;
 import com.ssafy.api.request.UserLoginPostReq;
 import com.ssafy.api.request.UserRegisterPostReq;
 import com.ssafy.api.response.PlayerRes;
 import com.ssafy.api.response.UserLoginPostRes;
-import com.ssafy.api.response.UserRes;
+import com.ssafy.api.response.UserResponse;
 import com.ssafy.api.service.GameService;
 import com.ssafy.api.service.UserService;
 import com.ssafy.common.auth.SsafyUserDetails;
@@ -50,7 +50,7 @@ public class GameController {
         @ApiResponse(code = 500, message = "서버 오류")
     })
 	public ResponseEntity<PlayerRes> getPlayerInfo(
-			@RequestBody @ApiParam(value="아이디 정보", required = true) UserIdReq idInfo) {
+			@RequestBody @ApiParam(value="아이디 정보", required = true) UserRequest idInfo) {
 		//임의로 리턴된 User 인스턴스. 현재 코드는 회원 가입 성공 여부만 판단하기 때문에 굳이 Insert 된 유저 정보를 응답하지 않음.
 
 		Player player = gameService.getPlayerByUserId(idInfo.getId());

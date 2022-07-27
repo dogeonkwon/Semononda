@@ -1,6 +1,5 @@
 package com.ssafy.api.service;
 
-import com.ssafy.api.request.UserRegisterPostReq;
 import com.ssafy.db.entity.Player;
 
 /**

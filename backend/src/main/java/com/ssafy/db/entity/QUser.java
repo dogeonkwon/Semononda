@@ -3,7 +3,7 @@ package com.ssafy.db.entity;
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
 import com.querydsl.core.types.dsl.*;
-
+import com.ssafy.db.qentity.QBaseEntity;
 import com.querydsl.core.types.PathMetadata;
 import javax.annotation.Generated;
 import com.querydsl.core.types.Path;
@@ -33,7 +33,6 @@ public class QUser extends EntityPathBase<User> {
     public final StringPath nickname = createString("nickname");
     public final StringPath img = createString("img");
     public final StringPath description = createString("description");
-    public final DateTimePath d = createDateTime("asd", Date.class);
     public QUser(String variable) {
         super(User.class, forVariable(variable));
     }
