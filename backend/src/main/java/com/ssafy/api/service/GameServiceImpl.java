@@ -5,38 +5,28 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.ssafy.api.request.UserRegisterPostReq;
+import com.ssafy.db.entity.Player;
 import com.ssafy.db.entity.User;
+import com.ssafy.db.repository.PlayerRepository;
+import com.ssafy.db.repository.PlayerRepositorySupport;
 import com.ssafy.db.repository.UserRepository;
 import com.ssafy.db.repository.UserRepositorySupport;
 
 /**
  *	유저 관련 비즈니스 로직 처리를 위한 서비스 구현 정의.
  */
-@Service("userService")
-public class GameServiceImpl implements UserService {
+@Service("gameService")
+public class GameServiceImpl implements GameService {
 	@Autowired
-	UserRepository userRepository;
+	PlayerRepository playerRepository;
 	
 	@Autowired
-	UserRepositorySupport userRepositorySupport;
-	
-	@Autowired
-	PasswordEncoder passwordEncoder;
-	
-	@Override
-	public User createUser(UserRegisterPostReq userRegisterInfo) {
-		User user = new User();
-		user.setId(userRegisterInfo.getId());
-		// 보안을 위해서 유저 패스워드 암호화 하여 디비에 저장.
-		user.setPassword(passwordEncoder.encode(userRegisterInfo.getPassword()));
-		return userRepository.save(user);
-	}
+	PlayerRepositorySupport playerRepositorySupport;
 
 	@Override
-	public User getUserByUserId(String userId) {
-		// 디비에 유저 정보 조회 (userId 를 통한 조회).
-		System.out.println(userId);
-		User user = userRepositorySupport.findUserByUserId(userId).get();
-		return user;
+	public Player getPlayerByUserId(String userId) {
+		// TODO Auto-generated method stub
+		Player player = playerRepositorySupport.findPlayerByUserId(userId).get();
+		return player;
 	}
 }
