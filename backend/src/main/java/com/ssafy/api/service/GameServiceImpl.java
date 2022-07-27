@@ -27,6 +27,7 @@ public class GameServiceImpl implements GameService {
 	public Player getPlayerByUserId(String userId) {
 		// TODO Auto-generated method stub
 		Player player = playerRepositorySupport.findPlayerByUserId(userId).get();
+		System.out.println(player);
 		return player;
 	}
 }

@@ -21,8 +21,11 @@ public class PlayerRepositorySupport {
     QPlayer qPlayer = QPlayer.player;
 
     public Optional<Player> findPlayerByUserId(String userId) {
+    	System.out.println(userId);
+    	System.out.println(11);
         Player player = jpaQueryFactory.select(qPlayer).from(qPlayer)
                 .where(qPlayer.usersUid.eq(Long.parseLong(userId))).fetchOne();
+        System.out.println(2);
         if(player == null) return Optional.empty();
         return Optional.ofNullable(player);
     }

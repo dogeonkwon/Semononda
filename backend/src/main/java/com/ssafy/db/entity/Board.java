@@ -3,6 +3,7 @@ package com.ssafy.db.entity;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.*;
@@ -14,7 +15,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Table(name="boards")
-public class Board extends BaseEntity{
+public class Board extends BaseEntity implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	int uid;
