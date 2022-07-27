@@ -1,9 +1,9 @@
-package com.ssafy.db.entity;
+package com.ssafy.db.qentity;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
 import com.querydsl.core.types.dsl.*;
-
+import com.ssafy.db.entity.User;
 import com.querydsl.core.types.PathMetadata;
 import javax.annotation.Generated;
 import com.querydsl.core.types.Path;
@@ -16,11 +16,13 @@ import com.querydsl.core.types.Path;
 public class QUser extends EntityPathBase<User> {
 
     private static final long serialVersionUID = 846542477L;
-
+    
+   
     public static final QUser user = new QUser("user");
 
     public final QBaseEntity _super = new QBaseEntity(this);
 
+    public final NumberPath<Integer> uid = createNumber("uid",Integer.class);
     //inherited
     public final StringPath id = createString("id");
 
@@ -33,7 +35,7 @@ public class QUser extends EntityPathBase<User> {
     public final StringPath nickname = createString("nickname");
     public final StringPath img = createString("img");
     public final StringPath description = createString("description");
-    public final DateTimePath d = createDateTime("asd", Date.class);
+
     public QUser(String variable) {
         super(User.class, forVariable(variable));
     }

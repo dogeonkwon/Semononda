@@ -19,30 +19,29 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-@Table(name="boards")
-public class Board extends BaseEntity implements Serializable{
+@Table(name = "boards")
+public class Board extends BaseEntity implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	int uid;
-	
+
 	@Id
 	String nickname;
-	
-	@Column(name="category_large")
+
+	@Column(name = "category_large")
 	int categoryLarge;
-	
-	@Column(name="category_middle")
+
+	@Column(name = "category_middle")
 	int categoryMiddle;
-	
+
 	String title;
-	
+
 	String content;
-	
-	
-	@Column(name="reg_time")
+
+	@Column(name = "reg_time")
 	Date regTime;
-	
-	@Column(name="view_count")
+
+	@Column(name = "view_count")
 	int viewCount;
 	String img;
 }
