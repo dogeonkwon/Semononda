@@ -3,7 +3,7 @@ package com.ssafy.db.entity;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Entity;
+import javax.persistence.*;
 
 /**
  * 유저 모델 정의.
@@ -11,9 +11,20 @@ import javax.persistence.Entity;
 @Entity
 @Getter
 @Setter
+@Table(name="accusations")
 public class Accusation extends BaseEntity{
+	
+	@Id
+	@Column(name = "uid")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	int uid;
+	
+	@Column(name = "accusation_infos_uid")
 	int accusationInfosUid;
+	
+	@Column(name = "reporter_nickname")
 	String reporterNickname;
+	
+	@Column(name = "attacker_nickname")
 	String attackerNickname;
 }
