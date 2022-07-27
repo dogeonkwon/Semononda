@@ -19,8 +19,8 @@ public class PlayerRes{
 	int gameConferenceRoomUid;
 	@ApiModelProperty(name="Gold finch")
 	int goldfinch;
-	@ApiModelProperty(name="Role")
-	String role;
+	@ApiModelProperty(name="Role Uid")
+	int roleUid;
 	@ApiModelProperty(name="King Count")
 	int kingCount;
 	@ApiModelProperty(name="Team")
@@ -39,7 +39,7 @@ public class PlayerRes{
 		res.setUsersUid(player.getUsersUid());
 		res.setGameConferenceRoomUid(player.getGameConferenceRoomUid());
 		res.setGoldfinch(player.getGoldfinch());
-		res.setRole(player.getRole());
+		res.setRoleUid(player.getRoleUid());
 		res.setKingCount(player.getKingCount());
 		res.setTeam(player.getTeam());
 		res.setAccusationCount(player.getAccusationCount());
