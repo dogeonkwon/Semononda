@@ -40,6 +40,7 @@ public class Player extends BaseEntity{
 	
 	@Column(name="random_king")
 	boolean randomKing;
+
 	@Column(name="ready_state")
 	boolean readyState;
 }

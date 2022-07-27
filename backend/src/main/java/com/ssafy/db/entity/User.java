@@ -20,6 +20,7 @@ public class User extends BaseEntity{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	int uid;
 	
+	@Column(name="id")
 	String id;
 	String name;
     
