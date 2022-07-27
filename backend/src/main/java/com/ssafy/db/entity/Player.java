@@ -35,7 +35,7 @@ public class Player extends BaseEntity{
 	@Column(name="accusation_count")
 	int accusationCount;
 	
-	@Column(name="total_gold_finch")
+	@Column(name="total_goldfinch")
 	int totalGoldfinch;
 	
 	@Column(name="random_king")
