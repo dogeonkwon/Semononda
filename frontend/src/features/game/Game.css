@@ -18,11 +18,25 @@
 }
 
 .box {
-  background-color: white;
+  background-color: antiquewhite;
+  background-image: url('./human.png');
+  background-size: cover;
   margin: auto;
   /* border: 1px solid; */
-  width: 18rem;
-  height: 18rem;
+  width: 400px;
+  height: 300px;
+}
+
+.kingdiv .box {
+  width: 500px;
+  height: 400px;
+}
+.stream-container{
+  width:25%;
+  height:18rem;
+  margin:auto;
+  display: flex;
+  justify-content: center;
 }
 .kingdiv {
   margin-top: 10px;
@@ -31,6 +45,7 @@
 }
 
 .titlediv {
+  margin-top: 80px;
   height: 670px;
 }
 
@@ -75,7 +90,7 @@
   /* border: 1px solid */
 }
 
-.chat {
+.chatbg {
   margin-top: 60px;
   margin-bottom: auto;
   margin-left: auto;
@@ -86,6 +101,24 @@
   background-size: cover;
 }
 
+.chatbox {
+  padding-top: 60px;
+  padding-right: 19px;
+  padding-left: 16px;
+  padding-bottom: 20px;
+  height: 814px;
+}
+
+.chatbox__footer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 20px;
+  background-color:beige;
+  margin-top: 20px;
+}
+
 .icons {
   width: 384px;
   height: 206px;
@@ -94,6 +127,11 @@
   justify-content: space-around;
 }
 
+.ready-icon {
+  margin: auto;
+  width: 100px;
+  height: 100px;
+}
 .icon {
   margin: auto;
   width: 100px;
