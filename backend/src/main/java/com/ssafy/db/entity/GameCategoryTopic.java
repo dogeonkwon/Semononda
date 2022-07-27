@@ -14,7 +14,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Table(name="game_category_topics")
-public class GameCategoryTopics extends BaseEntity{
+public class GameCategoryTopic extends BaseEntity{
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
