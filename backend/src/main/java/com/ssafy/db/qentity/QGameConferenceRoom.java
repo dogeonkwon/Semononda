@@ -23,6 +23,7 @@ import com.ssafy.db.entity.GameConferenceRoom;
 public class QGameConferenceRoom extends EntityPathBase<GameConferenceRoom> {
 
     private static final long serialVersionUID = 846542477L;
+	public static final QGameConferenceRoom gameConferenceRoom = new QGameConferenceRoom("gameConferenceRoom");
 
 	public final NumberPath<Integer> uid = createNumber("uid", Integer.class);
 

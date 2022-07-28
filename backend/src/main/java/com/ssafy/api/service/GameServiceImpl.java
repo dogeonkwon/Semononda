@@ -35,4 +35,10 @@ public class GameServiceImpl implements GameService {
 		playerRepositorySupport.changePlayerReadyByUserId(userId);
 		return;
 	}
+
+	@Override
+	public void makeRandomKing(int gameConferenceRoomUid) {
+		playerRepositorySupport.makeRandomKing(gameConferenceRoomUid);
+		return;
+	}
 }
