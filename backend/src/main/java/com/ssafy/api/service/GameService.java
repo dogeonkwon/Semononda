@@ -10,4 +10,5 @@ public interface GameService {
 	void changePlayerReady(String userId);
 	void makeRandomKing(int gameConferenceRoomUid);
 	void makeRandomTeam(int gameConferenceRoomUid);
+	void gameStart(int gameConferenceRoomUid);
 }

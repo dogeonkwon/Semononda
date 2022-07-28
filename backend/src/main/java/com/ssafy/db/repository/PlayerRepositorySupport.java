@@ -47,6 +47,16 @@ public class PlayerRepositorySupport {
 	}
 
 	@Transactional
+	public void gameStart(int gameConferenceRoomUid) {
+		jpaQueryFactory.update(qGameConferenceRoom).set(qGameConferenceRoom.gameStart, true)
+				.where(qGameConferenceRoom.uid.eq(3)).execute();
+		GameConferenceRoom g = jpaQueryFactory.selectFrom(qGameConferenceRoom)
+				.where(qGameConferenceRoom.uid.eq(gameConferenceRoomUid)).fetchFirst();
+		System.out.println("UID " + g.getUid() + "번방 게임 시작");
+		System.out.println("방제목: " + g.getTitle());
+	}
+
+	@Transactional
 	public void makeRandomKing(int gameConferenceRoomUid) {
 		Random random = new Random();
 		ArrayList<Player> playerList = new ArrayList();
@@ -110,7 +120,7 @@ public class PlayerRepositorySupport {
 					jpaQueryFactory.update(qPlayer).set(qPlayer.team, "B")
 							.where(qPlayer.gameConferenceRoomUid.eq((long) gameConferenceRoomUid))
 							.where(qPlayer.roleUid.eq((long) 2))
-							.where(qPlayer.uid.eq((long)playerList.get(randomIndex).getUid())).execute();
+							.where(qPlayer.uid.eq((long) playerList.get(randomIndex).getUid())).execute();
 					selected[randomIndex] = true;
 					break;
 				}
@@ -118,33 +128,34 @@ public class PlayerRepositorySupport {
 		}
 		ArrayList<Integer> teamA = new ArrayList<>();
 		ArrayList<Integer> teamB = new ArrayList<>();
-		for(int i=0; i<playerNum; i++) {
-			if(!selected[i]) {
+		for (int i = 0; i < playerNum; i++) {
+			if (!selected[i]) {
 				teamA.add(i);
-			}else {
+			} else {
 				teamB.add(i);
 			}
 		}
 		// 서버 로그 출력
 		StringBuilder sb = new StringBuilder();
 		sb.append("A팀: ");
-		for(int i=0; i<teamACount; i++) {
-			User teamAUser = jpaQueryFactory.selectFrom(qUser).where(qUser.uid.eq(playerList.get(teamA.get(i)).getUsersUid()))
-					.fetchOne();
+		for (int i = 0; i < teamACount; i++) {
+			User teamAUser = jpaQueryFactory.selectFrom(qUser)
+					.where(qUser.uid.eq(playerList.get(teamA.get(i)).getUsersUid())).fetchOne();
 			sb.append(teamAUser.getNickname());
 			sb.append(", ");
 		}
-		sb.setLength(sb.length()-2); 
+		sb.setLength(sb.length() - 2);
 		sb.append("\n");
 		sb.append("B팀: ");
-		for(int i=0; i<teamBCount; i++) {
-			User teamBUser = jpaQueryFactory.selectFrom(qUser).where(qUser.uid.eq(playerList.get(teamB.get(i)).getUsersUid()))
-					.fetchOne();
+		for (int i = 0; i < teamBCount; i++) {
+			User teamBUser = jpaQueryFactory.selectFrom(qUser)
+					.where(qUser.uid.eq(playerList.get(teamB.get(i)).getUsersUid())).fetchOne();
 			sb.append(teamBUser.getNickname());
 			sb.append(", ");
 		}
-		sb.setLength(sb.length()-2); 
+		sb.setLength(sb.length() - 2);
 		sb.append("\n");
 		System.out.println(sb);
 	}
+
 }

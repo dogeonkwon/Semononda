@@ -37,6 +37,11 @@ public class GameServiceImpl implements GameService {
 	}
 
 	@Override
+	public void gameStart(int gameConferenceRoomUid) {
+		playerRepositorySupport.gameStart(gameConferenceRoomUid);
+		return;
+	}
+	@Override
 	public void makeRandomKing(int gameConferenceRoomUid) {
 		playerRepositorySupport.makeRandomKing(gameConferenceRoomUid);
 		return;
@@ -47,4 +52,5 @@ public class GameServiceImpl implements GameService {
 		playerRepositorySupport.makeRandomTeam(gameConferenceRoomUid);
 		return;
 	}
+
 }
