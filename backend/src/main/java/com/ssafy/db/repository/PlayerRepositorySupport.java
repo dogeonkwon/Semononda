@@ -1,5 +1,6 @@
 package com.ssafy.db.repository;
 
+import com.querydsl.core.types.QList;
 import com.querydsl.jpa.JPQLQueryFactory;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.db.entity.Player;
@@ -7,7 +8,10 @@ import com.ssafy.db.qentity.QPlayer;
 import com.ssafy.db.qentity.QUser;
 import com.ssafy.db.entity.User;
 
+import java.awt.List;
 import java.util.Optional;
+
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -21,6 +25,7 @@ public class PlayerRepositorySupport {
     private JPAQueryFactory jpaQueryFactory;
     QPlayer qPlayer = QPlayer.player;
     QUser qUser = QUser.user;
+    
     public Optional<Player> findPlayerByUserId(String userId) {
     	long userUid = jpaQueryFactory.select(qUser.uid).from(qUser).where((qUser.id).eq(userId)).fetchOne();
         Player player = jpaQueryFactory.select(qPlayer).from(qPlayer)
@@ -28,4 +33,13 @@ public class PlayerRepositorySupport {
         if(player == null) return Optional.empty();
         return Optional.ofNullable(player);
     }
+    
+    @Transactional
+	public void changePlayerReadyByUserId(String userId) {
+		long userUid = jpaQueryFactory.select(qUser.uid).from(qUser).where((qUser.id).eq(userId)).fetchOne();
+		Player player = jpaQueryFactory.select(qPlayer).from(qPlayer)
+                .where(qPlayer.usersUid.eq(userUid)).fetchOne();
+        jpaQueryFactory.update(qPlayer).set(qPlayer.readyState, jpaQueryFactory.select(qPlayer.readyState).from(qPlayer).where(qPlayer.usersUid.eq(userUid)).fetchOne() ? false:true)
+        .where(qPlayer.usersUid.eq(userUid)).execute();
+	}
 }

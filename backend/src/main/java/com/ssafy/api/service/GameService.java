@@ -7,4 +7,5 @@ import com.ssafy.db.entity.Player;
  */
 public interface GameService {
 	Player getPlayerByUserId(String userId);
+	void changePlayerReady(String userId);
 }
