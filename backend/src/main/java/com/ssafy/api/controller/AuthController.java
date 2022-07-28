@@ -71,7 +71,7 @@ public class AuthController {
 	
 	
 	@PostMapping("/id-info")
-	@ApiOperation(value = "로그인", notes = "<strong>아이디와 패스워드</strong>를 통해 로그인 한다.") 
+	@ApiOperation(value = "아이디 중복 검사", notes = "<strong>아이디가 DB에 있는 지 확인한다.")
     @ApiResponses({
         @ApiResponse(code = 200, message = "성공", response = UserLoginPostRes.class),
         @ApiResponse(code = 401, message = "인증 실패", response = BaseResponseBody.class),
