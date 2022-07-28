@@ -9,4 +9,5 @@ public interface GameService {
 	Player getPlayerByUserId(String userId);
 	void changePlayerReady(String userId);
 	void makeRandomKing(int gameConferenceRoomUid);
+	void makeRandomTeam(int gameConferenceRoomUid);
 }
