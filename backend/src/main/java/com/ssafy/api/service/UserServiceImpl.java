@@ -38,4 +38,11 @@ public class UserServiceImpl implements UserService {
 		User user = userRepositorySupport.findUserById(userId).get();
 		return user;
 	}
+	
+	@Override
+	public User getUserByNickname(String nickname) {
+		//디비에 유저 정보 조회(nickname을 통한 조회).
+		User user = userRepositorySupport.findUserByNickname(nickname).get();
+		return user;
+	}
 }
