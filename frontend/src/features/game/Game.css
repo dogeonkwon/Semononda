@@ -109,7 +109,17 @@
   height: 814px;
 }
 
+.chatbox__messages {
+  height: 630px;
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  overflow-y: scroll;
+  flex-direction: column;
+}
+
 .chatbox__footer {
+  
   display: flex;
   flex-direction: row;
   align-items: center;

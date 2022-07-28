@@ -4,19 +4,27 @@ import exit from './exit.png'
 import ready from './ready.png'
 import axios from 'axios';
 import { OpenVidu } from 'openvidu-browser';
-import React, { Component } from 'react';
+import React, { Component, createRef } from 'react';
 import UserVideoComponent from './UserVideoComponent'
 import Messages from './Messages'
+import { useParams } from 'react-router-dom';
 
 const OPENVIDU_SERVER_URL = 'https://' + window.location.hostname + ':4443';
 const OPENVIDU_SERVER_SECRET = 'MY_SECRET';
 
+function withRouter(Component) {
+  function ComponentWithRouter(props) {
+    let params = useParams()
+    return <Component {...props} params={params} />
+  }
+  return ComponentWithRouter
+}
+
 class Game extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
-        mySessionId: 'SessionA',
+        mySessionId: this.props.params.id,
         myUserName: 'Participant' + Math.floor(Math.random() * 100),
         session: undefined,
         mainStreamManager: undefined,
@@ -32,6 +40,10 @@ class Game extends Component {
     this.handleChangeUserName = this.handleChangeUserName.bind(this);
     this.handleMainVideoStream = this.handleMainVideoStream.bind(this);
     this.onbeforeunload = this.onbeforeunload.bind(this);
+    this.messageContainer = createRef(null);
+    this.sendmessageByClick = this.sendmessageByClick.bind(this);
+    this.sendmessageByEnter = this.sendmessageByEnter.bind(this);
+    this.handleChatMessageChange = this.handleChatMessageChange.bind(this);
   }
 
   componentDidMount() {
@@ -41,6 +53,12 @@ class Game extends Component {
 
   componentWillUnmount() {
       window.removeEventListener('beforeunload', this.onbeforeunload);
+  }
+
+  componentDidUpdate(previousProps, previousState) {
+    if (this.refs.chatoutput != null) {
+      this.refs.chatoutput.scrollTop = this.refs.chatoutput.scrollHeight;
+    }
   }
 
   onbeforeunload(event) {
@@ -108,67 +126,83 @@ class Game extends Component {
                   });
               });
 
+              mySession.on('signal:chat', (event) => {
+                let chatdata = event.data.split(',');
+                if (chatdata[0] !== this.state.myUserName) {
+                  this.setState({
+                    messages: [
+                      ...this.state.messages,
+                      {
+                        userName: chatdata[0],
+                        text: chatdata[1],
+                        chatClass: 'messages__item--visitor',
+                      },
+                    ],
+                  });
+                }
+              });
+
               // On every Stream destroyed...
-                mySession.on('streamDestroyed', (event) => {
-                
-                    // Remove the stream from 'subscribers' array
-                    this.deleteSubscriber(event.stream.streamManager);
-                });
+              mySession.on('streamDestroyed', (event) => {
               
-                // On every asynchronous exception...
-                mySession.on('exception', (exception) => {
-                    console.warn(exception);
-                });
-              
-                // --- 4) Connect to the session with a valid user token ---
-              
-                // 'getToken' method is simulating what your server-side should do.
-                // 'token' parameter should be retrieved and returned by your own backend
-                this.getToken().then((token) => {
-                    // First param is the token got from OpenVidu Server. Second param can be retrieved by every user on event
-                    // 'streamCreated' (property Stream.connection.data), and will be appended to DOM as the user's nickname
-                    mySession
-                        .connect(
-                            token,
-                            { clientData: this.state.myUserName },
-                        )
-                        .then(async () => {
-                            var devices = await this.OV.getDevices();
-                            var videoDevices = devices.filter(device => device.kind === 'videoinput');
+                  // Remove the stream from 'subscribers' array
+                  this.deleteSubscriber(event.stream.streamManager);
+              });
+            
+              // On every asynchronous exception...
+              mySession.on('exception', (exception) => {
+                  console.warn(exception);
+              });
+            
+              // --- 4) Connect to the session with a valid user token ---
+            
+              // 'getToken' method is simulating what your server-side should do.
+              // 'token' parameter should be retrieved and returned by your own backend
+              this.getToken().then((token) => {
+                  // First param is the token got from OpenVidu Server. Second param can be retrieved by every user on event
+                  // 'streamCreated' (property Stream.connection.data), and will be appended to DOM as the user's nickname
+                  mySession
+                      .connect(
+                          token,
+                          { clientData: this.state.myUserName },
+                      )
+                      .then(async () => {
+                          var devices = await this.OV.getDevices();
+                          var videoDevices = devices.filter(device => device.kind === 'videoinput');
+                      
+                          // --- 5) Get your own camera stream ---
+                      
+                          // Init a publisher passing undefined as targetElement (we don't want OpenVidu to insert a video
+                          // element: we will manage it on our own) and with the desired properties
+                          let publisher = this.OV.initPublisher(undefined, {
+                              audioSource: undefined, // The source of audio. If undefined default microphone
+                              videoSource: videoDevices[0].deviceId, // The source of video. If undefined default webcam
+                              publishAudio: true, // Whether you want to start publishing with your audio unmuted or not
+                              publishVideo: true, // Whether you want to start publishing with your video enabled or not
+                              resolution: '640x480', // The resolution of your video
+                              frameRate: 30, // The frame rate of your video
+                              insertMode: 'APPEND', // How the video is inserted in the target element 'video-container'
+                              mirror: false, // Whether to mirror your local video or not
+                          });
                         
-                            // --- 5) Get your own camera stream ---
+                          // --- 6) Publish your stream ---
                         
-                            // Init a publisher passing undefined as targetElement (we don't want OpenVidu to insert a video
-                            // element: we will manage it on our own) and with the desired properties
-                            let publisher = this.OV.initPublisher(undefined, {
-                                audioSource: undefined, // The source of audio. If undefined default microphone
-                                videoSource: videoDevices[0].deviceId, // The source of video. If undefined default webcam
-                                publishAudio: true, // Whether you want to start publishing with your audio unmuted or not
-                                publishVideo: true, // Whether you want to start publishing with your video enabled or not
-                                resolution: '640x480', // The resolution of your video
-                                frameRate: 30, // The frame rate of your video
-                                insertMode: 'APPEND', // How the video is inserted in the target element 'video-container'
-                                mirror: false, // Whether to mirror your local video or not
-                            });
-                          
-                            // --- 6) Publish your stream ---
-                          
-                            mySession.publish(publisher);
-                          
-                            // Set the main video in the page to display our webcam and store our Publisher
-                            this.setState({
-                                currentVideoDevice: videoDevices[0],
-                                mainStreamManager: publisher,
-                                publisher: publisher,
-                            });
-                        })
-                        .catch((error) => {
-                            console.log('There was an error connecting to the session:', error.code, error.message);
-                        });
-                });
-            },
-        );
-    }
+                          mySession.publish(publisher);
+                        
+                          // Set the main video in the page to display our webcam and store our Publisher
+                          this.setState({
+                              currentVideoDevice: videoDevices[0],
+                              mainStreamManager: publisher,
+                              publisher: publisher,
+                          });
+                      })
+                      .catch((error) => {
+                          console.log('There was an error connecting to the session:', error.code, error.message);
+                      });
+              });
+          },
+      );
+  }
 
   leaveSession() {
 
@@ -185,7 +219,7 @@ class Game extends Component {
       this.setState({
           session: undefined,
           subscribers: [],
-          mySessionId: 'SessionA',
+          mySessionId: this.props.params.id,
           myUserName: 'Participant' + Math.floor(Math.random() * 100),
           mainStreamManager: undefined,
           publisher: undefined
@@ -227,6 +261,62 @@ class Game extends Component {
         }
   }
 
+  sendmessageByClick() {
+    this.setState({
+      messages: [
+        ...this.state.messages,
+        {
+          userName: this.state.myUserName,
+          text: this.state.message,
+          chatClass: 'messages__item--operator',
+        },
+      ],
+    });
+    const mySession = this.state.session;
+
+    mySession.signal({
+      data: `${this.state.myUserName},${this.state.message}`,
+      to: [],
+      type: 'chat',
+    });
+
+    this.setState({
+      message: '',
+    });
+  }
+
+  sendmessageByEnter(e) {
+    if (e.key === 'Enter') {
+      this.setState({
+        messages: [
+          ...this.state.messages,
+          {
+            userName: this.state.myUserName,
+            text: this.state.message,
+            chatClass: 'messages__item--operator',
+          },
+        ],
+      });
+      const mySession = this.state.session;
+
+      mySession.signal({
+        data: `${this.state.myUserName},${this.state.message}`,
+        to: [],
+        type: 'chat',
+      });
+
+      this.setState({
+        message: '',
+      });
+    }
+  }
+
+  handleChatMessageChange(e) {
+    this.setState({
+      message: e.target.value,
+    });
+  }
+
   render(){
     const onClick = e => {
       alert('준비완료')
@@ -239,18 +329,18 @@ class Game extends Component {
       <div className="gamediv">
         <div className="camdiv">
           <div className="stream-container">
-            <UserVideoComponent streamManager={this.state.publisher} />
+            <UserVideoComponent streamManager={this.state.publisher1} />
           </div>
           <div className="stream-container">
-            <UserVideoComponent streamManager={this.state.publisher} />
+            <UserVideoComponent streamManager={this.state.publisher1} />
           </div>
           <div className="stream-container">
-            <UserVideoComponent streamManager={this.state.publisher} />
+            <UserVideoComponent streamManager={this.state.publisher1} />
           </div>
         </div>
         <div className="kingdiv">
           <div className="stream-container">
-            <UserVideoComponent streamManager={this.state.publisher} />
+            <UserVideoComponent streamManager={this.state.publisher1} />
           </div>
           <div className="titlediv">
             <div className="title">
@@ -265,18 +355,22 @@ class Game extends Component {
         </div>
         <div className="camdiv">
           <div className="stream-container">
-            <UserVideoComponent streamManager={this.state.publisher} />
+            <UserVideoComponent streamManager={this.state.publisher1} />
           </div>
           <div className="stream-container">
-            <UserVideoComponent streamManager={this.state.publisher} />
+            <UserVideoComponent streamManager={this.state.publisher1} />
           </div>
           <div className="stream-container">
-            <UserVideoComponent streamManager={this.state.publisher} />
+            <UserVideoComponent streamManager={this.state.publisher1} />
           </div>
         </div>
         <div className="chatdiv">
           <div className="chatbg"> 
             <div className="chatbox">
+              <div className="chatbox__messages" ref="chatoutput">
+                {/* {this.displayElements} */}
+                <Messages messages={messages} />
+              </div>
               <div className="chat chatbox__footer">
                 <input
                   id="chat_message"
@@ -369,4 +463,5 @@ class Game extends Component {
   }
 };
 
-export default Game;
+const HOCTaskDetail = withRouter(Game)
+export default HOCTaskDetail;
