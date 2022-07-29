@@ -35,17 +35,22 @@ public class UserResponse{
     String description;
 	
 	public static UserResponse of(Integer statusCode, String message, User user) {
-		UserResponse res = new UserResponse();
-		res.setUid(user.getUid());
-		res.setId(user.getId());
-		res.setName(user.getName());
-		res.setPassword(user.getPassword());
-		res.setPhonenumber(user.getPhonenumber());
-		res.setRankpoint(user.getRankpoint());
-		res.setNickname(user.getNickname());
-		res.setImg(user.getImg());
-		res.setDescription(user.getDescription());
-		return res;
+		if (user==null) {
+			return null;
+		}
+		else {
+			UserResponse res = new UserResponse();
+			res.setUid(user.getUid());
+			res.setId(user.getId());
+			res.setName(user.getName());
+			res.setPassword(user.getPassword());
+			res.setPhonenumber(user.getPhonenumber());
+			res.setRankpoint(user.getRankpoint());
+			res.setNickname(user.getNickname());
+			res.setImg(user.getImg());
+			res.setDescription(user.getDescription());
+			return res;
+		}
 	}
 	
 }
