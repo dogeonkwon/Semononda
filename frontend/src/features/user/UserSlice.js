@@ -8,7 +8,7 @@ export const signup = createAsyncThunk(
   'SIGNUP',
   async (userInfo, { rejectWithValue }) => {
     try {
-      const response = await axios.post('/api/signup', userInfo);
+      const response = await axios.post('/user/signin', userInfo);
       return response;
     } catch (err) {
       return rejectWithValue(err.response);
@@ -19,11 +19,9 @@ export const signup = createAsyncThunk(
 // 닉네임 중복 검사
 export const checkNickname = createAsyncThunk(
   'CHECK_NICKNAME',
-  async (nickname, { rejectWithValue }) => {
+  async (userInfo, { rejectWithValue }) => {
     try {
-      const response = await axios.get('/api/user/check_nickname', {
-        params: { nickname },
-      });
+      const response = await axios.get('/user/nickname-info',userInfo);
       return response;
     } catch (err) {
       return rejectWithValue(err.response);
@@ -37,7 +35,7 @@ export const login = createAsyncThunk(
   async (loginInfo, { rejectWithValue }) => {
     try {
       console.log("loginInfo", loginInfo)
-      const response = await axios.post('/login', loginInfo);
+      const response = await axios.post('/v1/auth/login', loginInfo);
       console.log("response",response)
       const {
         data: { token },
