@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Optional;
 import java.util.Random;
 
+import javax.persistence.criteria.CriteriaBuilder.Case;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,6 +56,57 @@ public class PlayerRepositorySupport {
 		System.out.println("UID " + g.getUid() + "번방 게임 시작");
 		System.out.println("방제목: " + g.getTitle());
 	}
+
+	@Transactional
+	public void changePenalty(int gameConferenceRoomUid, String userID, int penalty) {// penalty 0:스피커, 1:카메라, 2:음성변조
+		long userUid = jpaQueryFactory.select(qUser.uid).from(qUser).where((qUser.id).eq(userID)).fetchOne();
+		Player player = jpaQueryFactory.selectFrom(qPlayer).where(qPlayer.usersUid.eq(userUid)).fetchOne();
+		switch (penalty) {//제한 내용에 따른 스위치 문
+		case 0:
+			//이전 제한 여부
+			boolean beforeMuted = jpaQueryFactory.select(qPlayer.isMuted).from(qPlayer)
+					.where(qPlayer.usersUid.eq(userUid)).fetchOne();
+			//제한 여부 변경
+			jpaQueryFactory.update(qPlayer).set(qPlayer.isMuted, beforeMuted ? false : true)
+					.where(qPlayer.usersUid.eq(userUid)).execute();
+			//로그 츨력
+			if (beforeMuted)
+				System.out.println("아이디 " + userID + "음소거 해제 됨");
+			else
+				System.out.println("아이디 " + userID + "음소거 됨");
+			break;
+		case 1:
+			//이전 제한 여부
+			boolean beforeCamOff = jpaQueryFactory.select(qPlayer.isCamOff).from(qPlayer)
+					.where(qPlayer.usersUid.eq(userUid)).fetchOne();
+			//제한 여부 변경
+			jpaQueryFactory.update(qPlayer).set(qPlayer.isCamOff, beforeCamOff ? false : true)
+					.where(qPlayer.usersUid.eq(userUid)).execute();
+			//로그 츨력
+			if (beforeCamOff)
+				System.out.println("아이디 " + userID + "카메라 제한 해제 됨");
+			else
+				System.out.println("아이디 " + userID + "카메라 제한 됨");
+			break;
+		default:
+			//이전 제한 여부
+			boolean beforeChangeVoice = jpaQueryFactory.select(qPlayer.isChangeVoice).from(qPlayer)
+					.where(qPlayer.usersUid.eq(userUid)).fetchOne();
+			//제한 여부 변경
+			jpaQueryFactory.update(qPlayer).set(qPlayer.isChangeVoice, beforeChangeVoice ? false : true)
+					.where(qPlayer.usersUid.eq(userUid)).execute();
+			//로그 츨력
+			if (beforeChangeVoice)
+				System.out.println("아이디 " + userID + "음성 변조 해제 됨");
+			else
+				System.out.println("아이디 " + userID + "음성 변조 됨");
+			break;
+		}
+		jpaQueryFactory.update(qPlayer)
+				.set(qPlayer.readyState, jpaQueryFactory.select(qPlayer.readyState).from(qPlayer)
+						.where(qPlayer.usersUid.eq(userUid)).fetchOne() ? false : true)
+				.where(qPlayer.usersUid.eq(userUid)).execute();
+	} 
 
 	@Transactional
 	public void makeRandomKing(int gameConferenceRoomUid) {

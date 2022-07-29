@@ -90,6 +90,24 @@ public class GameController {
 		return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
 	}
 	
+	@PostMapping("/common/penalty")
+	@ApiOperation(value = "플레이어 제한", notes = "해당 아이디의 플레이어의 <strong>제한 여부(0:스피커, 1:카메라, 2:음성변조)</strong>를 변경한다.") 
+    @ApiResponses({
+        @ApiResponse(code = 200, message = "성공"),
+        @ApiResponse(code = 401, message = "인증 실패"),
+        @ApiResponse(code = 404, message = "사용자 없음"),
+        @ApiResponse(code = 500, message = "서버 오류")
+    })
+	public ResponseEntity<? extends BaseResponseBody> changePenalty(
+			@RequestParam("gameConferenceRoomUid") @ApiParam(value="게임 컨퍼런스룸 Uid 정보", required = true) int gameConferenceRoomUid,
+			@RequestParam("userID") @ApiParam(value="플레이어의 user ID", required = true) String userID, 
+			@RequestParam("penalty") @ApiParam(value="제한 종류(0:스피커, 1:카메라, 2:음성변조)", required = true) int penalty) {
+		//임의로 리턴된 User 인스턴스. 현재 코드는 회원 가입 성공 여부만 판단하기 때문에 굳이 Insert 된 유저 정보를 응답하지 않음.
+
+		gameService.changePenalty(gameConferenceRoomUid, userID, penalty);
+		return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
+	}
+	
 	@PostMapping("/normal/random-king")
 	@ApiOperation(value = "랜덤 왕 선정", notes = "해당 게임에서 <strong>랜덤왕을 한 번도 해본 적 없는</strong>플레이어 중 왕을 선정한다.") 
     @ApiResponses({

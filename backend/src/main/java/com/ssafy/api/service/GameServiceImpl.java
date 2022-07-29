@@ -42,6 +42,11 @@ public class GameServiceImpl implements GameService {
 		return;
 	}
 	@Override
+	public void changePenalty(int gameConferenceRoomUid, String userID, int penalty) {
+		playerRepositorySupport.changePenalty(gameConferenceRoomUid, userID, penalty);
+		return;
+	}
+	@Override
 	public void makeRandomKing(int gameConferenceRoomUid) {
 		playerRepositorySupport.makeRandomKing(gameConferenceRoomUid);
 		return;
@@ -52,5 +57,7 @@ public class GameServiceImpl implements GameService {
 		playerRepositorySupport.makeRandomTeam(gameConferenceRoomUid);
 		return;
 	}
+
+	
 
 }
