@@ -5,11 +5,8 @@ import org.springframework.stereotype.Service;
 
 import com.ssafy.api.request.BoardRequest;
 import com.ssafy.db.entity.Board;
-import com.ssafy.db.entity.User;
 import com.ssafy.db.repository.BoardRepository;
-import java.util.Date;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import com.ssafy.db.repository.BoardRepositorySupport;
 /**
  *	유저 관련 비즈니스 로직 처리를 위한 서비스 구현 정의.
  */
@@ -18,7 +15,8 @@ public class BoardServiceImpl implements BoardService {
 	@Autowired
 	BoardRepository boardRepository;
 	
-
+	@Autowired
+	BoardRepositorySupport boardRepositorySupport;
 
 	@Override
 	public Board createBoard(BoardRequest boardRegisterInfo) {
@@ -36,9 +34,10 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public Board readBoardByUid(BoardRequest boardRegisterInfo) {
-		// TODO Auto-generated method stub
-		return null;
+	public Board findBoardByUid(int uid) {
+		Board board = new Board();
+		board = boardRepositorySupport.findBoardByUid(uid);
+		return board;
 	}
 
 	@Override

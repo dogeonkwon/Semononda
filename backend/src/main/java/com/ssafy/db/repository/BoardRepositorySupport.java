@@ -19,10 +19,9 @@ public class BoardRepositorySupport {
     private JPAQueryFactory jpaQueryFactory;
     QBoard qBoard = QBoard.board;
     
-    public Optional<Board> findBoardByUid(int uid) {
+    public Board findBoardByUid(int uid) {
         Board board = jpaQueryFactory.select(qBoard).from(qBoard)
                 .where(qBoard.uid.eq(uid)).fetchOne();
-        if(board == null) return Optional.empty();
-        return Optional.ofNullable(board);
+        return board;
     }
 }
