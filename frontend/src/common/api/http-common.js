@@ -1,8 +1,7 @@
 import baseAxios from 'axios';
-import { getToken } from './JWT-common';
 
 const axios = baseAxios.create({
-  baseURL: 'http://localhost:8081/api/v1/auth',
+  baseURL: 'http://localhost:8081/api',
   headers: {
     'Content-Type': 'application/json',
   },

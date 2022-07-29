@@ -1,9 +1,16 @@
 import React, {useState} from 'react'
 import {Button, Form, FormGroup} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.css';
-import axios from 'axios';
+//import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import {useNavigate}from 'react-router-dom'
+import {signup, checkNickname} from '../UserSlice';
+import { toast } from 'react-toastify';
 
 function Signin() {
+
+    const dispatch = useDispatch();
+    const history = useNavigate();
 
     //서버로 전달할 user객체
    const [user, setUser] = useState({
@@ -143,33 +150,41 @@ function Signin() {
         }
     }
 
+    // const onCheckNickname = async (event) => {
+        //     axios
+        //       .get(`/user/nickname-info/${nickname}`)
+        //       .then(function (response) {
+            //         console.log(response);
+            //       })
+            //       //실패 시 catch 실행
+            //       .catch(function (error) {
+                //         console.log(error);
+                //       })
+                //       //성공이던 실패던 항상 실행
+                //       .then(function () {
+                    //         // always executed
+                    //       });
+                    
+                    // };
+                    
     //닉네임 중복값 인증
-    const onCheckNickname = async (event) => {
-        axios
-          .get(`/user/nickname-info/${nickname}`)
-          .then(function (response) {
-            console.log(response);
-          })
-          //실패 시 catch 실행
-          .catch(function (error) {
-            console.log(error);
-          })
-          //성공이던 실패던 항상 실행
-          .then(function () {
-            // always executed
-          });
-        
-    };
+    const onCheckNickname = (event) => {
+        //입력값 남겨두는 함수
+    event.preventDefault()
 
+    console.log(user)
+        dispatch(checkNickname(user))
+        .then(() => {
+            history("/signin", {replace: true})
+        })
+        .catch((err) => {
+            console.log(err);
+        })
+        alert("사용가능한 닉네임입니다.")
+    }
     //가입버튼 눌렀을 때 호출되는 함수
     const onSubmit = (event) => {
     
-    //콘솔 확인
-    console.log("user",user)
-    
-    const jsonUser = JSON.stringify(user)
-    console.log("userJson",jsonUser);
-    sessionStorage.setItem('jsonUser',jsonUser);
     //입력값 남겨두는 함수
     event.preventDefault()
 
@@ -177,6 +192,23 @@ function Signin() {
         alert('모든 정보를 입력해주세요');
         console.log(user);
     }else{
+        dispatch(signup(user))
+    
+        .then(() => {
+            history("/login", {replace: true})
+          })
+          .catch((err) => {
+            if (err.status === 400) {
+              toast.error('😥 입력하신 정보를 다시 확인해주세요');
+            } else if (err.status === 409) {
+              toast.error('😥 이미 로그인된 사용자입니다');
+            } else if (err.status === 401) {
+              toast.error('😥 아이디와 비밀번호를 다시 확인해주세요');
+              history.push('/login');
+            } else if (err.status === 500) {
+              history.push('/error');
+            }
+          });
         alert('회원가입 완료');
         console.log(user);
     }
