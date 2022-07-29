@@ -37,26 +37,26 @@ public class CommunityController {
 			@ApiResponse(code = 404, message = "게시물 없음"), @ApiResponse(code = 500, message = "서버 오류") })
 	public ResponseEntity<? extends BaseResponseBody> createBoard(
 			@RequestBody @ApiParam(value = "글 정보", required = true) BoardRequest registerInfo) {
-		
-//		EntityManagerFactory emf = Persistence.createEntityManagerFactory("jpabook");
-//		EntityManager em = emf.createEntityManager();
 
-//		EntityTransaction tx = em.getTransaction();
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("jpabook");
+		EntityManager em = emf.createEntityManager();
+
+		EntityTransaction tx = em.getTransaction();
 		try {
-//			tx.begin();
+			tx.begin();
 			Board board = boardService.createBoard(registerInfo);
-//			tx.commit();
+			tx.commit();
 			return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
 		} catch (Exception e) {
-//			tx.rollback();
+			tx.rollback();
 			return ResponseEntity.status(400).body(BaseResponseBody.of(400, "Bad responce"));
 		} finally {
 			System.out.println("hhhhhhhhhhhhhh");
-//			em.close();
+			em.close();
 		}
 
 	}
-	
+
 	@PostMapping("/test")
 	@ApiOperation(value = "글등록", notes = "<strong>아이디와 패스워드</strong>를 통해 회원가입 한다.")
 	@ApiResponses({ @ApiResponse(code = 200, message = "성공"), @ApiResponse(code = 401, message = "인증 실패"),
@@ -70,9 +70,9 @@ public class CommunityController {
 		System.out.println(registerInfo.getTitle());
 		System.out.println(registerInfo.getRegTime());
 
-			Board board = boardService.createBoard(registerInfo);
+		Board board = boardService.createBoard(registerInfo);
 
-			return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
+		return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
 
-		}
+	}
 }
