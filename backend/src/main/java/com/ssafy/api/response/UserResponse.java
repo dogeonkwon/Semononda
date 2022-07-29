@@ -34,7 +34,7 @@ public class UserResponse{
     @ApiModelProperty(name="유저 한줄소개(100자 이내)", example="난 나야")
     String description;
 	
-	public static UserResponse of(User user) {
+	public static UserResponse of(Integer statusCode, String message, User user) {
 		UserResponse res = new UserResponse();
 		res.setUid(user.getUid());
 		res.setId(user.getId());
@@ -47,4 +47,5 @@ public class UserResponse{
 		res.setDescription(user.getDescription());
 		return res;
 	}
+	
 }
