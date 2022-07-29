@@ -18,17 +18,18 @@ public class UserRepositorySupport {
     private JPAQueryFactory jpaQueryFactory;
     QUser qUser = QUser.user;
     
-    public Optional<User> findUserById(String userId) {
+    public User findUserById(String userId) {
         User user = jpaQueryFactory.select(qUser).from(qUser)
                 .where(qUser.id.eq(userId)).fetchOne();
-        if(user == null) return Optional.empty();
-        return Optional.ofNullable(user);
+        if(user == null) return null;
+        return user;
     }
     
-    public Optional<User> findUserByNickname(String nickname) {
+    public User findUserByNickname(String nickname) {
         User user = jpaQueryFactory.select(qUser).from(qUser)
                 .where(qUser.nickname.eq(nickname)).fetchOne();
-        if(user == null) return Optional.empty();
-        return Optional.ofNullable(user);
+
+        if(user == null) return null;
+        return user;
     }
 }
