@@ -25,7 +25,6 @@ public class Board extends BaseEntity implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	int uid;
 
-	@Id
 	@Column(name="user_uid")
 	int userUid;
 
@@ -44,5 +43,7 @@ public class Board extends BaseEntity implements Serializable {
 
 	@Column(name = "view_count")
 	int viewCount;
+	
+	@Column(nullable = true, name = "img")
 	String img;
 }

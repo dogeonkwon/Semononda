@@ -1,5 +1,7 @@
 package com.ssafy.api.service;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -38,14 +40,14 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public User getUserById(String userId) {
 		// 디비에 유저 정보 조회 (userId 를 통한 조회).
-		User user = userRepositorySupport.findUserById(userId).get();
+		User user = userRepositorySupport.findUserById(userId);
 		return user;
 	}
 	
 	@Override
 	public User getUserByNickname(String nickname) {
 		//디비에 유저 정보 조회(nickname을 통한 조회).
-		User user = userRepositorySupport.findUserByNickname(nickname).get();
+		User user = userRepositorySupport.findUserByNickname(nickname);
 		return user;
 	}
 }
