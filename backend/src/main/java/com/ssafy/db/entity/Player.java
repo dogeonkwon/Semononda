@@ -46,4 +46,13 @@ public class Player extends BaseEntity{
 
 	@Column(name="ready_state")
 	boolean readyState;
+	
+	@Column(name="is_muted")
+	boolean isMuted;
+	
+	@Column(name="is_cam_off")
+	boolean isCamOff;
+	
+	@Column(name="is_change_voice")
+	boolean isChangeVoice;
 }
