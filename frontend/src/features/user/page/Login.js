@@ -2,9 +2,9 @@ import React, {useState} from 'react'
 import {Button, Form, FormGroup} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.css';
 import { useDispatch } from 'react-redux';
+import {useNavigate}from 'react-router-dom'
 import { toast } from 'react-toastify';
 import {login} from '../UserSlice';
-import {useNavigate}from 'react-router-dom'
 
 function Login() {
   const dispatch = useDispatch();
