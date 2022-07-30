@@ -26,10 +26,10 @@ import io.swagger.annotations.ApiResponses;
 /**
  * 유저 관련 API 요청 처리를 위한 컨트롤러 정의.
  */
-@Api(value = "커뮤니티 API", tags = { "Community" })
+@Api(value = "guide API", tags = { "Guide" })
 @RestController
-@RequestMapping("/api/community")
-public class CommunityController {
+@RequestMapping("/api/guide")
+public class GuideController {
 
 	@Autowired
 	BoardService boardService;
