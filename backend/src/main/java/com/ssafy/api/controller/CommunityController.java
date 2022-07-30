@@ -1,14 +1,11 @@
 package com.ssafy.api.controller;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -36,34 +33,28 @@ public class CommunityController {
 
 	@Autowired
 	BoardService boardService;
-
-	@PostMapping("/tmp")
-	@ApiOperation(value = "글등록", notes = "<strong>아이디와 패스워드</strong>를 통해 회원가입 한다.")
+	
+	@PostMapping("/create")
+	@ApiOperation(value = "글등록", notes = "<strong>글 정보</strong>를 통해 게시글을 추가한다.")
 	@ApiResponses({ @ApiResponse(code = 200, message = "성공"), @ApiResponse(code = 401, message = "인증 실패"),
 			@ApiResponse(code = 404, message = "게시물 없음"), @ApiResponse(code = 500, message = "서버 오류") })
 	public ResponseEntity<? extends BaseResponseBody> createBoard(
-			@RequestBody @ApiParam(value = "글 정보", required = true) BoardRequest registerInfo) {
+			@RequestBody @ApiParam(value = "글 정보", required = true) BoardRequest boardInfo) {
 
-		EntityManagerFactory emf = Persistence.createEntityManagerFactory("jpabook");
-		EntityManager em = emf.createEntityManager();
-		//수정 요함
-		EntityTransaction tx = em.getTransaction();
-		try {
-			tx.begin();
-			Board board = boardService.createBoard(registerInfo);
-			tx.commit();
-			return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
-		} catch (Exception e) {
-			tx.rollback();
-			return ResponseEntity.status(400).body(BaseResponseBody.of(400, "Bad responce"));
-		} finally {
-			em.close();
-		}
+		System.out.println(boardInfo.getUserUid());
+		System.out.println(boardInfo.getCategoryLarge());
+		System.out.println(boardInfo.getCategoryMiddle());
+		System.out.println(boardInfo.getTitle());
+		System.out.println(boardInfo.getRegTime());
 
+		Board board = boardService.createBoard(boardInfo);
+
+		return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
 	}
-
+	
+	
 	@GetMapping("")
-	@ApiOperation(value = "board 검색 정보", notes = "<strong>board 를 uid로 검색한 정보</strong>를 통해 회원가입 한다.")
+	@ApiOperation(value = "board 검색 정보", notes = "<strong>board 를 uid로 검색한 정보</strong>")
 	@ApiResponses({ @ApiResponse(code = 200, message = "성공"), @ApiResponse(code = 401, message = "인증 실패"),
 			@ApiResponse(code = 404, message = "게시물 없음"), @ApiResponse(code = 500, message = "서버 오류") })
 	public ResponseEntity<? extends BoardResponse> findBoardByUid(
@@ -76,25 +67,50 @@ public class CommunityController {
 		else {
 			return ResponseEntity.status(200).body(BoardResponse.of(200, "Success",board));			
 		}
-
 	}
 	
-	@PostMapping("/create")
-	@ApiOperation(value = "글등록", notes = "<strong>아이디와 패스워드</strong>를 통해 회원가입 한다.")
+
+	@PutMapping("")
+	@ApiOperation(value = "board 글 변경 내용", notes = "<strong>board 를 uid로 검색한 정보</strong>.")
 	@ApiResponses({ @ApiResponse(code = 200, message = "성공"), @ApiResponse(code = 401, message = "인증 실패"),
 			@ApiResponse(code = 404, message = "게시물 없음"), @ApiResponse(code = 500, message = "서버 오류") })
-	public ResponseEntity<? extends BaseResponseBody> createBoardTest(
-			@RequestBody @ApiParam(value = "글 정보", required = true) BoardRequest registerInfo) {
+	public ResponseEntity<? extends BoardResponse> updateBoardByUid(
+			@RequestBody @ApiParam(value = "글 정보", required = true) BoardRequest boardInfo) {
+		Board board = boardService.findBoardByUid(boardInfo.getUid());
+		System.out.println("it is in");
+		
+		System.out.println(boardInfo.getUserUid());
+		System.out.println(boardInfo.getCategoryLarge());
+		System.out.println(boardInfo.getCategoryMiddle());
+		System.out.println(boardInfo.getTitle());
+		System.out.println(boardInfo.getRegTime());
 
-		System.out.println(registerInfo.getUserUid());
-		System.out.println(registerInfo.getCategoryLarge());
-		System.out.println(registerInfo.getCategoryMiddle());
-		System.out.println(registerInfo.getTitle());
-		System.out.println(registerInfo.getRegTime());
-
-		Board board = boardService.createBoard(registerInfo);
-
-		return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
-
+		if (board==null) {
+			System.out.println("업데이트 할 게시물이 없습니다.");
+			return ResponseEntity.status(400).body(BoardResponse.of(400, "Success",board));
+		}
+		else {
+			boardService.updateBoard(board, boardInfo);
+			return ResponseEntity.status(200).body(BoardResponse.of(200, "Success",board));
+		}
 	}
+	
+
+	@DeleteMapping("")
+	@ApiOperation(value = "board 글 삭제", notes = "<strong>board 를 uid로 검색한 게시글 삭제</strong>.")
+	@ApiResponses({ @ApiResponse(code = 200, message = "성공"), @ApiResponse(code = 401, message = "인증 실패"),
+			@ApiResponse(code = 404, message = "게시물 없음"), @ApiResponse(code = 500, message = "서버 오류") })
+	public ResponseEntity<? extends BaseResponseBody> deleteBoardByUid(
+			@ApiParam(value = "board uid", required = true) @RequestParam("uid") int uid) {
+		Board board = boardService.findBoardByUid(uid);
+		if(board!=null) {
+			boardService.deleteBoardByUid(board);
+			return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
+		}
+		else {
+			return ResponseEntity.status(200).body(BaseResponseBody.of(404, "failed, that board is not found"));
+		}
+	}
+	
+
 }

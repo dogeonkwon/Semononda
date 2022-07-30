@@ -9,7 +9,7 @@ import com.ssafy.db.entity.Board;
 public interface BoardService {
 	Board createBoard(BoardRequest boardRegisterInfo);
 	Board findBoardByUid(int uid);
-	Board updateBoard(BoardRequest boardRegisterInfo);
-	Board deleteBoardByNickname(int uid);
+	Board updateBoard(Board board, BoardRequest boardRegisterInfo);
+	void deleteBoardByUid(Board board);
 	Board postBoardByUsersNickname(int uid);
 }
