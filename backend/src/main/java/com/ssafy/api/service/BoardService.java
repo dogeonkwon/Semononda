@@ -1,5 +1,7 @@
 package com.ssafy.api.service;
 
+import java.util.List;
+
 import com.ssafy.api.request.BoardRequest;
 import com.ssafy.db.entity.Board;
 
@@ -12,4 +14,5 @@ public interface BoardService {
 	Board updateBoard(Board board, BoardRequest boardRegisterInfo);
 	void deleteBoardByUid(Board board);
 	Board postBoardByUsersNickname(int uid);
+	List<Board> getAllBoard();
 }

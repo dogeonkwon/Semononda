@@ -1,5 +1,7 @@
 package com.ssafy.api.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -110,5 +112,21 @@ public class BoardServiceImpl implements BoardService {
 	public Board postBoardByUsersNickname(int uid) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	/**
+	  * @Method Name : getAllBoard
+	  * @작성일 : 2022. 7. 30
+	  * @작성자 : 김동우
+	  * @변경이력 : 
+	
+	  * @Method 설명 :
+	  * @return
+	  */
+	
+	@Override
+	public List<Board> getAllBoard() {
+		// TODO Auto-generated method stub
+		return boardRepository.findAll();
 	}
 }
