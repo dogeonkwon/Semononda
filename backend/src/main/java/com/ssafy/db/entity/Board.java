@@ -36,6 +36,7 @@ public class Board extends BaseEntity implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	int uid;
 
+
 	@Column(name="user_uid")
 	int userUid;
 
@@ -65,7 +66,7 @@ public class Board extends BaseEntity implements Serializable {
 	String img;
 	
 	
-	@ManyToOne()
-	@JoinColumn(name="uid")
-	private User user;
+//	@ManyToOne()
+//	@JoinColumn(name="uid")
+//	private User user;
 }

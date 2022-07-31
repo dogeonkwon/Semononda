@@ -1,5 +1,6 @@
 package com.ssafy.db.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -37,16 +38,18 @@ public class User extends BaseEntity{
     String password;
     String phonenumber;
     int rankpoint;
+    
+//    @OneToMany
     String nickname;
     String img;
     String description;
     
-    @OneToMany(mappedBy="board")
-    private List<Board> boardList;
-    
-    public void add(Board board) {
-    	board.setUser(this);
-    	this.boardList.add(board);
-    }
+//    @OneToMany(mappedBy="user")
+//    private List<Board> boardList = new ArrayList<>();
+//    
+//    public void add(Board board) {
+//    	board.setUser(this);
+//    	this.boardList.add(board);
+//    }
     
 }
