@@ -3,7 +3,7 @@ video {
     height: 300px;
     float: left;
     cursor: pointer;
-    border-radius: 10%;
+    border-radius: 5%;
 }
 
 .kingdiv video {

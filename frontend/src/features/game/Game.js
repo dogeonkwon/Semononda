@@ -31,6 +31,8 @@ class Game extends Component {
         publisher: undefined,
         subscribers: [],
         messages: [],
+        isKing: false,
+        isLeaved: false,
     };
 
     this.joinSession = this.joinSession.bind(this);
@@ -52,7 +54,11 @@ class Game extends Component {
   }
 
   componentWillUnmount() {
+      window.location.reload();
       window.removeEventListener('beforeunload', this.onbeforeunload);
+      if (!this.state.leaved) {
+      this.leaveSession();
+    }
   }
 
   componentDidUpdate(previousProps, previousState) {
@@ -324,19 +330,21 @@ class Game extends Component {
     };
     
     const messages = this.state.messages;
-
+    const sub1 = this.state.subscribers.slice(0,3)
+    const sub2 = this.state.subscribers.slice(3,6)
+    console.log(this.state.subscribers)
     return (
       <div className="gamediv">
         <div className="camdiv">
-          <div className="stream-container">
-            <UserVideoComponent streamManager={this.state.publisher1} />
-          </div>
-          <div className="stream-container">
-            <UserVideoComponent streamManager={this.state.publisher1} />
-          </div>
-          <div className="stream-container">
-            <UserVideoComponent streamManager={this.state.publisher1} />
-          </div>
+          {sub1.map((sub,i) => (
+            <div
+              key={i}
+              className="stream-container"
+              onClick={() => this.handleMainVideoStream(sub)}
+              >
+              <UserVideoComponent streamManager={ undefined } />
+            </div>
+          ))}
         </div>
         <div className="kingdiv">
           <div className="stream-container">
@@ -354,15 +362,15 @@ class Game extends Component {
           </div>
         </div>
         <div className="camdiv">
-          <div className="stream-container">
-            <UserVideoComponent streamManager={this.state.publisher1} />
-          </div>
-          <div className="stream-container">
-            <UserVideoComponent streamManager={this.state.publisher1} />
-          </div>
-          <div className="stream-container">
-            <UserVideoComponent streamManager={this.state.publisher1} />
-          </div>
+          {sub2.map((sub,i) => (
+            <div
+              key={i}
+              className="stream-container"
+              onClick={() => this.handleMainVideoStream(sub)}
+              >
+              <UserVideoComponent streamManager={ undefined } />
+            </div>
+          ))}
         </div>
         <div className="chatdiv">
           <div className="chatbg"> 
