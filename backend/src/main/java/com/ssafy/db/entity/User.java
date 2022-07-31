@@ -1,12 +1,20 @@
 package com.ssafy.db.entity;
 
+import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Getter;
 import lombok.Setter;
-
-import javax.persistence.*;
 /**
  * 유저 모델 정의.
  */
@@ -32,4 +40,13 @@ public class User extends BaseEntity{
     String nickname;
     String img;
     String description;
+    
+    @OneToMany(mappedBy="board")
+    private List<Board> boardList;
+    
+    public void add(Board board) {
+    	board.setUser(this);
+    	this.boardList.add(board);
+    }
+    
 }
