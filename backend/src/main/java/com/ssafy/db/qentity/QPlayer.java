@@ -46,6 +46,9 @@ public class QPlayer extends EntityPathBase<Player> {
 	public final BooleanPath randomKing = createBoolean("randomKing");
 
 	public final BooleanPath readyState = createBoolean("readyState");
+	public final BooleanPath isMuted = createBoolean("isMuted");
+	public final BooleanPath isCamOff = createBoolean("isCamOff");
+	public final BooleanPath isChangeVoice = createBoolean("isChangeVoice");
 
 	public QPlayer(String variable) {
 		super(Player.class, forVariable(variable));

@@ -7,4 +7,9 @@ import com.ssafy.db.entity.Player;
  */
 public interface GameService {
 	Player getPlayerByUserId(String userId);
+	void changePlayerReady(String userId);
+	void makeRandomKing(int gameConferenceRoomUid);
+	void makeRandomTeam(int gameConferenceRoomUid);
+	void gameStart(int gameConferenceRoomUid);
+	void changePenalty(int gameConferenceRoomUid, String userID, int penalty);
 }

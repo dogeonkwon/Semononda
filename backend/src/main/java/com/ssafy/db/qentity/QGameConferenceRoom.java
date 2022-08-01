@@ -23,6 +23,7 @@ import com.ssafy.db.entity.GameConferenceRoom;
 public class QGameConferenceRoom extends EntityPathBase<GameConferenceRoom> {
 
     private static final long serialVersionUID = 846542477L;
+	public static final QGameConferenceRoom gameConferenceRoom = new QGameConferenceRoom("gameConferenceRoom");
 
 	public final NumberPath<Integer> uid = createNumber("uid", Integer.class);
 
@@ -42,6 +43,7 @@ public class QGameConferenceRoom extends EntityPathBase<GameConferenceRoom> {
     public final StringPath customTopic = createString("customTopic");
     public final StringPath customAnswerA = createString("customAnswerA");
     public final StringPath customAnswerB = createString("customAnswerB");
+    public final BooleanPath gameStart = createBoolean("gameStart");
     public QGameConferenceRoom(String variable) {
         super(GameConferenceRoom.class, forVariable(variable));
     }
