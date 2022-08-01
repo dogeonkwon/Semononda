@@ -26,8 +26,7 @@ public class QSelectedTopic extends EntityPathBase<SelectedTopic> {
     public final NumberPath<Integer> uid = createNumber("uid", Integer.class);
     public final NumberPath<Integer> gameConferenceRoomUid = createNumber("gameConferenceRoomUid", Integer.class);
     public final NumberPath<Integer> gameCategoryTopicsUid = createNumber("gameCategoryTopicsUid", Integer.class);
-    public final BooleanPath isSelected = createBoolean("isSelected");
-    
+ 
    
     public QSelectedTopic(String variable) {
         super(SelectedTopic.class, forVariable(variable));

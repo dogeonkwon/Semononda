@@ -22,11 +22,12 @@ public class QGameCategoryTopic extends EntityPathBase<GameCategoryTopic> {
 
 	public final NumberPath<Integer> uid = createNumber("uid", Integer.class);
 
-	public final NumberPath<Integer> category = createNumber("category",Integer.class);
+	public final NumberPath<Integer> categoryUid = createNumber("categoryUid",Integer.class);
     
-    public final StringPath topicA = createString("topicA");
+    public final StringPath topic = createString("topic");
+    public final StringPath answerA = createString("answerA");
 
-    public final StringPath topicB = createString("topicB");
+    public final StringPath answerB = createString("answerB");
 	public final NumberPath<Integer> teamAWinCount = createNumber("teamAWinCount", Integer.class);
 	public final NumberPath<Integer> teamBWinCount = createNumber("teamBWinCount", Integer.class);
 
