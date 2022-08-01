@@ -446,6 +446,9 @@ class Game extends Component {
         alert('모든 플레이어가 준비되지 않았습니다.')
       } else {
         alert('게임 시작!!')
+        this.setState ({
+          readyState : 'start'
+        })
       }
     }
   };
