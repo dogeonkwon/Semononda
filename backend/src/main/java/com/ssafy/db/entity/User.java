@@ -39,17 +39,16 @@ public class User extends BaseEntity{
     String phonenumber;
     int rankpoint;
     
-//    @OneToMany
+
     String nickname;
     String img;
     String description;
     
-//    @OneToMany(mappedBy="user")
-//    private List<Board> boardList = new ArrayList<>();
-//    
-//    public void add(Board board) {
-//    	board.setUser(this);
-//    	this.boardList.add(board);
-//    }
+    @OneToMany(mappedBy="user_uid")
+    private List<Board> boardList = new ArrayList<Board>();
+    
+    public void add(Board board) {
+    	this.boardList.add(board);
+    }
     
 }

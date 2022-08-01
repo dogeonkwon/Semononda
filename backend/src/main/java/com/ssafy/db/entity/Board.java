@@ -37,9 +37,6 @@ public class Board extends BaseEntity implements Serializable {
 	int uid;
 
 
-	@Column(name="user_uid")
-	int userUid;
-
 	/**
 	 * 1: 커뮤니티 2: 뉴스 3: 가이드
 	 */
@@ -65,8 +62,10 @@ public class Board extends BaseEntity implements Serializable {
 	@Column(nullable = true, name = "img")
 	String img;
 	
+	@Column(name="user_uid")
+	int userUid;
 	
-//	@ManyToOne()
-//	@JoinColumn(name="uid")
-//	private User user;
+	@ManyToOne()
+	@JoinColumn(name="uid")
+	private User user;
 }
