@@ -72,6 +72,7 @@ public class BoardServiceImpl implements BoardService {
 		return board;
 	}
 	
+
 	
 	/**
 	  * @Method Name : updateBoard
@@ -102,6 +103,15 @@ public class BoardServiceImpl implements BoardService {
 		return boardRepository.save(board);
 	}
 
+	/**
+	  * @Method Name : deleteBoardByUid
+	  * @작성일 : 2022. 8. 1
+	  * @작성자 : 김동우
+	  * @변경이력 : 
+	
+	  * @Method 설명 :
+	  * @param board
+	  */
 	@Override
 	public void deleteBoardByUid(Board board) {
 		
@@ -128,5 +138,22 @@ public class BoardServiceImpl implements BoardService {
 	public List<Board> getAllBoard() {
 		// TODO Auto-generated method stub
 		return boardRepository.findAll();
+	}
+
+	/**
+	  * @Method Name : findBoardByTitle
+	  * @작성일 : 2022. 8. 1
+	  * @작성자 : 김동우
+	  * @변경이력 : 
+	
+	  * @Method 설명 : board 의 이름으로 찾는다.
+	  * @param board
+	  * @return
+	  */
+	
+	@Override
+	public List<Board> findBoardByTitle(String title) {
+		// TODO Auto-generated method stub
+		return boardRepositorySupport.findBoardByTitle(title);
 	}
 }
