@@ -25,9 +25,39 @@ public class GameServiceImpl implements GameService {
 
 	@Override
 	public Player getPlayerByUserId(String userId) {
-		// TODO Auto-generated method stub
 		Player player = playerRepositorySupport.findPlayerByUserId(userId).get();
 		System.out.println(player);
 		return player;
 	}
+
+	@Override
+	public void changePlayerReady(String userId) {
+		playerRepositorySupport.changePlayerReadyByUserId(userId);
+		return;
+	}
+
+	@Override
+	public void gameStart(int gameConferenceRoomUid) {
+		playerRepositorySupport.gameStart(gameConferenceRoomUid);
+		return;
+	}
+	@Override
+	public void changePenalty(int gameConferenceRoomUid, String userID, int penalty) {
+		playerRepositorySupport.changePenalty(gameConferenceRoomUid, userID, penalty);
+		return;
+	}
+	@Override
+	public void makeRandomKing(int gameConferenceRoomUid) {
+		playerRepositorySupport.makeRandomKing(gameConferenceRoomUid);
+		return;
+	}
+
+	@Override
+	public void makeRandomTeam(int gameConferenceRoomUid) {
+		playerRepositorySupport.makeRandomTeam(gameConferenceRoomUid);
+		return;
+	}
+
+	
+
 }

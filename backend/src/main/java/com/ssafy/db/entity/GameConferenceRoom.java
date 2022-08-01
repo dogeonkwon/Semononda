@@ -41,10 +41,8 @@ public class GameConferenceRoom extends BaseEntity{
 	@Column(name="end_time")
 	Date endTime;
 	
-	@Column(name="custom_passworrd")
+	@Column(name="custom_password")
 	int customPassword;
-	
-
 	
 	@Column(name="title")
 	String title;
@@ -57,5 +55,8 @@ public class GameConferenceRoom extends BaseEntity{
 
 	@Column(name="custom_answer_B")
 	String customAnswerB;
+
+	@Column(name = "game_start")
+	boolean gameStart;
 
 }
