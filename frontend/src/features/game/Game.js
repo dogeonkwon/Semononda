@@ -2,12 +2,15 @@ import './Game.css';
 import invite from './invite.png'
 import exit from './exit.png'
 import ready from './ready.png'
+import ready_ok from './ready_ok.png'
+import start from './start.png'
 import axios from 'axios';
 import { OpenVidu } from 'openvidu-browser';
 import React, { Component, createRef } from 'react';
 import UserVideoComponent from './UserVideoComponent'
 import Messages from './Messages'
 import { useParams } from 'react-router-dom';
+import $ from 'jquery'; 
 
 const OPENVIDU_SERVER_URL = 'https://' + window.location.hostname + ':4443';
 const OPENVIDU_SERVER_SECRET = 'MY_SECRET';
@@ -31,8 +34,13 @@ class Game extends Component {
         publisher: undefined,
         subscribers: [],
         messages: [],
+        isReady: false,
+        isHost: false,
         isKing: false,
         isLeaved: false,
+        player : 1,
+        readyPlayer: 1,
+        readyState : 'ready',
     };
 
     this.joinSession = this.joinSession.bind(this);
@@ -46,6 +54,7 @@ class Game extends Component {
     this.sendmessageByClick = this.sendmessageByClick.bind(this);
     this.sendmessageByEnter = this.sendmessageByEnter.bind(this);
     this.handleChatMessageChange = this.handleChatMessageChange.bind(this);
+    this.readyClick = this.readyClick.bind(this);
   }
 
   componentDidMount() {
@@ -54,9 +63,9 @@ class Game extends Component {
   }
 
   componentWillUnmount() {
-      window.location.reload();
-      window.removeEventListener('beforeunload', this.onbeforeunload);
-      if (!this.state.leaved) {
+    window.location.reload();
+    window.removeEventListener('beforeunload', this.onbeforeunload);
+    if (!this.state.leaved) {
       this.leaveSession();
     }
   }
@@ -150,16 +159,56 @@ class Game extends Component {
 
               // On every Stream destroyed...
               mySession.on('streamDestroyed', (event) => {
-              
-                  // Remove the stream from 'subscribers' array
-                  this.deleteSubscriber(event.stream.streamManager);
+                this.updateHost().then((clientData) => {
+                  const host = JSON.parse(clientData).clientData;
+
+                  mySession.signal({
+                    data: host,
+                    to: [],
+                    type: 'update-host',
+                  })
+                  .then(() => {})
+                  .cat((error) => {});
+                });
+                // Remove the stream from 'subscribers' array
+                this.deleteSubscriber(event.stream.streamManager);
               });
-            
+              mySession.on('signal:update-host',(event) => {
+                if(this.state.myUserName === event.data) {
+                  this.setState({ 
+                  isHost:true,
+                  isReady:true,})
+                }
+              });
               // On every asynchronous exception...
               mySession.on('exception', (exception) => {
                   console.warn(exception);
               });
-            
+
+              mySession.on('signal:ready-ok', (event) =>{
+                this.setState({
+                  readyPlayer: this.state.readyPlayer + 1
+                })
+              })
+              
+              mySession.on('signal:ready-cancel', (event) => {
+                this.setState({
+                  readyPlayer: this.state.readyPlayer - 1
+                })
+              })
+
+              mySession.on('signal:player-come', (event) => {
+                this.setState({
+                  player : this.state.player + 1
+                })
+              })
+
+              mySession.on('signal: player-out', (event) => {
+                this.setState({
+                  player : this.state.player - 1
+                })
+              })
+
               // --- 4) Connect to the session with a valid user token ---
             
               // 'getToken' method is simulating what your server-side should do.
@@ -175,7 +224,14 @@ class Game extends Component {
                       .then(async () => {
                           var devices = await this.OV.getDevices();
                           var videoDevices = devices.filter(device => device.kind === 'videoinput');
-                      
+                          this.updateHost().then((firstUser) => {
+                            const host = JSON.parse(firstUser).clientData;
+            
+                            if (this.state.myUserName === host)
+                              this.setState({ 
+                              isHost: true,
+                              isReady: true});
+                          });
                           // --- 5) Get your own camera stream ---
                       
                           // Init a publisher passing undefined as targetElement (we don't want OpenVidu to insert a video
@@ -215,7 +271,7 @@ class Game extends Component {
       // --- 7) Leave the session by calling 'disconnect' method over the Session object ---
 
       const mySession = this.state.session;
-
+      
       if (mySession) {
           mySession.disconnect();
       }
@@ -323,11 +379,78 @@ class Game extends Component {
     });
   }
 
+  readyClick() {
+    const mySession = this.state.session;
+
+    if (this.state.isReady === false) {
+      mySession.signal({
+        to: [],
+        type: 'ready-ok',
+      })
+    } else {
+      mySession.signal({
+        to: [],
+        type: 'ready-cancel'
+      })
+    }
+    this.setState({
+      isReady: !this.state.isReady,
+    });
+  }
+
+  updateHost() {
+    return new Promise((resolve, reject) => {
+      $.ajax({
+        type: 'GET',
+        // https://YOUR_OPENVIDUSERVER_IP/openvidu/api/sessions/SESSION_ID/connection
+        url: `https://${window.location.hostname}:4443/openvidu/api/sessions/${
+          this.state.mySessionId
+        }/connection`,
+        
+        headers: {
+          Authorization: `Basic ${btoa(
+            `OPENVIDUAPP:${OPENVIDU_SERVER_SECRET}`
+          )}`,
+        },
+        success: (response) => {
+          let content = response.content;
+          content.sort((a, b) => a.createdAt - b.createdAt);
+          console.log(content[0])
+          resolve(content[0].clientData);
+        },
+        error: (error) => reject(error),
+      });
+    });
+  }
+
+  start() {
+    let players = this.state.subscribers.length +1
+    console.log(this.state.readyPlayer)
+    console.log(this.state.subscribers.length + 1)
+    // if (players < 3 ) {
+    //   alert('게임에 필요한 인원수 가 부족합니다.')
+    // } else {
+    //   if ( this.state.readyPlayer !== players ) {
+    //     alert('모든 플레이어가 준비되지 않았습니다.')
+    //   } else {
+    //     alert('게임 시작!!')
+    //   }
+    // }
+
+    if (players < 3 ) {
+      alert('게임에 필요한 인원이 부족합니다.')
+    } else if (players > 7) {
+      alert('인원 수 가 너무 많습니다.')
+    } else {
+      if ( this.state.readyPlayer !== players ) {
+        alert('모든 플레이어가 준비되지 않았습니다.')
+      } else {
+        alert('게임 시작!!')
+      }
+    }
+  };
+
   render(){
-    const onClick = e => {
-      alert('준비완료')
-      console.log(e)
-    };
     
     const messages = this.state.messages;
     const sub1 = this.state.subscribers.slice(0,3)
@@ -348,7 +471,7 @@ class Game extends Component {
         </div>
         <div className="kingdiv">
           <div className="stream-container">
-            <UserVideoComponent streamManager={this.state.publisher1} />
+            <UserVideoComponent streamManager={this.state.publisher} />
           </div>
           <div className="titlediv">
             <div className="title">
@@ -398,9 +521,19 @@ class Game extends Component {
             </div>
           </div>
           <div className="icons">
-            <img className="ready-icon" alt="ready" src={ready} onClick={onClick}/>
+            {this.state.isHost === true ? (
+              <img className="ready-icon" alt="start" src={start} onClick={() => this.start()}/>
+            ):(this.state.isReady === false ?
+              <img className="ready-icon" alt="ready" src={ready} onClick={() => this.readyClick()}/>
+              :<img className="ready-icon" alt="ready" src={ready_ok} onClick={() => this.readyClick()}/>)}
+            {/* {this.state.isHost === true ? (
+                    <img className="ready-icon" alt="ready" src={start} onClick={() => this.readyClick()}/>
+                ) : <img className="ready-icon" alt="ready" src={ready_ok} onClick={() => this.readyClick()}/>}
+            {this.state.isReady === false ? (
+                    <img className="ready-icon" alt="ready" src={ready} onClick={() => this.readyClick()}/>
+                ) : <img className="ready-icon" alt="ready" src={ready_ok} onClick={() => this.readyClick()}/>} */}
             <img className="icon" alt="invite" src={invite}/>
-            <img className="icon" alt="exit" src={exit}/>
+            <img className="icon" alt="exit" src={exit} onClick={() => this.updateHost()}/>
           </div>
         </div>
       </div>
