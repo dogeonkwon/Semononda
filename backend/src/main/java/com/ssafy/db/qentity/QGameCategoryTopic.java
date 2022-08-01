@@ -19,6 +19,7 @@ import com.ssafy.db.entity.GameCategoryTopic;
 public class QGameCategoryTopic extends EntityPathBase<GameCategoryTopic> {
 
     private static final long serialVersionUID = 846542477L;
+	public static final QGameCategoryTopic gameCategoryTopic = new QGameCategoryTopic("gameCategoryTopic");
 
 	public final NumberPath<Integer> uid = createNumber("uid", Integer.class);
 

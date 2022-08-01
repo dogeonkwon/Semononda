@@ -4,18 +4,22 @@ import java.util.ArrayList;
 import java.util.Optional;
 import java.util.Random;
 
-import javax.persistence.criteria.CriteriaBuilder.Case;
 import javax.transaction.Transactional;
 
+import org.checkerframework.checker.units.qual.radians;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.ssafy.db.entity.GameCategoryTopic;
 import com.ssafy.db.entity.GameConferenceRoom;
 import com.ssafy.db.entity.Player;
+import com.ssafy.db.entity.SelectedTopic;
 import com.ssafy.db.entity.User;
+import com.ssafy.db.qentity.QGameCategoryTopic;
 import com.ssafy.db.qentity.QGameConferenceRoom;
 import com.ssafy.db.qentity.QPlayer;
+import com.ssafy.db.qentity.QSelectedTopic;
 import com.ssafy.db.qentity.QUser;
 
 /**
@@ -24,10 +28,15 @@ import com.ssafy.db.qentity.QUser;
 @Repository
 public class PlayerRepositorySupport {
 	@Autowired
+	private SelectedTopicRepository selectedTopicRepository;
+	
+	@Autowired
 	private JPAQueryFactory jpaQueryFactory;
 	QPlayer qPlayer = QPlayer.player;
 	QUser qUser = QUser.user;
 	QGameConferenceRoom qGameConferenceRoom = QGameConferenceRoom.gameConferenceRoom;
+	QGameCategoryTopic qGameCategoryTopic = QGameCategoryTopic.gameCategoryTopic;
+	QSelectedTopic qSelectedTopic = QSelectedTopic.selectedTopic;
 
 	public Optional<Player> findPlayerByUserId(String userId) {
 		long userUid = jpaQueryFactory.select(qUser.uid).from(qUser).where((qUser.id).eq(userId)).fetchOne();
@@ -50,7 +59,7 @@ public class PlayerRepositorySupport {
 	@Transactional
 	public void gameStart(int gameConferenceRoomUid) {
 		jpaQueryFactory.update(qGameConferenceRoom).set(qGameConferenceRoom.gameStart, true)
-				.where(qGameConferenceRoom.uid.eq(3)).execute();
+				.where(qGameConferenceRoom.uid.eq(gameConferenceRoomUid)).execute();
 		GameConferenceRoom g = jpaQueryFactory.selectFrom(qGameConferenceRoom)
 				.where(qGameConferenceRoom.uid.eq(gameConferenceRoomUid)).fetchFirst();
 		System.out.println("UID " + g.getUid() + "번방 게임 시작");
@@ -61,41 +70,41 @@ public class PlayerRepositorySupport {
 	public void changePenalty(int gameConferenceRoomUid, String userID, int penalty) {// penalty 0:스피커, 1:카메라, 2:음성변조
 		long userUid = jpaQueryFactory.select(qUser.uid).from(qUser).where((qUser.id).eq(userID)).fetchOne();
 		Player player = jpaQueryFactory.selectFrom(qPlayer).where(qPlayer.usersUid.eq(userUid)).fetchOne();
-		switch (penalty) {//제한 내용에 따른 스위치 문
+		switch (penalty) {// 제한 내용에 따른 스위치 문
 		case 0:
-			//이전 제한 여부
+			// 이전 제한 여부
 			boolean beforeMuted = jpaQueryFactory.select(qPlayer.isMuted).from(qPlayer)
 					.where(qPlayer.usersUid.eq(userUid)).fetchOne();
-			//제한 여부 변경
+			// 제한 여부 변경
 			jpaQueryFactory.update(qPlayer).set(qPlayer.isMuted, beforeMuted ? false : true)
 					.where(qPlayer.usersUid.eq(userUid)).execute();
-			//로그 츨력
+			// 로그 츨력
 			if (beforeMuted)
 				System.out.println("아이디 " + userID + "음소거 해제 됨");
 			else
 				System.out.println("아이디 " + userID + "음소거 됨");
 			break;
 		case 1:
-			//이전 제한 여부
+			// 이전 제한 여부
 			boolean beforeCamOff = jpaQueryFactory.select(qPlayer.isCamOff).from(qPlayer)
 					.where(qPlayer.usersUid.eq(userUid)).fetchOne();
-			//제한 여부 변경
+			// 제한 여부 변경
 			jpaQueryFactory.update(qPlayer).set(qPlayer.isCamOff, beforeCamOff ? false : true)
 					.where(qPlayer.usersUid.eq(userUid)).execute();
-			//로그 츨력
+			// 로그 츨력
 			if (beforeCamOff)
 				System.out.println("아이디 " + userID + "카메라 제한 해제 됨");
 			else
 				System.out.println("아이디 " + userID + "카메라 제한 됨");
 			break;
 		default:
-			//이전 제한 여부
+			// 이전 제한 여부
 			boolean beforeChangeVoice = jpaQueryFactory.select(qPlayer.isChangeVoice).from(qPlayer)
 					.where(qPlayer.usersUid.eq(userUid)).fetchOne();
-			//제한 여부 변경
+			// 제한 여부 변경
 			jpaQueryFactory.update(qPlayer).set(qPlayer.isChangeVoice, beforeChangeVoice ? false : true)
 					.where(qPlayer.usersUid.eq(userUid)).execute();
-			//로그 츨력
+			// 로그 츨력
 			if (beforeChangeVoice)
 				System.out.println("아이디 " + userID + "음성 변조 해제 됨");
 			else
@@ -106,7 +115,7 @@ public class PlayerRepositorySupport {
 				.set(qPlayer.readyState, jpaQueryFactory.select(qPlayer.readyState).from(qPlayer)
 						.where(qPlayer.usersUid.eq(userUid)).fetchOne() ? false : true)
 				.where(qPlayer.usersUid.eq(userUid)).execute();
-	} 
+	}
 
 	@Transactional
 	public void makeRandomKing(int gameConferenceRoomUid) {
@@ -127,7 +136,7 @@ public class PlayerRepositorySupport {
 		jpaQueryFactory.update(qPlayer).set(qPlayer.roleUid, (long) 2)
 				.where(qPlayer.gameConferenceRoomUid.eq((long) gameConferenceRoomUid)).execute();
 		// 랜덤 왕 역할을 왕(1)으로 설정
-		jpaQueryFactory.update(qPlayer).set(qPlayer.roleUid, (long) 1)
+		jpaQueryFactory.update(qPlayer).set(qPlayer.roleUid, (long) 1).set(qPlayer.goldfinch, (long) 0)
 				.where(qPlayer.usersUid.eq((long) randomKingPlayer.getUsersUid())).execute();
 		// 랜덤 왕을 맡은 유저 정보
 		User randomKingUser = jpaQueryFactory.selectFrom(qUser).where(qUser.uid.eq(randomKingPlayer.getUsersUid()))
@@ -209,5 +218,60 @@ public class PlayerRepositorySupport {
 		sb.append("\n");
 		System.out.println(sb);
 	}
+
+	@Transactional
+	public GameCategoryTopic getRoundStart(int gameConferenceRoomUid) {
+		Random random = new Random();
+		ArrayList<Player> playerList = new ArrayList();
+		ArrayList<GameCategoryTopic> topicList = new ArrayList();
+		ArrayList<Integer> selectedList = new ArrayList<>();
+		int categoryUid = jpaQueryFactory.select(qGameConferenceRoom.gameCategoriesUid).from(qGameConferenceRoom)
+				.where(qGameConferenceRoom.uid.eq(gameConferenceRoomUid)).fetchOne();
+		// 해당 게임에 참가중인 플레이어 리스트
+		playerList = (ArrayList<Player>) jpaQueryFactory.select(qPlayer).from(qPlayer)
+				.where(qPlayer.gameConferenceRoomUid.eq((long) gameConferenceRoomUid)).fetchResults().getResults();
+		// 모든 플레이어 제한 풀기
+		jpaQueryFactory.update(qPlayer).set(qPlayer.isCamOff, false).set(qPlayer.isMuted, false)
+				.set(qPlayer.isChangeVoice, false).where(qPlayer.gameConferenceRoomUid.eq((long) gameConferenceRoomUid))
+				.execute();
+		// 현재 카테고리의 토픽 리스트
+		topicList = (ArrayList<GameCategoryTopic>) jpaQueryFactory.selectFrom(qGameCategoryTopic)
+				.where(qGameCategoryTopic.categoryUid.eq(categoryUid)).fetchResults().getResults();
+		// 현재 게임 방이 했었던 주제들
+		if (jpaQueryFactory.select(qSelectedTopic.gameCategoryTopicsUid).from(qSelectedTopic)
+				.where(qSelectedTopic.gameConferenceRoomUid.eq(gameConferenceRoomUid)).fetchCount() != 0)
+			selectedList = (ArrayList<Integer>) jpaQueryFactory.select(qSelectedTopic.gameCategoryTopicsUid)
+					.from(qSelectedTopic).where(qSelectedTopic.gameConferenceRoomUid.eq(gameConferenceRoomUid))
+					.fetchResults().getResults();
+		GameCategoryTopic randomTopic = topicList.get(0);
+		// 남은 주제가 없을 떄
+		if(topicList.size()==selectedList.size()) {
+			System.out.println("남은 주제 없음!!");
+//			주제 없을 시 db의 selected topic 리셋
+			jpaQueryFactory.delete(qSelectedTopic).where(qSelectedTopic.gameConferenceRoomUid.eq(gameConferenceRoomUid)).execute();
+			System.out.println("루프");
+		}
+		for(int i=0; i<topicList.size(); i++) {
+			int randomIndex = random.nextInt(topicList.size());
+			// 랜덤 토픽
+			randomTopic = topicList.get(randomIndex);
+			// 선택된 토픽과 겹치지 않을 때
+			if (!selectedList.contains(randomTopic.getUid())) {
+				// selectedTopic table에 추가
+				SelectedTopic selectedTopic = new SelectedTopic();
+				selectedTopic.setGameCategoryTopicsUid(randomTopic.getUid());
+				selectedTopic.setGameConferenceRoomUid(gameConferenceRoomUid);
+				selectedTopicRepository.save(selectedTopic);
+				// 현재 게임 컨퍼런스룸의 주제 uid 변경
+				jpaQueryFactory.update(qGameConferenceRoom)
+						.set(qGameConferenceRoom.gameCategoryTopicsUid, randomTopic.getUid())
+						.where(qGameConferenceRoom.uid.eq(gameConferenceRoomUid)).execute();
+				System.out.println(gameConferenceRoomUid+"번방의 주제가 "+randomTopic.getTopic()+" \""+randomTopic.getAnswerA()+"\" VS \""+randomTopic.getAnswerB()+"\"(으)로 변경되었습니다.");
+				break;
+			}
+		}
+		return randomTopic;
+	}
+	
 
 }
