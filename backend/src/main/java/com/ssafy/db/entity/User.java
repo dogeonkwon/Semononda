@@ -44,11 +44,11 @@ public class User extends BaseEntity{
     String img;
     String description;
     
-    @OneToMany(mappedBy="user_uid")
-    private List<Board> boardList = new ArrayList<Board>();
-    
-    public void add(Board board) {
-    	this.boardList.add(board);
-    }
+//    @OneToMany(mappedBy="user_uid")
+//    private List<Board> boardList = new ArrayList<Board>();
+//    
+//    public void add(Board board) {
+//    	this.boardList.add(board);
+//    }
     
 }

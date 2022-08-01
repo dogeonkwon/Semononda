@@ -65,7 +65,7 @@ public class Board extends BaseEntity implements Serializable {
 	@Column(name="user_uid")
 	int userUid;
 	
-	@ManyToOne()
-	@JoinColumn(name="uid")
-	private User user;
+//	@ManyToOne()
+//	@JoinColumn(name="uid")
+//	private User user;
 }
