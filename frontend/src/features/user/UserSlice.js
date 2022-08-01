@@ -19,9 +19,28 @@ export const signup = createAsyncThunk(
 // 닉네임 중복 검사
 export const checkNickname = createAsyncThunk(
   'CHECK_NICKNAME',
-  async (userInfo, { rejectWithValue }) => {
+  async (nickname, { rejectWithValue }) => {
     try {
-      const response = await axios.get('/user/nickname-info',userInfo);
+      console.log(nickname)
+      const response = await axios.get('/user/nickname-info',{
+      params: {nickname}
+      });
+      return response;
+    } catch (err) {
+      return rejectWithValue(err.response);
+    }
+  }
+);
+
+// 아이디 중복 검사
+export const checkId = createAsyncThunk(
+  'CHECK_NICKNAME',
+  async (user_id, { rejectWithValue }) => {
+    try {
+      console.log("user_id",user_id)
+      const response = await axios.get('/user/id-info',{
+      params: {user_id}
+      });
       return response;
     } catch (err) {
       return rejectWithValue(err.response);
@@ -137,6 +156,7 @@ const initialState = {
   isAdmin: false,
   isNicknameChecked: false,
   isLoading: false,
+  isIdChecked: false,
 };
 
 // slice
@@ -146,6 +166,9 @@ const userSlice = createSlice({
   reducers: {
     setNicknameCheckedFalse: (state) => {
       state.isNicknameChecked = false;
+    },
+    setIdCheckedFasle: (state) => {
+      state.isIdChecked = false;
     },
     resetUser: (state) => {
       state.user = {};
@@ -177,6 +200,12 @@ const userSlice = createSlice({
     [checkNickname.rejected]: (state) => {
       state.isNicknameChecked = false;
     },
+    [checkId.fulfilled]: (state) => {
+      state.isIdChecked = true;
+    },
+    [checkId.rejected]: (state) => {
+      state.isIdChecked = false;
+    },
     [modifyNickname.fulfilled]: (state) => {
       state.isNicknameChecked = false;
     },
@@ -190,5 +219,5 @@ const userSlice = createSlice({
   },
 });
 
-export const { setNicknameCheckedFalse, resetUser } = userSlice.actions;
+export const { setIdCheckedFasle, setNicknameCheckedFalse, resetUser } = userSlice.actions;
 export default userSlice.reducer;

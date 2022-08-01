@@ -4,13 +4,32 @@ import 'bootstrap/dist/css/bootstrap.css';
 //import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import {useNavigate}from 'react-router-dom'
-import {signup, checkNickname} from '../UserSlice';
+import {signup, checkNickname, checkId} from '../UserSlice';
 import { toast } from 'react-toastify';
+import styled from "styled-components";
+
+//메인페이지 배경화면 파일
+const homeImgUrl = "homebase.png";
+//메인페이지 배경화면 Container
+const Container = styled.div`
+    display: block;
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    max-width: 100%;
+    max-height: 100%;
+    background: center;
+    background-color: black;
+    background-repeat: no-repeat;
+    background-image: url(${homeImgUrl});
+    background-size: cover;`
 
 function Signin() {
 
     const dispatch = useDispatch();
     const history = useNavigate();
+
+    const formImg = "userform_img.png";
 
     //서버로 전달할 user객체
    const [user, setUser] = useState({
@@ -150,30 +169,13 @@ function Signin() {
         }
     }
 
-    // const onCheckNickname = async (event) => {
-        //     axios
-        //       .get(`/user/nickname-info/${nickname}`)
-        //       .then(function (response) {
-            //         console.log(response);
-            //       })
-            //       //실패 시 catch 실행
-            //       .catch(function (error) {
-                //         console.log(error);
-                //       })
-                //       //성공이던 실패던 항상 실행
-                //       .then(function () {
-                    //         // always executed
-                    //       });
-                    
-                    // };
-                    
     //닉네임 중복값 인증
     const onCheckNickname = (event) => {
         //입력값 남겨두는 함수
     event.preventDefault()
 
-    console.log(user)
-        dispatch(checkNickname(user))
+    console.log(user.nickname)
+        dispatch(checkNickname(user.nickname))
         .then(() => {
             history("/signin", {replace: true})
         })
@@ -182,6 +184,23 @@ function Signin() {
         })
         alert("사용가능한 닉네임입니다.")
     }
+
+    //닉네임 중복값 인증
+    const onCheckId = (event) => {
+        //입력값 남겨두는 함수
+    event.preventDefault()
+
+    console.log(user.id)
+        dispatch(checkId(user.id))
+        .then(() => {
+            history("/signin", {replace: true})
+        })
+        .catch((err) => {
+            console.log(err);
+        })
+        alert("사용가능한 ID입니다.")
+    }
+
     //가입버튼 눌렀을 때 호출되는 함수
     const onSubmit = (event) => {
     
@@ -217,11 +236,14 @@ function Signin() {
 
   //회원가입 폼
   return (
-      <Form style={{margin:"1em"}}>
+    <Container>
+
+      <Form style={{ width:"50%", margin:"0 auto", top:"1em", position:"relative",padding:"1em", backgroundImage:`url(${formImg})`, backgroundSize:"cover"}}>
         <FormGroup className='mb-3' controlId='formBasicId'>
             <Form.Label>아이디</Form.Label>
             <Form.Control name='id' type='id' placeholder='아이디' value={id} onChange={onChangeId}/>
             {id.length > 0 && <span className={`message ${isId ? 'success' : 'error'}`}>{idMessage}</span>}
+            <Button onClick={onCheckId} variant='primary'>중복검사</Button>
         </FormGroup>
         <FormGroup className='mb-3' controlId='formBasicName'>
             <Form.Label>이름</Form.Label>
@@ -256,6 +278,7 @@ function Signin() {
           <Button type="submit" onClick={onSubmit} variant="primary">계정 생성하기</Button>
         </FormGroup>
       </Form>
+    </Container>
   );
 }
 export default Signin;
