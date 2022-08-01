@@ -7,9 +7,10 @@ import {useNavigate}from 'react-router-dom'
 import {signup, checkNickname, checkId} from '../UserSlice';
 import { toast } from 'react-toastify';
 import styled from "styled-components";
+import homebase from "../../../assets/images/homebase.png"
+import userform_img from "../../../assets/images/userform_img.png"
+import login_img from "../../../assets/images/login_img.png"
 
-//메인페이지 배경화면 파일
-const homeImgUrl = "homebase.png";
 //메인페이지 배경화면 Container
 const Container = styled.div`
     display: block;
@@ -21,15 +22,13 @@ const Container = styled.div`
     background: center;
     background-color: black;
     background-repeat: no-repeat;
-    background-image: url(${homeImgUrl});
+    background-image: url(${homebase});
     background-size: cover;`
 
 function Signin() {
 
     const dispatch = useDispatch();
     const history = useNavigate();
-
-    const formImg = "userform_img.png";
 
     //서버로 전달할 user객체
    const [user, setUser] = useState({
@@ -238,7 +237,7 @@ function Signin() {
   return (
     <Container>
 
-      <Form style={{ width:"50%", margin:"0 auto", top:"1em", position:"relative",padding:"1em", backgroundImage:`url(${formImg})`, backgroundSize:"cover"}}>
+      <Form style={{ width:"50%", margin:"0 auto", top:"1em", position:"relative",padding:"1em", backgroundImage:`url(${userform_img})`, backgroundSize:"cover"}}>
         <FormGroup className='mb-3' controlId='formBasicId'>
             <Form.Label>아이디</Form.Label>
             <Form.Control name='id' type='id' placeholder='아이디' value={id} onChange={onChangeId}/>

@@ -2,9 +2,8 @@ import React from "react";
 import 'bootstrap/dist/css/bootstrap.css';
 import styled from "styled-components";
 import {Link} from "react-router-dom";
-
-//메인페이지 배경화면 파일
-const homeImgUrl = "homebase.png";
+import homebase from "../../../assets/images/homebase.png"
+import homelogo from "../../../assets/images/homelogo.png"
 
 //메인페이지 배경화면 Container
 const Container = styled.div`
@@ -17,7 +16,7 @@ const Container = styled.div`
     background: center;
     background-color: black;
     background-repeat: no-repeat;
-    background-image: url(${homeImgUrl});
+    background-image: url(${homebase});
     background-size: cover;`
 
 //Container 이분할
@@ -75,9 +74,43 @@ const ArguementGroup = styled.div`
 
 //공식 경연 버튼
 const OfficialButton = styled.button`
+    font-family: JSArirangHON;
+    position: relative;
+    border: none;
+    min-width: 200px;
+    min-height: 50px;
+    background: linear-gradient(
+        90deg,
+        rgb(70, 70, 185) 0%,
+        rgb(40, 40, 220) 100%
+    );
+    border-radius: 1000px;
+    color: rgb(255, 255, 255);
+    cursor: pointer;
+    box-shadow: 12px 12px 24px rgb(175, 175, 235);
+    font-weight: 500;
+    transition: 0.3s;
+    font-size: 40px;
 `
 //자유 경연 버튼
 const FreeButton = styled.button`
+    font-family: JSArirangHON;
+    position: relative;
+    border: none;
+    min-width: 200px;
+    min-height: 50px;
+    background: linear-gradient(
+        90deg,
+        rgb(65, 165, 65) 0%,
+        rgb(50, 135, 45) 100%
+    );
+    border-radius: 1000px;
+    color: rgb(255, 255, 255);
+    cursor: pointer;
+    box-shadow: 12px 12px 24px rgb(180, 235, 170);
+    font-weight: 500;
+    transition: 0.3s;
+    font-size: 40px;
 `
 
 
@@ -91,15 +124,15 @@ function home() {
                 <Section>
                 <LogoWrapper>
                     <SecondLogoWrapper>
-                        <Logo src="homelogo.png"></Logo>
+                        <Logo src={homelogo}></Logo>
                     </SecondLogoWrapper>
                 </LogoWrapper>
                 </Section>
 
                 <Section>
                 <ArguementGroup>
-                    <OfficialButton>공식 경연</OfficialButton>
-                    <FreeButton>자유 경연</FreeButton>
+                    <Link to="/rank"><OfficialButton>공식 경연</OfficialButton></Link>
+                    <Link to="/custom"><FreeButton>자유 경연</FreeButton></Link>
                 </ArguementGroup>
                 </Section>
 

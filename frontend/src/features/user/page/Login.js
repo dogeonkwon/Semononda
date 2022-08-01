@@ -6,9 +6,10 @@ import {useNavigate}from 'react-router-dom'
 import { toast } from 'react-toastify';
 import {login} from '../UserSlice';
 import styled from "styled-components";
+import homebase from "../../../assets/images/homebase.png"
+import userform_img from "../../../assets/images/userform_img.png"
+import login_img from "../../../assets/images/login_img.png"
 
-//메인페이지 배경화면 파일
-const homeImgUrl = "homebase.png";
 
 //메인페이지 배경화면 Container
 const Container = styled.div`
@@ -21,7 +22,7 @@ const Container = styled.div`
     background: center;
     background-color: black;
     background-repeat: no-repeat;
-    background-image: url(${homeImgUrl});
+    background-image: url(${homebase});
     background-size: cover;`
 
 //로고 영역
@@ -47,9 +48,6 @@ const LoginLogo = styled.img`
 function Login() {
   const dispatch = useDispatch();
   const history = useNavigate();
-
-  //로그인, 회원가입 폼 배경 이미지
-  const formImg = "userform_img.png";
 
   //id
   const [userId, setId] = useState("");
@@ -95,9 +93,9 @@ function Login() {
 
   return (
     <Container>
-      <Form style={{width: "50%", textalign:"center",padding:"1em", backgroundImage:`url(${formImg})`, backgroundSize:"cover", margin: "0 auto", position:"relative", top:"15%"}}>
+      <Form style={{width: "50%", textalign:"center",padding:"1em", backgroundImage:`url(${userform_img})`, backgroundSize:"cover", margin: "0 auto", position:"relative", top:"15%"}}>
         <LogoWrapper>
-          <LoginLogo src="login.png"></LoginLogo>
+          <LoginLogo src={login_img}></LoginLogo>
         </LogoWrapper>
         <FormGroup className='mb-3'>
             <FormLabel style={{marginLeft: "25%"}}> 아이디</FormLabel>
