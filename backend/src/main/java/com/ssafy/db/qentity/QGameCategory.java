@@ -9,35 +9,32 @@ import com.querydsl.core.types.PathMetadata;
 import javax.annotation.Generated;
 import com.querydsl.core.types.Path;
 
-
 /**
  * QUser is a Querydsl query type for User
  */
 @Generated("com.querydsl.codegen.EntitySerializer")
 public class QGameCategory extends EntityPathBase<GameCategory> {
 
-    private static final long serialVersionUID = 846542477L;
+	private static final long serialVersionUID = 846542477L;
 
 	public final NumberPath<Integer> uid = createNumber("uid", Integer.class);
 
-    public final NumberPath<Integer> subject = createNumber("subject",Integer.class);
-    public final NumberPath<Integer> subjectCount = createNumber("subjectCount",Integer.class);
-    
-    public final StringPath subjectImg = createString("subjectImg");
+	public final StringPath subject = createString("subject");
 
-   
+	public final NumberPath<Integer> subjectCount = createNumber("subjectCount", Integer.class);
 
-    public QGameCategory(String variable) {
-        super(GameCategory.class, forVariable(variable));
-    }
+	public final StringPath subjectImg = createString("subjectImg");
 
-    public QGameCategory(Path<? extends GameCategory> path) {
-        super(path.getType(), path.getMetadata());
-    }
+	public QGameCategory(String variable) {
+		super(GameCategory.class, forVariable(variable));
+	}
 
-    public QGameCategory(PathMetadata metadata) {
-        super(GameCategory.class, metadata);
-    }
+	public QGameCategory(Path<? extends GameCategory> path) {
+		super(path.getType(), path.getMetadata());
+	}
+
+	public QGameCategory(PathMetadata metadata) {
+		super(GameCategory.class, metadata);
+	}
 
 }
-

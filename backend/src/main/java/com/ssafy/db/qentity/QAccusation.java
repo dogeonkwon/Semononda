@@ -25,8 +25,8 @@ public class QAccusation extends EntityPathBase<Accusation> {
 	public final QBaseEntity _super = new QBaseEntity(this);
 	public final NumberPath<Integer> uid = createNumber("uid", Integer.class);
 	public final NumberPath<Integer> accusationInfosUid = createNumber("accusationInfosUid", Integer.class);
-	public final StringPath reporterNickname = createString("reporterNickname");
-	public final StringPath attackerNickname = createString("attackerNickname");
+	public final NumberPath<Integer> reporterUid= createNumber("reporterUid",Integer.class);
+	public final NumberPath<Integer> attackerUid= createNumber("attackerUid",Integer.class);
 
 	public QAccusation(String variable) {
 		super(Accusation.class, forVariable(variable));

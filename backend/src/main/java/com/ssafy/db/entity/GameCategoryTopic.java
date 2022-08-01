@@ -20,14 +20,17 @@ public class GameCategoryTopic extends BaseEntity{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	int uid;
 	
-	@Column(name="category")
-	int category;
+	@Column(name="category_uid")
+	int categoryUid;
 	
-	@Column(name="topic_A")
-	String topicA;
-	
-	@Column(name="topic_B")
-	String topicB;
+	@Column(name="topic")
+	String topic;
+
+	@Column(name="answer_A")
+	String answerA;
+
+	@Column(name="answer_B")
+	String answerB;
 	
 	@Column(name="team_A_win_count")
 	int teamAWinCount;

@@ -19,7 +19,7 @@ public class GameCategory extends BaseEntity{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	int uid;
-	int subject;
+	String subject;
 	@Column(name="subject_count")
 	int subjectCount;
 	@Column(name="subject_img")

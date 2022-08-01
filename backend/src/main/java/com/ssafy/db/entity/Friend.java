@@ -18,8 +18,8 @@ public class Friend extends BaseEntity{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	int uid;
 	
-	@Column(name="friend_requester")
-	String friendRequester;
-	@Column(name="friend_receiver")
-	String friendReceiver;
+	@Column(name="friend_requester_uid")
+	int friendRequesterUid;
+	@Column(name="friend_receiver_uid")
+	int friendReceiverUid;
 }

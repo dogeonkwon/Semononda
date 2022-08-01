@@ -21,9 +21,9 @@ public class QFriend extends EntityPathBase<Friend> {
 
 	public final NumberPath<Integer> uid = createNumber("uid", Integer.class);
 
-	public final StringPath friendRequester = createString("friendRequester");
+	public final NumberPath<Integer> friendRequesterUid = createNumber("friendRequesterUid", Integer.class);
 
-	public final StringPath friendReceiver = createString("friendReceiver");
+	public final NumberPath<Integer> friendReceiverUid = createNumber("friendReceiverUid", Integer.class);
 
 	public QFriend(String variable) {
 		super(Friend.class, forVariable(variable));

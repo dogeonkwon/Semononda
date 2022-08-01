@@ -22,9 +22,9 @@ public class Accusation extends BaseEntity{
 	@Column(name = "accusation_infos_uid")
 	int accusationInfosUid;
 	
-	@Column(name = "reporter_nickname")
-	String reporterNickname;
+	@Column(name = "reporter_uid")
+	int reporterUid;
 	
-	@Column(name = "attacker_nickname")
-	String attackerNickname;
+	@Column(name = "attacker_uid")
+	int attackerUid;
 }

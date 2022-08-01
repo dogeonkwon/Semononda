@@ -1,5 +1,7 @@
 package com.ssafy.api.service;
 
+import java.util.Optional;
+
 import com.ssafy.api.request.UserRegisterPostReq;
 import com.ssafy.db.entity.User;
 
@@ -9,4 +11,5 @@ import com.ssafy.db.entity.User;
 public interface UserService {
 	User createUser(UserRegisterPostReq userRegisterInfo);
 	User getUserById(String userId);
+	User getUserByNickname(String nickname);
 }
