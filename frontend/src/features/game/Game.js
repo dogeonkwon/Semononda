@@ -38,9 +38,10 @@ class Game extends Component {
         isHost: false,
         isKing: false,
         isLeaved: false,
-        player : 1,
         readyPlayer: 1,
         readyState : 'ready',
+        coin : 0,
+        kingCount : 0,
     };
 
     this.joinSession = this.joinSession.bind(this);
@@ -175,9 +176,10 @@ class Game extends Component {
               });
               mySession.on('signal:update-host',(event) => {
                 if(this.state.myUserName === event.data) {
-                  this.setState({ 
+                  this.setState({
                   isHost:true,
-                  isReady:true,})
+                  isReady:true,
+                  })
                 }
               });
               // On every asynchronous exception...
@@ -203,7 +205,7 @@ class Game extends Component {
                 })
               })
 
-              mySession.on('signal: player-out', (event) => {
+              mySession.on('signal:player-out', (event) => {
                 this.setState({
                   player : this.state.player - 1
                 })
@@ -244,7 +246,7 @@ class Game extends Component {
                               resolution: '640x480', // The resolution of your video
                               frameRate: 30, // The frame rate of your video
                               insertMode: 'APPEND', // How the video is inserted in the target element 'video-container'
-                              mirror: false, // Whether to mirror your local video or not
+                              mirror: true, // Whether to mirror your local video or not
                           });
                         
                           // --- 6) Publish your stream ---
@@ -425,7 +427,7 @@ class Game extends Component {
 
   start() {
     let players = this.state.subscribers.length +1
-    console.log(this.state.readyPlayer)
+    console.log(this.state.readyPlayer +'준비된자')
     console.log(this.state.subscribers.length + 1)
     // if (players < 3 ) {
     //   alert('게임에 필요한 인원수 가 부족합니다.')
