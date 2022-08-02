@@ -50,8 +50,8 @@ public class RoomServiceImpl implements RoomService {
 
 	@Override
 	public List<GameConferenceRoom> findRoomByRoomTitle(String title) {
-		// TODO Auto-generated method stub
-		return null;
+		System.err.println("ServiceImpl : " + title);
+		return roomRepositorySupport.findRoomByTitle(title);
 	}
 
 	@Override
@@ -64,8 +64,7 @@ public class RoomServiceImpl implements RoomService {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
-	
+
 	@Override
 	public GameConferenceRoom updateRoom(GameConferenceRoom room, RoomRequest roomRegisterInfo) {
 		room.setGameCategoriesUid(roomRegisterInfo.getGameCategoriesUid());

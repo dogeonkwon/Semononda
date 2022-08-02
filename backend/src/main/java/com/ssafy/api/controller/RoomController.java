@@ -105,9 +105,25 @@ public class RoomController {
 		GameConferenceRoom room = roomService.findRoomByUid(uid);
 		if (room != null) {
 			roomService.deleteRoomByUid(room);
-			return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
+			return ResponseEntity.status(200).body(BaseResponseBody.of(200, "success"));
 		} else {
-			return ResponseEntity.status(200).body(BaseResponseBody.of(404, "failed, that room is not found"));
+			return ResponseEntity.status(200).body(BaseResponseBody.of(404, "failed"));
+		}
+	}
+
+	@GetMapping("/word")
+	@ApiOperation(value = "title로 room 검색 ", notes = "title로 room 검색")
+	@ApiResponses({ @ApiResponse(code = 200, message = "성공"), @ApiResponse(code = 401, message = "인증 실패"),
+			@ApiResponse(code = 404, message = "게임방 없음"), @ApiResponse(code = 500, message = "서버 오류") })
+	public ResponseEntity<List<GameConferenceRoom>> findRoomByTitle(
+			@ApiParam(value = "room uid", required = true) @RequestParam("title") String title) {
+
+		List<GameConferenceRoom> rooms = roomService.findRoomByRoomTitle(title);
+		System.err.println("controller : " + title);
+		if (rooms == null) {
+			return new ResponseEntity<List<GameConferenceRoom>>(rooms, HttpStatus.BAD_REQUEST);
+		} else {
+			return new ResponseEntity<List<GameConferenceRoom>>(rooms, HttpStatus.OK);
 		}
 	}
 

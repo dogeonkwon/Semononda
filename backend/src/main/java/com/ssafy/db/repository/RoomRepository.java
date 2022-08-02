@@ -8,6 +8,6 @@ import com.ssafy.db.entity.GameConferenceRoom;
 @Repository
 public interface RoomRepository  extends JpaRepository<GameConferenceRoom, Long>{
 	 GameConferenceRoom findRoomByUid(int uid);
-	 
+	 GameConferenceRoom findRoomByTitleLike(String title);
 	 
 }
