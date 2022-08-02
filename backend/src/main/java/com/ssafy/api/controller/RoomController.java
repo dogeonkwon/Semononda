@@ -22,7 +22,7 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
-@Api(value = "게임방 API", tags = {"Room"})
+@Api(value = "게임 방 API", tags = {"Room"})
 @RestController
 @RequestMapping("api/room")
 public class RoomController {
