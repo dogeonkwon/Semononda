@@ -16,4 +16,5 @@ public interface GameService {
 	GameCategoryTopic getRoundStart(int gameConferenceRoomUid);
 	Player getRoundEnd(int gameConferenceRoomUid, String winTeam);
 	void normalGameEnd(int gameConferenceRoomUid, int userUid);
+	void customGameEnd(int gameConferenceRoomUid);
 }

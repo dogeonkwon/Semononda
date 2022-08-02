@@ -432,4 +432,9 @@ public class PlayerRepositorySupport {
 		}
 	}
 
+	public void customGameEnd(int gameConferenceRoomUid) {
+		jpaQueryFactory.update(qGameConferenceRoom).set(qGameConferenceRoom.gameStart, false)
+		.where(qGameConferenceRoom.uid.eq(gameConferenceRoomUid)).execute();
+	}
+
 }

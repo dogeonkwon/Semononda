@@ -81,6 +81,12 @@ public class GameServiceImpl implements GameService {
 		return;
 	}
 
+	@Override
+	public void customGameEnd(int gameConferenceRoomUid) {
+		playerRepositorySupport.customGameEnd(gameConferenceRoomUid);
+		return;
+	}
+
 	
 
 }
