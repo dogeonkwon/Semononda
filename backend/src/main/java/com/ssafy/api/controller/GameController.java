@@ -151,4 +151,21 @@ public class GameController {
 		return ResponseEntity.status(200).body(GameCategoryTopicsRes.of(topic));
 	}
 	
+	@GetMapping("/normal/round-end")
+	@ApiOperation(value = "라운드 끝", notes = "승리팀에게 금화를 분배하고 다음 턴의 왕을 선정한다. 왕으로 세번 째 선정된 플레이어가 있다면 리턴한다.") 
+    @ApiResponses({
+        @ApiResponse(code = 200, message = "성공"),
+        @ApiResponse(code = 401, message = "인증 실패"),
+        @ApiResponse(code = 404, message = "사용자 없음"),
+        @ApiResponse(code = 500, message = "서버 오류")
+    })
+	public ResponseEntity<PlayerRes> getRoundEnd(
+			@RequestParam("gameConferenceRoomUid") @ApiParam(value="게임 컨퍼런스룸 Uid 정보", required = true) int gameConferenceRoomUid,
+			@RequestParam("winTeam") @ApiParam(value="승리팀 정보", required = true) String winTeam) {
+
+		Player winner = gameService.getRoundEnd(gameConferenceRoomUid, winTeam);
+		System.out.println(winner.getKingCount());
+		return ResponseEntity.status(200).body(PlayerRes.of(winner));
+	}
+	
 }
