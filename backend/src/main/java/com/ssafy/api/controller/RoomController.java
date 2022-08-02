@@ -8,12 +8,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssafy.api.request.BoardRequest;
 import com.ssafy.api.request.RoomRequest;
+import com.ssafy.api.response.BoardResponse;
 import com.ssafy.api.response.RoomResponse;
 import com.ssafy.api.service.RoomService;
 import com.ssafy.common.model.response.BaseResponseBody;
@@ -74,6 +77,26 @@ public class RoomController {
 			return ResponseEntity.status(200).body(RoomResponse.of(200, "Success", room));
 		}
 	}
+	
+	@PutMapping("")
+	@ApiOperation(value = "게임 방 주제, (커스텀)비밀번호 변경, 게임중 상태 변화 같은 게임 방 변동사항", notes = "게임 방 변동사항")
+	@ApiResponses({ @ApiResponse(code = 200, message = "성공"), @ApiResponse(code = 401, message = "인증 실패"),
+			@ApiResponse(code = 404, message = "게임방 없음"), @ApiResponse(code = 500, message = "서버 오류") })
+	public ResponseEntity<? extends RoomResponse> updateRoomByUid(
+			@RequestBody @ApiParam(value = "글 정보", required = true)  RoomRequest roomInfo) {
+		GameConferenceRoom room = roomService.findRoomByUid(roomInfo.getUid());
+		
+
+		if (room==null) {
+			System.out.println("없데이트 할 방이 없습니다.");
+			return ResponseEntity.status(400).body(RoomResponse.of(400, "Success",room));
+		}
+		else {
+			roomService.updateRoom(room, roomInfo);
+			return ResponseEntity.status(200).body(RoomResponse.of(200, "Success",room));
+		}
+	}
+	
 
 	@DeleteMapping("")
 	@ApiOperation(value = "room 방 삭제", notes = "방장이 나간 방 삭제")

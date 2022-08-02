@@ -20,8 +20,8 @@ public class RoomRepositorySupport {
 	private JPAQueryFactory jpaQueryFactory;
 	QGameConferenceRoom qRoom = QGameConferenceRoom.gameConferenceRoom;
 
-	public GameConferenceRoom findRoomByRoomUid(int uid) {
-		GameConferenceRoom room = jpaQueryFactory.select(qRoom).from(qRoom).where(qRoom.gameCategoriesUid.eq(uid))
+	public GameConferenceRoom findRoomByUid(int uid) {
+		GameConferenceRoom room = jpaQueryFactory.select(qRoom).from(qRoom).where(qRoom.uid.eq(uid))
 				.fetchOne();
 		return room;
 

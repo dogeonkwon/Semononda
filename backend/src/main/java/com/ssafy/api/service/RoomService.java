@@ -16,7 +16,7 @@ public interface RoomService {
 	void deleteRoomByUid(GameConferenceRoom room);
 	List<GameConferenceRoom> getNormalRoom();
 	List<GameConferenceRoom> getCustomRoom();
-	GameConferenceRoom updateRoom(GameConferenceRoom room);
+	GameConferenceRoom updateRoom(GameConferenceRoom room, RoomRequest roomRegisterInfo);
 	
 	//방 참가 어떻게??
 //	GameConferenceRoom enterRoom();

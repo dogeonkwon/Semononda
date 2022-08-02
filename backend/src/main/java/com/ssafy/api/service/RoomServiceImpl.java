@@ -64,17 +64,23 @@ public class RoomServiceImpl implements RoomService {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
+	
 	@Override
-	public GameConferenceRoom updateRoom(GameConferenceRoom room) {
-		// TODO Auto-generated method stub
-		return null;
+	public GameConferenceRoom updateRoom(GameConferenceRoom room, RoomRequest roomRegisterInfo) {
+		room.setGameCategoriesUid(roomRegisterInfo.getGameCategoriesUid());
+		room.setCustomPassword(roomRegisterInfo.getCustomPassword());
+		room.setCustomTopic(roomRegisterInfo.getCustomTopic());
+		room.setCustomAnswerA(roomRegisterInfo.getCustomAnswerA());
+		room.setCustomAnswerB(roomRegisterInfo.getCustomAnswerB());
+		room.setGameStart(roomRegisterInfo.isGameStart());
+		return roomRepository.save(room);
 	}
 
 	@Override
 	public GameConferenceRoom findRoomByUid(int uid) {
 		GameConferenceRoom room = new GameConferenceRoom();
-		room = roomRepositorySupport.findRoomByRoomUid(uid);
+		room = roomRepositorySupport.findRoomByUid(uid);
 		return room;
 	}
 
