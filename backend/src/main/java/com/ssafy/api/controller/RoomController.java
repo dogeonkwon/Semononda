@@ -37,7 +37,7 @@ public class RoomController {
 			@RequestBody @ApiParam(value = "방 정보", required = true) RoomRequest roomInfo) {
 
 		System.out.println("방 생성 controller");
-		System.err.println(roomInfo.toString());
+		System.out.println(roomInfo.toString());
 		GameConferenceRoom room = roomService.createRoom(roomInfo);
 
 		return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
