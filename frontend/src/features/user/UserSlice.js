@@ -57,12 +57,14 @@ export const login = createAsyncThunk(
       const response = await axios.post('/v1/auth/login', loginInfo);
       console.log("response",response)
       const {
-        data: { token },
+        data: { accessToken },
       } = response;
-      saveToken(token);
+      saveToken(accessToken);
       return response;
     } catch (err) {
-      return rejectWithValue(err.response);
+      console.log("Axios",err.response.status)
+      //console.log("rejectWithValue",rejectWithValue(err.response.status));
+      return (err.response.status);
     }
   }
 );
@@ -72,7 +74,7 @@ export const logout = createAsyncThunk(
   'LOGOUT',
   async (arg, { rejectWithValue }) => {
     try {
-      const response = await axios.post('/api/auth/logout');
+      const response = await axios.post('/auth/logout');
       deleteToken();
       return response;
     } catch (err) {
@@ -81,6 +83,7 @@ export const logout = createAsyncThunk(
   }
 );
 
+//내 정보 가져오기
 export const loadUser = createAsyncThunk(
   'LOAD_USER',
   async (arg, { rejectWithValue }) => {
@@ -154,6 +157,7 @@ export const deleteUser = createAsyncThunk(
 const initialState = {
   user: {},
   isAdmin: false,
+  isAuthenticated: false,
   isNicknameChecked: false,
   isLoading: false,
   isIdChecked: false,
@@ -161,7 +165,7 @@ const initialState = {
 
 // slice
 const userSlice = createSlice({
-  name: 'auth',
+  name: 'user',
   initialState,
   reducers: {
     setNicknameCheckedFalse: (state) => {
@@ -189,6 +193,7 @@ const userSlice = createSlice({
       state.isAuthenticated = true;
     },
     [login.rejected]: (state) => {
+      console.log("state",state);
       state.isAuthenticated = false;
     },
     [logout.fulfilled]: (state) => {

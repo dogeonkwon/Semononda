@@ -38,22 +38,40 @@
     min-width: 200px;
     min-height: 50px;
     background: linear-gradient(
-        90deg,
-        rgb(65, 165, 65) 0%,
-        rgb(50, 135, 45) 100%
-    );
-    border-radius: 1000px;
-    color: rgb(255, 255, 255);
-    cursor: pointer;
-    box-shadow: 12px 12px 24px rgb(180, 235, 170);
-    font-weight: 500;
-    transition: 0.3s;
-    font-size: 40px;
-  }
-  
-  .free:hover {
+      90deg,
+      rgb(65, 165, 65) 0%,
+      rgb(50, 135, 45) 100%
+      );
+      border-radius: 1000px;
+      color: rgb(255, 255, 255);
+      cursor: pointer;
+      box-shadow: 12px 12px 24px rgb(180, 235, 170);
+      font-weight: 500;
+      transition: 0.3s;
+      font-size: 40px;
+    }
+    .free:hover {
     transform: scale(1.2);
   }
+    
+    /* 로그인 버튼 */
+  .btn-login{
+      position: relative;
+      border: none;
+      min-width: 50px;
+      min-height: 50px;
+      background-color:gray;
+      border-radius: 100px;
+      color: rgb(255, 255, 255);
+      cursor: pointer;
+      font-weight: 500;
+      transition: 0.3s;
+      font-size: 20px;
+    }
+    .btn-login:hover {
+      transform: scale(1.1);
+    }
+    
   
   /* 프로필 */
   .profile:hover {
@@ -63,6 +81,7 @@
   .side-text :hover {
     background-color: #1a83ff;
   }
+
 
 /* 사이드바 */
 /* .nav-menu {
