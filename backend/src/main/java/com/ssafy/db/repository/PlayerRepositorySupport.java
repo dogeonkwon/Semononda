@@ -19,6 +19,7 @@ import com.ssafy.db.entity.GameRecord;
 import com.ssafy.db.entity.Player;
 import com.ssafy.db.entity.SelectedTopic;
 import com.ssafy.db.entity.User;
+import com.ssafy.db.qentity.QFriend;
 import com.ssafy.db.qentity.QGameCategoryTopic;
 import com.ssafy.db.qentity.QGameConferenceRoom;
 import com.ssafy.db.qentity.QGameRecord;
@@ -289,6 +290,7 @@ public class PlayerRepositorySupport {
 				// 현재 게임 컨퍼런스룸의 주제 uid 변경
 				jpaQueryFactory.update(qGameConferenceRoom)
 						.set(qGameConferenceRoom.gameCategoryTopicsUid, randomTopic.getUid())
+						.set(qGameConferenceRoom.gameCategoriesUid, randomTopic.getCategoryUid())
 						.where(qGameConferenceRoom.uid.eq(gameConferenceRoomUid)).execute();
 				System.out.println(gameConferenceRoomUid + "번방의 주제가 " + randomTopic.getTopic() + " \""
 						+ randomTopic.getAnswerA() + "\" VS \"" + randomTopic.getAnswerB() + "\"(으)로 변경되었습니다.");
@@ -361,6 +363,19 @@ public class PlayerRepositorySupport {
 		// 서버 로그 출력
 		System.out.println("UID" + gameConferenceRoomUid + "번방의 의 왕이 " + randomKingUser.getNickname() + "으로 선정됨.");
 		// 2. 주제 테이블을 업데이트한다.
+		// 이 라운드의 주제 Uid
+		int topicUid = jpaQueryFactory.select(qGameConferenceRoom.gameCategoryTopicsUid).from(qGameConferenceRoom)
+				.where(qGameConferenceRoom.uid.eq(gameConferenceRoomUid)).fetchOne();
+		// 이 라운드의 주제
+		GameCategoryTopic thisTopic = jpaQueryFactory.selectFrom(qGameCategoryTopic).where(qGameCategoryTopic.uid.eq(topicUid)).fetchOne();
+		// 주제에 게임 결과를 저장
+		if(winTeam.compareTo("A")==0) {
+			jpaQueryFactory.update(qGameCategoryTopic).set(qGameCategoryTopic.teamAWinCount, thisTopic.getTeamAWinCount()+1)
+			.where(qGameCategoryTopic.uid.eq(topicUid)).execute();
+		} else {
+			jpaQueryFactory.update(qGameCategoryTopic).set(qGameCategoryTopic.teamBWinCount, thisTopic.getTeamBWinCount()+1)
+			.where(qGameCategoryTopic.uid.eq(topicUid)).execute();
+		}
 		return nextKing;
 	}
 
