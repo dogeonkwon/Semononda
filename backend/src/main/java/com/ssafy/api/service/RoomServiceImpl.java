@@ -1,5 +1,6 @@
 package com.ssafy.api.service;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,23 +30,22 @@ public class RoomServiceImpl implements RoomService {
 	@Override
 	public GameConferenceRoom createRoom(RoomRequest roomRegisterInfo) {
 		GameConferenceRoom room = new GameConferenceRoom();
+		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+
 		room.setNormal(roomRegisterInfo.isNormal());
 		room.setGameCategoriesUid(roomRegisterInfo.getGameCategoriesUid());
 		room.setGameCategoryTopicsUid(roomRegisterInfo.getGameCategoryTopicsUid());
 		room.setRoomAdminUserUid(roomRegisterInfo.getRoomAdminUserUid());
 		room.setConferenceRoomUrl(roomRegisterInfo.getConferenceRoomUrl());
-		//room.setStartTime(roomRegisterInfo.getStartTime());
-		//room.setEndTime(roomRegisterInfo.getEndTime());
-		//room.setCustomPassword(roomRegisterInfo.getCustomPassword());
+		room.setStartTime(timestamp);
+		room.setCustomPassword(roomRegisterInfo.getCustomPassword());
 		room.setTitle(roomRegisterInfo.getTitle());
-		//room.setCustomTopic(roomRegisterInfo.getCustomTopic());
-		//room.setCustomAnswerA(roomRegisterInfo.getCustomAnswerA());
-		//room.setCustomAnswerB(roomRegisterInfo.getCustomAnswerB());
-		//room.setGameStart(roomRegisterInfo.isGameStart());
-		System.out.println("Service");
-		System.out.println(roomRegisterInfo.getConferenceRoomUrl());
+		room.setCustomTopic(roomRegisterInfo.getCustomTopic());
+		room.setCustomAnswerA(roomRegisterInfo.getCustomAnswerA());
+		room.setCustomAnswerB(roomRegisterInfo.getCustomAnswerB());
+		room.setGameStart(roomRegisterInfo.isGameStart());
 		return roomRepository.save(room);
-		
+
 	}
 
 	@Override

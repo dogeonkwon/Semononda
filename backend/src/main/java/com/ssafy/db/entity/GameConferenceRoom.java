@@ -2,6 +2,7 @@ package com.ssafy.db.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.util.Date;
 
@@ -12,6 +13,7 @@ import javax.persistence.*;
 @Entity
 @Getter
 @Setter
+@ToString
 @Table(name="game_conference_rooms")
 public class GameConferenceRoom extends BaseEntity{
 	
@@ -20,23 +22,19 @@ public class GameConferenceRoom extends BaseEntity{
 	int uid;
 	
 	@Column(name = "is_normal")
-	boolean isNormal;
+	boolean Normal;
 	
 	@Column(name= "Game_categories_uid")
-	//@JoinColumn(name = "GameCategories" , referencedColumnName = "uid")
 	int gameCategoriesUid;
 	
 	@Column(name="game_category_topics_uid")
-	//@JoinColumn(name = "GameCategoryTopic", referencedColumnName = "uid")
 	int gameCategoryTopicsUid;
-	
 	
 	@Column(name="room_admin_user_uid")
 	int roomAdminUserUid;
 	
 	@Column(name="conference_room_url")
 	String conferenceRoomUrl;
-	
 	
 	@Column(name="start_time")
 	Date startTime;
@@ -45,7 +43,7 @@ public class GameConferenceRoom extends BaseEntity{
 	Date endTime;
 	
 	@Column(name="custom_password")
-	int customPassword;
+	String customPassword;
 	
 	@Column(name="title")
 	String title;

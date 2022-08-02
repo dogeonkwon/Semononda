@@ -13,12 +13,12 @@ import lombok.Setter;
 @Setter
 @ApiModel("RoomResponse")
 public class RoomResponse {
-	
+
 	@ApiModelProperty(name = "방 고유 Uid", example = "1")
 	int uid;
 
 	@ApiModelProperty(name = "노말모드 인지 확인하는 변수", example = "True")
-	boolean isNormal;
+	boolean Normal;
 
 	@ApiModelProperty(name = "일반 모드 게임 카테고리 Uid", example = "1")
 	int gameCategoriesUid;
@@ -39,7 +39,7 @@ public class RoomResponse {
 	Date endTime;
 
 	@ApiModelProperty(name = "커스텀 모드 방 비밀번호", example = "1234")
-	int customPassword;
+	String customPassword;
 
 	@ApiModelProperty(name = "방 제목", example = "나랑 붙어 볼 사람~")
 	String title;
@@ -75,7 +75,7 @@ public class RoomResponse {
 			res.setCustomAnswerA(room.getCustomAnswerA());
 			res.setCustomAnswerB(room.getCustomAnswerB());
 			res.setGameStart(room.isGameStart());
-			
+
 			return res;
 		}
 

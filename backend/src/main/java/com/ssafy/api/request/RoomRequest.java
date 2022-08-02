@@ -8,6 +8,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 /**
  * 
@@ -20,13 +21,14 @@ import lombok.Setter;
 
 @Getter
 @Setter
+@ToString
 @ApiModel("RoomRequest")
 public class RoomRequest {
 	@ApiModelProperty(name = "방 고유  Uid", example = "1")
 	int uid;
 
 	@ApiModelProperty(name = "노말모드 인지 확인하는 변수", example = "True")
-	boolean isNormal;
+	boolean normal;
 
 	@ApiModelProperty(name = "일반 모드 게임 카테고리 Uid", example = "1")
 	int gameCategoriesUid;
@@ -47,7 +49,7 @@ public class RoomRequest {
 	Date endTime;
 
 	@ApiModelProperty(name = "커스텀 모드 방 비밀번호", example = "1234")
-	int customPassword;
+	String customPassword;
 
 	@ApiModelProperty(name = "방 제목", example = "나랑 붙어 볼 사람~")
 	String title;
