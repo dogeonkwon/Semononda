@@ -36,12 +36,13 @@ public class BoardServiceImpl implements BoardService {
 	  * @작성자 : 김동우
 	  * @변경이력 : 
 	
-	  * @Method 설명 :
+	  * @Method 설명 : 
 	  * @param boardRegisterInfo
 	  * @return
 	  */
 	@Override
 	public Board createBoard(BoardRequest boardRegisterInfo) {
+		
 		Board board = new Board();
 		board.setCategoryLarge(boardRegisterInfo.getCategoryLarge());
 		board.setCategoryMiddle(boardRegisterInfo.getCategoryMiddle());
@@ -54,6 +55,8 @@ public class BoardServiceImpl implements BoardService {
 
 		return boardRepository.save(board);
 	}
+	
+	
 
 	/**
 	  * @Method Name : findBoardByUid

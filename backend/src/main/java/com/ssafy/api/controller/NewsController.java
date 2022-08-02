@@ -17,8 +17,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ssafy.api.request.BoardRequest;
 import com.ssafy.api.response.BoardResponse;
 import com.ssafy.api.service.BoardService;
+import com.ssafy.api.service.UserService;
 import com.ssafy.common.model.response.BaseResponseBody;
 import com.ssafy.db.entity.Board;
+import com.ssafy.db.entity.User;
+import com.ssafy.infos.Authority;
+import com.ssafy.infos.BoardLargeCategory;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -36,7 +40,10 @@ public class NewsController {
 
 	@Autowired
 	BoardService boardService;
-	
+
+	@Autowired
+	UserService userService;
+
 	@PostMapping("/create")
 	@ApiOperation(value = "board 글등록", notes = "<strong>글 정보</strong>를 통해 게시글을 추가한다.")
 	@ApiResponses({ @ApiResponse(code = 200, message = "성공"), @ApiResponse(code = 401, message = "인증 실패"),
@@ -44,34 +51,37 @@ public class NewsController {
 	public ResponseEntity<? extends BaseResponseBody> createBoard(
 			@RequestBody @ApiParam(value = "글 정보", required = true) BoardRequest boardInfo) {
 
+		boardInfo.setCategoryLarge(BoardLargeCategory.NEWS.ordinal());
 		System.out.println(boardInfo.getUserUid());
 		System.out.println(boardInfo.getCategoryLarge());
 		System.out.println(boardInfo.getCategoryMiddle());
 		System.out.println(boardInfo.getTitle());
 		System.out.println(boardInfo.getRegTime());
+		User user = userService.getUserByUid(boardInfo.getUserUid());
 
-		Board board = boardService.createBoard(boardInfo);
+		if (user.getAuthority() == Authority.MANAGER.toString()) {
+			boardService.createBoard(boardInfo);
+			return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
+		} else 
+			return ResponseEntity.status(403).body(BaseResponseBody.of(403, "you dont have Authority to make News"));
 
-		return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
+
 	}
-	
-	
+
 	@GetMapping("")
 	@ApiOperation(value = "board 검색 정보", notes = "<strong>board 를 uid로 검색한 정보</strong>")
 	@ApiResponses({ @ApiResponse(code = 200, message = "성공"), @ApiResponse(code = 401, message = "인증 실패"),
 			@ApiResponse(code = 404, message = "게시물 없음"), @ApiResponse(code = 500, message = "서버 오류") })
 	public ResponseEntity<? extends BoardResponse> findBoardByUid(
-			 @ApiParam(value = "board uid", required = true) @RequestParam("uid") int uid) {
+			@ApiParam(value = "board uid", required = true) @RequestParam("uid") int uid) {
 
 		Board board = boardService.findBoardByUid(uid);
-		if (board==null) {
-			return ResponseEntity.status(400).body(BoardResponse.of(400, "Bad responce",board));
-		}
-		else {
-			return ResponseEntity.status(200).body(BoardResponse.of(200, "Success",board));			
+		if (board == null) {
+			return ResponseEntity.status(400).body(BoardResponse.of(400, "Bad responce", board));
+		} else {
+			return ResponseEntity.status(200).body(BoardResponse.of(200, "Success", board));
 		}
 	}
-	
 
 	@PutMapping("")
 	@ApiOperation(value = "board 글 변경 내용", notes = "<strong>board 를 uid로 검색한 정보</strong>.")
@@ -79,25 +89,27 @@ public class NewsController {
 			@ApiResponse(code = 404, message = "게시물 없음"), @ApiResponse(code = 500, message = "서버 오류") })
 	public ResponseEntity<? extends BoardResponse> updateBoardByUid(
 			@RequestBody @ApiParam(value = "글 정보", required = true) BoardRequest boardInfo) {
-		Board board = boardService.findBoardByUid(boardInfo.getUid());
+
 		System.out.println("it is in");
-		
+
 		System.out.println(boardInfo.getUserUid());
 		System.out.println(boardInfo.getCategoryLarge());
 		System.out.println(boardInfo.getCategoryMiddle());
 		System.out.println(boardInfo.getTitle());
 		System.out.println(boardInfo.getRegTime());
 
-		if (board==null) {
-			System.out.println("업데이트 할 게시물이 없습니다.");
-			return ResponseEntity.status(400).body(BoardResponse.of(400, "Success",board));
-		}
-		else {
-			boardService.updateBoard(board, boardInfo);
-			return ResponseEntity.status(200).body(BoardResponse.of(200, "Success",board));
-		}
+		User user = userService.getUserByUid(boardInfo.getUserUid());
+		if (user.getAuthority() == Authority.MANAGER.toString()) {
+			Board board = boardService.findBoardByUid(boardInfo.getUid());
+			if (board != null) {
+				boardService.updateBoard(board, boardInfo);
+				return ResponseEntity.status(200).body(BoardResponse.of(200, "Success", board));
+			} else
+				return ResponseEntity.status(400).body(BoardResponse.of(400, "bad request", board));
+		} else
+			return ResponseEntity.status(403).body(BoardResponse.of(403, "forbidden ", null));
+
 	}
-	
 
 	@DeleteMapping("")
 	@ApiOperation(value = "board 글 삭제", notes = "<strong>board 를 uid로 검색한 게시글 삭제</strong>.")
@@ -106,13 +118,19 @@ public class NewsController {
 	public ResponseEntity<? extends BaseResponseBody> deleteBoardByUid(
 			@ApiParam(value = "board uid", required = true) @RequestParam("uid") int uid) {
 		Board board = boardService.findBoardByUid(uid);
-		if(board!=null) {
+		
+		if (board == null) 
+			return ResponseEntity.status(400).body(BaseResponseBody.of(400, "bad request"));
+		
+		User user = userService.getUserByUid(board.getUserUid());
+		
+		// board uid로 uid 찾음
+		if (user.getAuthority() == Authority.MANAGER.toString()) {
 			boardService.deleteBoardByUid(board);
 			return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
-		}
-		else {
-			return ResponseEntity.status(200).body(BaseResponseBody.of(404, "failed, that board is not found"));
-		}
+		} else 
+			return ResponseEntity.status(403).body(BaseResponseBody.of(403, "your authority can`t delete board"));
+		
 	}
 
 	@GetMapping("/list")
@@ -121,10 +139,9 @@ public class NewsController {
 			@ApiResponse(code = 404, message = "게시물 없음"), @ApiResponse(code = 500, message = "서버 오류") })
 	public ResponseEntity<List<Board>> getBoardList() {
 		List<Board> boards = boardService.getAllBoard();
-		if (boards==null) {
-			return  new ResponseEntity<List<Board>>(boards, HttpStatus.BAD_REQUEST);
-		}
-		else {
+		if (boards == null) {
+			return new ResponseEntity<List<Board>>(boards, HttpStatus.BAD_REQUEST);
+		} else {
 			return new ResponseEntity<List<Board>>(boards, HttpStatus.OK);
 		}
 	}

@@ -44,6 +44,14 @@ public class User extends BaseEntity{
     String img;
     String description;
     
+    @Column(name="number_of_wins")
+    int numberOfWins;
+    
+    @Column(name="number_of_loses")
+    int numberOfLoses;
+    
+    String authority;
+    
     @OneToMany(mappedBy="userUid")
     private List<Board> boardList = new ArrayList<Board>();
     

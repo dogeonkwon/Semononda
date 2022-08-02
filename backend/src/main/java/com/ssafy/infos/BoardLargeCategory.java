@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.ssafy.api.controller;
+package com.ssafy.infos;
 
 /**
  * 

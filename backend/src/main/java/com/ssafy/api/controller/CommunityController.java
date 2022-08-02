@@ -18,8 +18,14 @@ import com.ssafy.api.request.BoardRequest;
 import com.ssafy.api.response.BoardListResponse;
 import com.ssafy.api.response.BoardResponse;
 import com.ssafy.api.service.BoardService;
+import com.ssafy.api.service.UserService;
 import com.ssafy.common.model.response.BaseResponseBody;
 import com.ssafy.db.entity.Board;
+import com.ssafy.db.entity.User;
+import com.ssafy.db.repository.BoardRepository;
+import com.ssafy.infos.Authority;
+import com.ssafy.infos.BoardLargeCategory;
+import com.ssafy.infos.BoardMiddleCategory;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -38,6 +44,12 @@ public class CommunityController {
 	@Autowired
 	BoardService boardService;
 	
+	@Autowired
+	BoardRepository b;
+	
+	@Autowired
+	UserService userService;
+	
 	@PostMapping("/create")
 	@ApiOperation(value = "board 글등록", notes = "<strong>글 정보</strong>를 통해 게시글을 추가한다.")
 	@ApiResponses({ @ApiResponse(code = 200, message = "성공"), @ApiResponse(code = 401, message = "인증 실패"),
@@ -50,24 +62,33 @@ public class CommunityController {
 		System.out.println(boardInfo.getCategoryMiddle());
 		System.out.println(boardInfo.getTitle());
 		System.out.println(boardInfo.getRegTime());
-
 		Board board = boardService.createBoard(boardInfo);
 
 		return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
 	}
 	
 	@PostMapping("/reply/create")
-	@ApiOperation(value = "board 글등록", notes = "<strong>글 정보</strong>를 통해 게시글을 추가한다.")
+	@ApiOperation(value = "board 댓글 등록", notes = "<strong>글 정보</strong>를 통해 게시글을 추가한다.")
 	@ApiResponses({ @ApiResponse(code = 200, message = "성공"), @ApiResponse(code = 401, message = "인증 실패"),
 			@ApiResponse(code = 404, message = "게시물 없음"), @ApiResponse(code = 500, message = "서버 오류") })
 	public ResponseEntity<? extends BaseResponseBody> createReply(
 			@RequestBody @ApiParam(value = "글 정보", required = true) BoardRequest boardInfo) {
-
-		boardInfo.setCategoryLarge(BoardLargeCategory.COMMUNITY.ordinal());
-		boardInfo.setCategoryMiddle(BoardMiddleCategory.REPLY.ordinal());
-		Board board = boardService.createBoard(boardInfo);
-
-		return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
+		if( boardInfo.getCategoryMiddle()==BoardMiddleCategory.QnA.ordinal()) {
+			User user = userService.getUserByUid(boardInfo.getUserUid());
+			if (user.getAuthority()==Authority.MANAGER.toString()) {
+				boardInfo.setCategoryLarge(BoardLargeCategory.COMMUNITY.ordinal());
+				boardInfo.setCategoryMiddle(BoardMiddleCategory.REPLY.ordinal());
+				boardService.createBoard(boardInfo);
+				return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
+			}
+			else {
+				return ResponseEntity.status(403).body(BaseResponseBody.of(403, "forbidden"));
+			}
+		}
+		else {
+			return ResponseEntity.status(400).body(BaseResponseBody.of(403, "bad request"));
+		}
+		
 	}
 	
 	
@@ -78,6 +99,28 @@ public class CommunityController {
 	public ResponseEntity<? extends BoardListResponse> findBoardByTitle(
 			 @ApiParam(value = "board uid", required = true) @RequestParam("title") String title) {
 
+		List<Board> boards = boardService.findBoardByTitle(title);
+		System.out.println("hi");
+		if (boards==null) {
+			return ResponseEntity.status(400).body(BoardListResponse.of(400, "Bad responce",boards));
+		}
+		else {
+			return ResponseEntity.status(200).body(BoardListResponse.of(200, "Success",boards));			
+		}
+	}
+	
+	
+	@GetMapping("/test")
+	@ApiOperation(value = "board 검색 정보", notes = "<strong>board 를 title로 검색한 정보</strong>")
+	@ApiResponses({ @ApiResponse(code = 200, message = "성공"), @ApiResponse(code = 401, message = "인증 실패"),
+			@ApiResponse(code = 404, message = "게시물 없음"), @ApiResponse(code = 500, message = "서버 오류") })
+	public ResponseEntity<? extends BoardListResponse> test(
+			 @ApiParam(value = "board uid", required = true) @RequestParam("title") String title) {
+		System.out.println("hhhh");
+		System.out.println(b.findBoardByTitleLike("%"+title+"%"));
+
+		System.out.println(b.findBoardByTitleLike(title));
+		
 		List<Board> boards = boardService.findBoardByTitle(title);
 		if (boards==null) {
 			return ResponseEntity.status(400).body(BoardListResponse.of(400, "Bad responce",boards));
@@ -112,10 +155,13 @@ public class CommunityController {
 	public ResponseEntity<? extends BoardResponse> updateBoardByUid(
 			@RequestBody @ApiParam(value = "글 정보", required = true) BoardRequest boardInfo) {
 		Board board = boardService.findBoardByUid(boardInfo.getUid());
-		  
+		
 		if (board==null) {
 			System.out.println("업데이트 할 게시물이 없습니다.");
-			return ResponseEntity.status(400).body(BoardResponse.of(400, "Success",board));
+			return ResponseEntity.status(400).body(BoardResponse.of(400, "not to do update",null));
+		}
+		else if(boardInfo.getUserUid()!=board.getUserUid()) {
+			return ResponseEntity.status(403).body(BoardResponse.of(403, "your authority can`t change board",board));
 		}
 		else {
 			boardService.updateBoard(board, boardInfo);
@@ -131,12 +177,17 @@ public class CommunityController {
 	public ResponseEntity<? extends BaseResponseBody> deleteBoardByUid(
 			@ApiParam(value = "board uid", required = true) @RequestParam("uid") int uid) {
 		Board board = boardService.findBoardByUid(uid);
-		if(board!=null) {
-			boardService.deleteBoardByUid(board);
-			return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
+		
+		if (board==null) {
+			System.out.println("삭제 할 게시물이 없습니다.");
+			return ResponseEntity.status(400).body(BaseResponseBody.of(400, "not to do update"));
+		}
+		else if(board.getUserUid()!=board.getUserUid()) {
+			return ResponseEntity.status(403).body(BaseResponseBody.of(403, "your authority can`t change board"));
 		}
 		else {
-			return ResponseEntity.status(200).body(BaseResponseBody.of(404, "failed, that board is not found"));
+			boardService.deleteBoardByUid(board);
+			return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
 		}
 	}
 	

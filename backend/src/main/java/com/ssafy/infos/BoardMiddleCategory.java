@@ -1,5 +1,5 @@
 
-package com.ssafy.api.controller;
+package com.ssafy.infos;
 
 /**
 
@@ -11,6 +11,6 @@ package com.ssafy.api.controller;
   * @프로그램 설명 : category 대분류
   */
 public enum BoardMiddleCategory {
-	ZERO, FREE_BOARD, NEWS, UPDATES, REPLY, GAME_INTRODUCE, GAME_ROLE, GAME_MODE;
+	ZERO, FREE_BOARD, NEWS, UPDATES, REPLY, GAME_INTRODUCE, GAME_ROLE, GAME_MODE, QnA;
 }
 
