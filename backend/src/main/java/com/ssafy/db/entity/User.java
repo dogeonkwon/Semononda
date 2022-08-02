@@ -43,6 +43,10 @@ public class User extends BaseEntity{
     String nickname;
     String img;
     String description;
+	@Column(name="number_of_wins")
+    int numberOfWins;
+	@Column(name="number_of_loses")
+    int numberOfLoses;
     
 //    @OneToMany(mappedBy="user_uid")
 //    private List<Board> boardList = new ArrayList<Board>();

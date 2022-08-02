@@ -1,23 +1,27 @@
 package com.ssafy.db.repository;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Optional;
 import java.util.Random;
 
 import javax.transaction.Transactional;
 
-import org.checkerframework.checker.units.qual.radians;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.db.entity.GameCategoryTopic;
 import com.ssafy.db.entity.GameConferenceRoom;
+import com.ssafy.db.entity.GameRecord;
 import com.ssafy.db.entity.Player;
 import com.ssafy.db.entity.SelectedTopic;
 import com.ssafy.db.entity.User;
 import com.ssafy.db.qentity.QGameCategoryTopic;
 import com.ssafy.db.qentity.QGameConferenceRoom;
+import com.ssafy.db.qentity.QGameRecord;
 import com.ssafy.db.qentity.QPlayer;
 import com.ssafy.db.qentity.QSelectedTopic;
 import com.ssafy.db.qentity.QUser;
@@ -31,6 +35,10 @@ public class PlayerRepositorySupport {
 	private SelectedTopicRepository selectedTopicRepository;
 	@Autowired
 	private PlayerRepository playerRepository;
+	@Autowired
+	private UserRepository userRepository;
+	@Autowired
+	private GameRecordRepository gameRecordRepository;
 
 	@Autowired
 	private JPAQueryFactory jpaQueryFactory;
@@ -39,6 +47,20 @@ public class PlayerRepositorySupport {
 	QGameConferenceRoom qGameConferenceRoom = QGameConferenceRoom.gameConferenceRoom;
 	QGameCategoryTopic qGameCategoryTopic = QGameCategoryTopic.gameCategoryTopic;
 	QSelectedTopic qSelectedTopic = QSelectedTopic.selectedTopic;
+	QGameRecord qGameRecord = QGameRecord.gameRecord;
+	
+	static int calcRankPoint(int totalGoldFinch, boolean isWinner, boolean isRandomKing) {
+		int rankPoint = 0;
+		if(isWinner) {
+			rankPoint = totalGoldFinch * 10 + 20;
+		}else {
+			rankPoint = totalGoldFinch * 10 - 20;
+		}
+		if(isRandomKing) {
+			rankPoint += 10;
+		}
+		return rankPoint;
+	}
 
 	public Optional<Player> findPlayerByUserId(String userId) {
 		int userUid = jpaQueryFactory.select(qUser.uid).from(qUser).where((qUser.id).eq(userId)).fetchOne();
@@ -285,7 +307,7 @@ public class PlayerRepositorySupport {
 		playerList = (ArrayList<Player>) jpaQueryFactory.select(qPlayer).from(qPlayer)
 				.where(qPlayer.roleUid.eq(2))
 				.where(qPlayer.gameConferenceRoomUid.eq(gameConferenceRoomUid)).fetchResults().getResults();
-		// 1. 이긴 팀에게 goldfinch 지급
+		// 1. 이긴 팀에게 goldfinch 지급, totalgoldfinch도 수정
 		for (int i = 0; i < playerList.size(); i++) {
 			if ((playerList.get(i).getTeam()).compareTo(winTeam) == 0) {
 				winPlayerList.add(playerList.get(i));
@@ -293,7 +315,9 @@ public class PlayerRepositorySupport {
 		}
 		for (int i = 0; i < winPlayerList.size(); i++) {
 			jpaQueryFactory.update(qPlayer).set(qPlayer.goldfinch, jpaQueryFactory.select(qPlayer.goldfinch)
-					.from(qPlayer).where(qPlayer.uid.eq(winPlayerList.get(i).getUid())).fetchOne() + 1);
+					.from(qPlayer).where(qPlayer.uid.eq(winPlayerList.get(i).getUid())).fetchOne() + 1).
+			set(qPlayer.totalGoldfinch, jpaQueryFactory.select(qPlayer.totalGoldfinch)
+							.from(qPlayer).where(qPlayer.uid.eq(winPlayerList.get(i).getUid())).fetchOne() + 1).execute();
 		}
 		// 골드가 업데이트 되어서 다시 불러옴
 		playerList = (ArrayList<Player>) jpaQueryFactory.select(qPlayer).from(qPlayer)
@@ -336,7 +360,61 @@ public class PlayerRepositorySupport {
 				.fetchOne();
 		// 서버 로그 출력
 		System.out.println("UID" + gameConferenceRoomUid + "번방의 의 왕이 " + randomKingUser.getNickname() + "으로 선정됨.");
+		// 2. 주제 테이블을 업데이트한다.
 		return nextKing;
+	}
+
+	@Transactional
+	public void normalGameEnd(int gameConferenceRoomUid, int userUid) {
+		// 1. 게임 방의 game-start 상태를 false로 바꾼다.
+		jpaQueryFactory.update(qGameConferenceRoom).set(qGameConferenceRoom.gameStart, false)
+		.where(qGameConferenceRoom.uid.eq(gameConferenceRoomUid)).execute();
+		ArrayList<Player> playerList = new ArrayList();
+		// 게임에 참가한 모든 플레이어 리스트
+		playerList = (ArrayList<Player>) jpaQueryFactory.select(qPlayer).from(qPlayer)
+				.where(qPlayer.gameConferenceRoomUid.eq(gameConferenceRoomUid)).fetchResults().getResults();
+		// 현재 게임방
+		GameConferenceRoom thisRoom = jpaQueryFactory.selectFrom(qGameConferenceRoom)
+				.where(qGameConferenceRoom.uid.eq(gameConferenceRoomUid)).fetchOne();
+		Date endtime = Calendar.getInstance().getTime();
+		// 각 플레이어마다 랭크 포인트 부여
+		for(int i=0; i<playerList.size(); i++) {
+			User user = jpaQueryFactory.selectFrom(qUser).where(qUser.uid.eq(playerList.get(i).getUsersUid())).fetchOne();
+			// 2. total_gold_finch 대로 점수를 배분한다.
+			jpaQueryFactory
+			.update(qUser)
+			.set(qUser.rankpoint, user.getRankpoint() + calcRankPoint(playerList.get(i).getTotalGoldfinch(), user.getUid()==userUid, playerList.get(i).isRandomKing()))
+			.set(qUser.numberOfWins, user.getUid()==userUid ? user.getNumberOfWins()+1: user.getNumberOfWins())
+			.set(qUser.numberOfLoses, user.getUid()==userUid ? user.getNumberOfLoses(): user.getNumberOfLoses()+1)
+			.where(qUser.uid.eq(user.getUid())).execute();
+			
+			// 3. game_records에 게임 기록을 추가한다.
+			GameRecord gameRecord = new GameRecord();
+			gameRecord.setGameCategoryTopicsUid(thisRoom.getGameCategoryTopicsUid());
+			gameRecord.setGameConferenceRoomUid(gameConferenceRoomUid);
+			gameRecord.setPlayerUid(playerList.get(i).getUsersUid());
+			gameRecord.setStartTime(thisRoom.getStartTime());
+			gameRecord.setTotalGoldfinch(playerList.get(i).getTotalGoldfinch());
+			gameRecord.setWinner(userUid==user.getUid());
+			gameRecord.setEndTime(endtime);
+			gameRecordRepository.save(gameRecord);
+		}
+		// 4. 모든 플레이어의 게임 정보를 초기화한다.
+		for(int i=0; i<playerList.size(); i++) {
+			jpaQueryFactory.update(qPlayer)
+			.set(qPlayer.accusationCount, 0)
+			.set(qPlayer.goldfinch, 0)
+			.set(qPlayer.isCamOff, false)
+			.set(qPlayer.isChangeVoice, false)
+			.set(qPlayer.isMuted, false)
+			.set(qPlayer.kingCount, 0)
+			.set(qPlayer.randomKing, false)
+			.set(qPlayer.readyState, false)
+			.set(qPlayer.roleUid, 2)
+			.set(qPlayer.team, "A")
+			.set(qPlayer.totalGoldfinch, 0)
+			.execute();
+		}
 	}
 
 }

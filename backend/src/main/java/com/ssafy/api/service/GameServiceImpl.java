@@ -75,6 +75,12 @@ public class GameServiceImpl implements GameService {
 		return winner;
 	}
 
+	@Override
+	public void normalGameEnd(int gameConferenceRoomUid, int userUid) {
+		playerRepositorySupport.normalGameEnd(gameConferenceRoomUid, userUid);
+		return;
+	}
+
 	
 
 }

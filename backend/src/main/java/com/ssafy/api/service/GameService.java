@@ -15,4 +15,5 @@ public interface GameService {
 	void changePenalty(int gameConferenceRoomUid, String userID, int penalty);
 	GameCategoryTopic getRoundStart(int gameConferenceRoomUid);
 	Player getRoundEnd(int gameConferenceRoomUid, String winTeam);
+	void normalGameEnd(int gameConferenceRoomUid, int userUid);
 }
