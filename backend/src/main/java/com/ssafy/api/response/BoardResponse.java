@@ -35,6 +35,7 @@ public class BoardResponse{
 	
 	
 	
+	
 	public static BoardResponse of(Integer statusCode, String message, Board board) {
 		if (board==null) {
 			return null;
