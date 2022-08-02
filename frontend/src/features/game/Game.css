@@ -53,7 +53,7 @@
 
 .titlecontent {
   width: 310px;
-  height: 650px;
+  height: 550px;
   padding-top: 130px;
   padding-left: 50px;
   font-family: JsaHON;
@@ -68,6 +68,37 @@
 
 .subjectcontent {
   font-size: 30px;
+}
+.buttondiv {
+  display: flex;
+  justify-content: center;
+}
+
+.button {
+  width:100px;
+  margin-left:5px;
+  margin-right: 5px;
+}
+
+.servantdiv {
+  padding-right:55px;
+  padding-left: 70px;
+  display:flex;
+  flex-direction: row;
+  font-family: JsaHON;
+  justify-content: space-between;
+}
+
+.servantdiv > p{
+  font-size:50px;
+}
+
+.servantinfo > p{
+  font-size:20px;
+  display:flex;
+  flex-direction: column;
+  margin-top:5px;
+  margin-bottom:0px
 }
 
 .king {
