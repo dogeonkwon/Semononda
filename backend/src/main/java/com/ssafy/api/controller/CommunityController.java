@@ -43,10 +43,7 @@ public class CommunityController {
 
 	@Autowired
 	BoardService boardService;
-	
-	@Autowired
-	BoardRepository b;
-	
+
 	@Autowired
 	UserService userService;
 	
@@ -57,13 +54,7 @@ public class CommunityController {
 	public ResponseEntity<? extends BaseResponseBody> createBoard(
 			@RequestBody @ApiParam(value = "글 정보", required = true) BoardRequest boardInfo) {
 		
-		System.out.println(boardInfo.getUserUid());
-		System.out.println(boardInfo.getCategoryLarge());
-		System.out.println(boardInfo.getCategoryMiddle());
-		System.out.println(boardInfo.getTitle());
-		System.out.println(boardInfo.getRegTime());
-		Board board = boardService.createBoard(boardInfo);
-
+		boardService.createBoard(boardInfo);
 		return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
 	}
 	
@@ -75,38 +66,15 @@ public class CommunityController {
 			@RequestBody @ApiParam(value = "글 정보", required = true) BoardRequest boardInfo) {
 		if( boardInfo.getCategoryMiddle()==BoardMiddleCategory.QnA.ordinal()) {
 			User user = userService.getUserByUid(boardInfo.getUserUid());
-			if (user.getAuthority()==Authority.MANAGER.toString()) {
+			if (user.getAuthority().equals(Authority.MANAGER.toString())) {
 				boardInfo.setCategoryLarge(BoardLargeCategory.COMMUNITY.ordinal());
 				boardInfo.setCategoryMiddle(BoardMiddleCategory.REPLY.ordinal());
 				boardService.createBoard(boardInfo);
 				return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
 			}
-			else {
-				return ResponseEntity.status(403).body(BaseResponseBody.of(403, "forbidden"));
-			}
+			else return ResponseEntity.status(403).body(BaseResponseBody.of(403, "forbidden"));
 		}
-		else {
-			return ResponseEntity.status(400).body(BaseResponseBody.of(403, "bad request"));
-		}
-		
-	}
-	
-	
-	@GetMapping("/title")
-	@ApiOperation(value = "board 검색 정보", notes = "<strong>board 를 title로 검색한 정보</strong>")
-	@ApiResponses({ @ApiResponse(code = 200, message = "성공"), @ApiResponse(code = 401, message = "인증 실패"),
-			@ApiResponse(code = 404, message = "게시물 없음"), @ApiResponse(code = 500, message = "서버 오류") })
-	public ResponseEntity<? extends BoardListResponse> findBoardByTitle(
-			 @ApiParam(value = "board uid", required = true) @RequestParam("title") String title) {
-
-		List<Board> boards = boardService.findBoardByTitle(title);
-		System.out.println("hi");
-		if (boards==null) {
-			return ResponseEntity.status(400).body(BoardListResponse.of(400, "Bad responce",boards));
-		}
-		else {
-			return ResponseEntity.status(200).body(BoardListResponse.of(200, "Success",boards));			
-		}
+		else return ResponseEntity.status(400).body(BaseResponseBody.of(403, "bad request"));
 	}
 	
 	
@@ -116,18 +84,12 @@ public class CommunityController {
 			@ApiResponse(code = 404, message = "게시물 없음"), @ApiResponse(code = 500, message = "서버 오류") })
 	public ResponseEntity<? extends BoardListResponse> test(
 			 @ApiParam(value = "board uid", required = true) @RequestParam("title") String title) {
-		System.out.println("hhhh");
-		System.out.println(b.findBoardByTitleLike("%"+title+"%"));
-
-		System.out.println(b.findBoardByTitleLike(title));
 		
 		List<Board> boards = boardService.findBoardByTitle(title);
 		if (boards==null) {
 			return ResponseEntity.status(400).body(BoardListResponse.of(400, "Bad responce",boards));
 		}
-		else {
-			return ResponseEntity.status(200).body(BoardListResponse.of(200, "Success",boards));			
-		}
+		else return ResponseEntity.status(200).body(BoardListResponse.of(200, "Success",boards));			
 	}
 	
 	@GetMapping("")
@@ -141,9 +103,7 @@ public class CommunityController {
 		if (board==null) {
 			return ResponseEntity.status(400).body(BoardResponse.of(400, "Bad responce",board));
 		}
-		else {
-			return ResponseEntity.status(200).body(BoardResponse.of(200, "Success",board));			
-		}
+		else return ResponseEntity.status(200).body(BoardResponse.of(200, "Success",board));			
 	}
 	
 	
@@ -160,9 +120,8 @@ public class CommunityController {
 			System.out.println("업데이트 할 게시물이 없습니다.");
 			return ResponseEntity.status(400).body(BoardResponse.of(400, "not to do update",null));
 		}
-		else if(boardInfo.getUserUid()!=board.getUserUid()) {
+		else if(boardInfo.getUserUid()!=board.getUserUid()) 
 			return ResponseEntity.status(403).body(BoardResponse.of(403, "your authority can`t change board",board));
-		}
 		else {
 			boardService.updateBoard(board, boardInfo);
 			return ResponseEntity.status(200).body(BoardResponse.of(200, "Success",board));
@@ -182,9 +141,8 @@ public class CommunityController {
 			System.out.println("삭제 할 게시물이 없습니다.");
 			return ResponseEntity.status(400).body(BaseResponseBody.of(400, "not to do update"));
 		}
-		else if(board.getUserUid()!=board.getUserUid()) {
+		else if(board.getUserUid()!=board.getUserUid()) 
 			return ResponseEntity.status(403).body(BaseResponseBody.of(403, "your authority can`t change board"));
-		}
 		else {
 			boardService.deleteBoardByUid(board);
 			return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
@@ -198,11 +156,8 @@ public class CommunityController {
 			@ApiResponse(code = 404, message = "게시물 없음"), @ApiResponse(code = 500, message = "서버 오류") })
 	public ResponseEntity<List<Board>> getBoardList() {
 		List<Board> boards = boardService.getAllBoard();
-		if (boards==null) {
+		if (boards==null) 
 			return  new ResponseEntity<List<Board>>(boards, HttpStatus.BAD_REQUEST);
-		}
-		else {
-			return new ResponseEntity<List<Board>>(boards, HttpStatus.OK);
-		}
+		else return new ResponseEntity<List<Board>>(boards, HttpStatus.OK);
 	}
 }

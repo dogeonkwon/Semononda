@@ -52,12 +52,6 @@ public class GuideController {
 			@RequestBody @ApiParam(value = "글 정보", required = true) BoardRequest boardInfo) {
 		boardInfo.setCategoryLarge(BoardLargeCategory.GUIDE.ordinal());
 
-		System.out.println(boardInfo.getUserUid());
-		System.out.println(boardInfo.getCategoryLarge());
-		System.out.println(boardInfo.getCategoryMiddle());
-		System.out.println(boardInfo.getTitle());
-		System.out.println(boardInfo.getRegTime());
-
 		boardService.createBoard(boardInfo);
 
 		return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
@@ -86,15 +80,12 @@ public class GuideController {
 			@RequestBody @ApiParam(value = "글 정보", required = true) BoardRequest boardInfo) {
 
 		System.out.println("it is in");
-
-		System.out.println(boardInfo.getUserUid());
-		System.out.println(boardInfo.getCategoryLarge());
-		System.out.println(boardInfo.getCategoryMiddle());
-		System.out.println(boardInfo.getTitle());
-		System.out.println(boardInfo.getRegTime());
+		System.out.println(Authority.GENERAL.toString());
 
 		User user = userService.getUserByUid(boardInfo.getUserUid());
-		if (user.getAuthority() == Authority.MANAGER.toString()) {
+		System.out.println(user.getAuthority());
+		if (user.getAuthority().equals(Authority.MANAGER.toString())) {
+			System.out.println("im in~~~~~");
 			Board board = boardService.findBoardByUid(boardInfo.getUid());
 			if (board != null) {
 				boardService.updateBoard(board, boardInfo);
@@ -120,12 +111,11 @@ public class GuideController {
 		User user = userService.getUserByUid(board.getUserUid());
 
 		// board uid로 uid 찾음
-		if (user.getAuthority() == Authority.MANAGER.toString()) {
+		if (user.getAuthority().equals(Authority.MANAGER.toString())) {
 			boardService.deleteBoardByUid(board);
 			return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
 		} else
 			return ResponseEntity.status(403).body(BaseResponseBody.of(403, "your authority can`t delete board"));
-
 	}
 
 	@GetMapping("/list")

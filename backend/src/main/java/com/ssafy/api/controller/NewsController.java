@@ -50,22 +50,13 @@ public class NewsController {
 			@ApiResponse(code = 404, message = "게시물 없음"), @ApiResponse(code = 500, message = "서버 오류") })
 	public ResponseEntity<? extends BaseResponseBody> createBoard(
 			@RequestBody @ApiParam(value = "글 정보", required = true) BoardRequest boardInfo) {
-
 		boardInfo.setCategoryLarge(BoardLargeCategory.NEWS.ordinal());
-		System.out.println(boardInfo.getUserUid());
-		System.out.println(boardInfo.getCategoryLarge());
-		System.out.println(boardInfo.getCategoryMiddle());
-		System.out.println(boardInfo.getTitle());
-		System.out.println(boardInfo.getRegTime());
 		User user = userService.getUserByUid(boardInfo.getUserUid());
 
-		if (user.getAuthority() == Authority.MANAGER.toString()) {
+		if (user.getAuthority().equals(Authority.MANAGER.toString())) {
 			boardService.createBoard(boardInfo);
 			return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
-		} else 
-			return ResponseEntity.status(403).body(BaseResponseBody.of(403, "you dont have Authority to make News"));
-
-
+		} else return ResponseEntity.status(403).body(BaseResponseBody.of(403, "you dont have Authority to make News"));
 	}
 
 	@GetMapping("")
@@ -90,16 +81,8 @@ public class NewsController {
 	public ResponseEntity<? extends BoardResponse> updateBoardByUid(
 			@RequestBody @ApiParam(value = "글 정보", required = true) BoardRequest boardInfo) {
 
-		System.out.println("it is in");
-
-		System.out.println(boardInfo.getUserUid());
-		System.out.println(boardInfo.getCategoryLarge());
-		System.out.println(boardInfo.getCategoryMiddle());
-		System.out.println(boardInfo.getTitle());
-		System.out.println(boardInfo.getRegTime());
-
 		User user = userService.getUserByUid(boardInfo.getUserUid());
-		if (user.getAuthority() == Authority.MANAGER.toString()) {
+		if (user.getAuthority().equals(Authority.MANAGER.toString())) {
 			Board board = boardService.findBoardByUid(boardInfo.getUid());
 			if (board != null) {
 				boardService.updateBoard(board, boardInfo);
@@ -108,7 +91,6 @@ public class NewsController {
 				return ResponseEntity.status(400).body(BoardResponse.of(400, "bad request", board));
 		} else
 			return ResponseEntity.status(403).body(BoardResponse.of(403, "forbidden ", null));
-
 	}
 
 	@DeleteMapping("")
@@ -125,12 +107,11 @@ public class NewsController {
 		User user = userService.getUserByUid(board.getUserUid());
 		
 		// board uid로 uid 찾음
-		if (user.getAuthority() == Authority.MANAGER.toString()) {
+		if (user.getAuthority().equals(Authority.MANAGER.toString())) {
 			boardService.deleteBoardByUid(board);
 			return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
 		} else 
 			return ResponseEntity.status(403).body(BaseResponseBody.of(403, "your authority can`t delete board"));
-		
 	}
 
 	@GetMapping("/list")
