@@ -56,8 +56,7 @@ public class RoomServiceImpl implements RoomService {
 
 	@Override
 	public List<GameConferenceRoom> getNormalRoom() {
-		// TODO Auto-generated method stub
-		return null;
+		return roomRepository.findAll();
 	}
 
 	@Override

@@ -1,6 +1,9 @@
 package com.ssafy.api.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +17,7 @@ import com.ssafy.api.request.RoomRequest;
 import com.ssafy.api.response.RoomResponse;
 import com.ssafy.api.service.RoomService;
 import com.ssafy.common.model.response.BaseResponseBody;
+import com.ssafy.db.entity.Board;
 import com.ssafy.db.entity.GameConferenceRoom;
 
 import io.swagger.annotations.Api;
@@ -43,14 +47,19 @@ public class RoomController {
 		return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
 	}
 
-	
-	
-	
-	
-	
-	
-	
-	
+	@GetMapping("/list")
+	@ApiOperation(value = "room list 정보", notes = "게임 방 전체 목록")
+	@ApiResponses({ @ApiResponse(code = 200, message = "성공"), @ApiResponse(code = 401, message = "인증 실패"),
+			@ApiResponse(code = 404, message = "게임 방 없음"), @ApiResponse(code = 500, message = "서버 오류") })
+	public ResponseEntity<List<GameConferenceRoom>> getRoomList() {
+		List<GameConferenceRoom> rooms = roomService.getNormalRoom();
+		if (rooms == null) {
+			return new ResponseEntity<List<GameConferenceRoom>>(rooms, HttpStatus.BAD_REQUEST);
+		} else {
+			return new ResponseEntity<List<GameConferenceRoom>>(rooms, HttpStatus.OK);
+		}
+	}
+
 	@GetMapping("")
 	@ApiOperation(value = "uid로 room 검색 ", notes = "uid로 room검색")
 	@ApiResponses({ @ApiResponse(code = 200, message = "성공"), @ApiResponse(code = 401, message = "인증 실패"),
@@ -66,12 +75,6 @@ public class RoomController {
 		}
 	}
 
-	
-	
-	
-	
-	
-	
 	@DeleteMapping("")
 	@ApiOperation(value = "room 방 삭제", notes = "방장이 나간 방 삭제")
 	@ApiResponses({ @ApiResponse(code = 200, message = "성공"), @ApiResponse(code = 401, message = "인증 실패"),
