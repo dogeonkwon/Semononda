@@ -11,8 +11,9 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@ApiModel("GameConferenceRoomResponse")
+@ApiModel("RoomResponse")
 public class RoomResponse {
+	
 	@ApiModelProperty(name = "방 고유 Uid", example = "1")
 	int uid;
 

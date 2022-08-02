@@ -22,10 +22,12 @@ public class GameConferenceRoom extends BaseEntity{
 	@Column(name = "is_normal")
 	boolean isNormal;
 	
-	@Column(name= "game_categories_uid")
+	@Column(name= "Game_categories_uid")
+	//@JoinColumn(name = "GameCategories" , referencedColumnName = "uid")
 	int gameCategoriesUid;
 	
 	@Column(name="game_category_topics_uid")
+	//@JoinColumn(name = "GameCategoryTopic", referencedColumnName = "uid")
 	int gameCategoryTopicsUid;
 	
 	
@@ -34,6 +36,7 @@ public class GameConferenceRoom extends BaseEntity{
 	
 	@Column(name="conference_room_url")
 	String conferenceRoomUrl;
+	
 	
 	@Column(name="start_time")
 	Date startTime;

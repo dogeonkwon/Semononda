@@ -20,9 +20,9 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@ApiModel("GameConferenceRoomRequest")
+@ApiModel("RoomRequest")
 public class RoomRequest {
-	@ApiModelProperty(name = "방 고유 Uid", example = "1")
+	@ApiModelProperty(name = "방 고유  Uid", example = "1")
 	int uid;
 
 	@ApiModelProperty(name = "노말모드 인지 확인하는 변수", example = "True")
