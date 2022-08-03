@@ -15,4 +15,5 @@ public interface BoardService {
 	void deleteBoardByUid(Board board);
 	Board postBoardByUsersNickname(int uid);
 	List<Board> getAllBoard();
+	List<Board> findBoardByTitle(String title);
 }

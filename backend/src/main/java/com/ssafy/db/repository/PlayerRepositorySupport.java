@@ -407,7 +407,6 @@ public class PlayerRepositorySupport {
 			GameRecord gameRecord = new GameRecord();
 			gameRecord.setGameCategoryTopicsUid(thisRoom.getGameCategoryTopicsUid());
 			gameRecord.setGameConferenceRoomUid(gameConferenceRoomUid);
-			gameRecord.setPlayerUid(playerList.get(i).getUsersUid());
 			gameRecord.setStartTime(thisRoom.getStartTime());
 			gameRecord.setTotalGoldfinch(playerList.get(i).getTotalGoldfinch());
 			gameRecord.setWinner(userUid==user.getUid());

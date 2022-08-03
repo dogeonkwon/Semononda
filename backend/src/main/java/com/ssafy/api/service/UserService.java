@@ -11,5 +11,7 @@ import com.ssafy.db.entity.User;
 public interface UserService {
 	User createUser(UserRegisterPostReq userRegisterInfo);
 	User getUserById(String userId);
+	User getUserByUid(int uid);
 	User getUserByNickname(String nickname);
+	User getGameRecordByNickname(String nickname);
 }

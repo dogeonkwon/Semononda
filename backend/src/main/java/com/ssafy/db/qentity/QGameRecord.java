@@ -12,7 +12,6 @@ import com.querydsl.core.types.dsl.BooleanPath;
 import com.querydsl.core.types.dsl.DatePath;
 import com.querydsl.core.types.dsl.EntityPathBase;
 import com.querydsl.core.types.dsl.NumberPath;
-import com.querydsl.core.types.dsl.StringPath;
 import com.ssafy.db.entity.GameRecord;
 
 /**
@@ -26,7 +25,7 @@ public class QGameRecord extends EntityPathBase<GameRecord> {
     public static final QGameRecord gameRecord = new QGameRecord("gameRecord");
 	public final NumberPath<Integer> uid = createNumber("uid", Integer.class);
 
-	public final NumberPath<Integer> playerUid = createNumber("playerUid", Integer.class);
+	public final NumberPath<Integer> userUid = createNumber("userUid", Integer.class);
 
 	public final NumberPath<Integer> totalGoldfinch = createNumber("totalGoldfinch", Integer.class);
 	public final BooleanPath isWinner = createBoolean("isWinner");
