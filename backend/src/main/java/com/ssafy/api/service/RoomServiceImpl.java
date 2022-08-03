@@ -54,15 +54,19 @@ public class RoomServiceImpl implements RoomService {
 		return roomRepositorySupport.findRoomByTitle(title);
 	}
 
-	@Override
-	public List<GameConferenceRoom> getNormalRoom() {
-		return roomRepository.findAll();
-	}
+//	@Override
+//	public List<GameConferenceRoom> findNormalRoomlist() {
+//		return roomRepository.findAll();
+//	}
 
 	@Override
-	public List<GameConferenceRoom> getCustomRoom() {
-		// TODO Auto-generated method stub
-		return null;
+	public List<GameConferenceRoom> findNormalRoomlist() {
+		return roomRepositorySupport.findNormalRoomlist();
+	}
+	
+	@Override
+	public List<GameConferenceRoom> findCustomRoomlist() {
+		return roomRepositorySupport.findCustomRoomlist();
 	}
 
 	@Override
@@ -87,6 +91,18 @@ public class RoomServiceImpl implements RoomService {
 	public void deleteRoomByUid(GameConferenceRoom room) {
 		roomRepository.delete(room);
 
+	}
+
+	@Override
+	public List<GameConferenceRoom> findNormalRoomByRoomTitle(String title) {
+		System.err.println("Normal ServiceImpl title: " + title);
+		return roomRepositorySupport.findNormalRoomByTitle(title);
+	}
+
+	@Override
+	public List<GameConferenceRoom> findCustomRoomByRoomTitle(String title) {
+		System.err.println("custom ServiceImpl title: " + title);
+		return roomRepositorySupport.findCustomRoomByTitle(title);
 	}
 
 }
