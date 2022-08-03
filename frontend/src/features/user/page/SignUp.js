@@ -263,7 +263,7 @@ function Signin() {
         <FormGroup className='mb-3' controlId='formBasicId'>
             <Form.Label style={{marginLeft: "10%"}}>아이디</Form.Label>
             <FormGroup style={{display: "flex"}}>
-                <Form.Control style={{width: "60%", textalign:"left", marginLeft:"10%"}} name='id' type='id' placeholder='아이디' value={id} onChange={onChangeId}/>
+                <Form.Control style={{width: "60%", textalign:"left", marginLeft:"10%"}} name='id' type='id' placeholder='5~16자, 영어/숫자만 입력 가능' value={id} onChange={onChangeId}/>
                 <Button style={{marginLeft:"1em"}} onClick={onCheckId} variant='primary'>중복검사</Button>
             </FormGroup>
             <FormGroup style={{marginLeft:"10%", marginTop:"3px"}}>
@@ -273,13 +273,13 @@ function Signin() {
 
         <FormGroup className='mb-3' controlId='formBasicName'>
             <Form.Label style={{marginLeft: "10%"}}>이름</Form.Label>
-            <Form.Control style={{width: "60%", textalign:"left", marginLeft:"10%"}} name="name" type="text" placeholder="이름" value={name} onChange={onChangeName} />
+            <Form.Control style={{width: "60%", textalign:"left", marginLeft:"10%"}} name="name" type="text" placeholder="최대 30자 입력가능" value={name} onChange={onChangeName} />
         </FormGroup>
 
         <FormGroup className='mb-3' controlId='formBasicNickname'>
             <Form.Label style={{marginLeft: "10%"}}>별호</Form.Label>
             <FormGroup style={{display: "flex"}}>
-                <Form.Control style={{width: "60%", textalign:"left", marginLeft:"10%"}} name="nickname" type="text" placeholder="별호" value={nickname} onChange={onChangeNickname} />
+                <Form.Control style={{width: "60%", textalign:"left", marginLeft:"10%"}} name="nickname" type="text" placeholder="최대 30자, 영어/한글/숫자 조합가능" value={nickname} onChange={onChangeNickname} />
                 <Button style={{marginLeft:"1em"}} onClick={onCheckNickname} variant='primary'>중복검사</Button>
             </FormGroup>
             <FormGroup style={{marginLeft:"10%", marginTop:"3px"}}>
@@ -305,7 +305,7 @@ function Signin() {
 
         <FormGroup  className='mb-3' controlId='formBasicPhoneNumber'>
             <Form.Label style={{marginLeft: "10%"}}>휴대폰 번호</Form.Label>
-            <Form.Control style={{width: "60%", textalign:"left", marginLeft:"10%"}} name="phonenumber" type="text" placeholder="휴대폰 번호" value={phonenumber} onChange={onChangePhoneNumber}/>
+            <Form.Control style={{width: "60%", textalign:"left", marginLeft:"10%"}} name="phonenumber" type="text" placeholder="'-'없이 숫자만 11자리 입력" value={phonenumber} onChange={onChangePhoneNumber}/>
             <FormGroup style={{marginLeft:"10%", marginTop:"3px"}}>
                 {phonenumber.length > 0 && <span className={`message ${isPhonenumber ? 'success' : 'error'}`}>{phonenumberMessage}</span>}
             </FormGroup>
