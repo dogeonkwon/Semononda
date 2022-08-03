@@ -25,18 +25,6 @@ const Section = styled.div`
     height: 50%;
     float: left;`
 
-//로그인 버튼(임시)
-const LoginButton = styled.button`
-    position: absolute;
-    right: 0px;
-    bottom: 0px;`
-
-//회원가입 버튼(임시)
-const JoinButton = styled.button`
-    position: absolute;
-    right: 0px;
-    bottom: 2em;`
-
 //로고 영역
 const LogoWrapper = styled.div`
   display: flex;
@@ -135,9 +123,6 @@ function home() {
                     <Link to="/custom"><FreeButton>자유 경연</FreeButton></Link>
                 </ArguementGroup>
                 </Section>
-
-                <LoginButton><Link to="/login">로그인테스트</Link></LoginButton>
-                <JoinButton><Link to="/signin">회원가입테스트</Link></JoinButton>
 
             </Container>
     );

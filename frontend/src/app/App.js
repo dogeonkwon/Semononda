@@ -6,7 +6,6 @@ import Login from '../features/user/page/Login';
 import SignUp from '../features/user/page/SignUp';
 import Custom from '../features/custom/page/Custom';
 import MyPage from '../features/mypage/page/MyPage';
-import NotFound from '../features/notfound/NotFound';
 import Rank from '../features/rank/page/Rank';
 import NavBar from "../common/navbar/NavBar";
 
@@ -20,7 +19,8 @@ function App() {
           <Route exact path="/login" element={<Login/>}/>
           <Route exact path="/signin" element={<SignUp/>}/>
           <Route exact path="/rank" element={<Rank/>}/>
-          <Route exact path="/Custom" element={<Custom/>}/>
+          <Route exact path="/custom" element={<Custom/>}/>
+          <Route exact path="/me" element={<MyPage/>}/>
         </Routes>
       </div>
     </Router>

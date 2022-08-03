@@ -3,7 +3,7 @@ import {Button, Form, FormGroup, FormLabel} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.css';
 import { useDispatch } from 'react-redux';
 import {Link, useNavigate}from 'react-router-dom'
-import {login} from '../UserSlice';
+import {login, loadUser} from '../UserSlice';
 import styled from "styled-components";
 
 
@@ -60,7 +60,7 @@ function Login() {
   
   const dispatch = useDispatch();
   const history = useNavigate();
-
+  
   //id
   const [userId, setId] = useState("");
   //password
@@ -81,6 +81,7 @@ function Login() {
   //로그인 버튼 누르면 실행되는 함수
   const onSubmit = (e) => {
     e.preventDefault();
+    
     const data = {
       userId,
       password,
@@ -89,6 +90,13 @@ function Login() {
     
     .then((response) => {
         if(response.payload.status === 200){
+
+          dispatch(loadUser(data.userId))
+            .then((response) => {
+              console.log("rrrr",response.payload);
+              window.localStorage.setItem('login_user', JSON.stringify(response.payload));
+            })
+
           history('/');
         }else{
           if (response.payload === 400) {

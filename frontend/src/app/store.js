@@ -13,7 +13,7 @@ const rootPersistConfig = {
 
 const rootReducer = combineReducers({
   // 각 리듀서를 합침
-  auth: UserReducer,
+  user: UserReducer,
 });
 // Middleware: Redux Persist Persisted Reducer
 const persistedReducer = persistReducer(rootPersistConfig, rootReducer);

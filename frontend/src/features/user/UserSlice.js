@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { deleteToken, saveToken } from '../../common/api/JWT-common';
+import { saveToken } from '../../common/api/JWT-common';
 import axios from '../../common/api/http-common';
 
 // 메서드 전체 REST API, params 필요
@@ -69,26 +69,14 @@ export const login = createAsyncThunk(
   }
 );
 
-// 로그아웃
-export const logout = createAsyncThunk(
-  'LOGOUT',
-  async (arg, { rejectWithValue }) => {
-    try {
-      const response = await axios.post('/auth/logout');
-      deleteToken();
-      return response;
-    } catch (err) {
-      return rejectWithValue(err.response);
-    }
-  }
-);
-
 //내 정보 가져오기
 export const loadUser = createAsyncThunk(
   'LOAD_USER',
-  async (arg, { rejectWithValue }) => {
+  async (id, { rejectWithValue }) => {
     try {
-      const response = await axios.get('api/user/me');
+      const response = await axios.get('/user/user-info',{
+      params: {id}
+      });
       return response.data;
     } catch (err) {
       return rejectWithValue(err.response);
@@ -175,8 +163,10 @@ const userSlice = createSlice({
       state.isIdChecked = false;
     },
     resetUser: (state) => {
+      console.log(state.user);
       state.user = {};
       state.isAdmin = false;
+      console.log(state);
     },
   },
   extraReducers: {
@@ -196,9 +186,6 @@ const userSlice = createSlice({
       console.log("state",state);
       state.isAuthenticated = false;
     },
-    [logout.fulfilled]: (state) => {
-      state.isAuthenticated = false;
-    },
     [checkNickname.fulfilled]: (state) => {
       state.isNicknameChecked = true;
     },
@@ -215,11 +202,7 @@ const userSlice = createSlice({
       state.isNicknameChecked = false;
     },
     [loadUser.fulfilled]: (state, action) => {
-      const { roles } = action.payload;
-      if (roles[0].roleName === 'ROLE_ADMIN') {
-        state.isAdmin = true;
-      }
-      state.user = action.payload;
+      state.user = action.payload;;
     },
   },
 });

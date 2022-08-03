@@ -1,11 +1,9 @@
 import React, { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import './NavBar.css';
-import { CgProfile } from "react-icons/cg";
+//import { CgProfile } from "react-icons/cg";
 import logo from '../../assets/images/logo.png';
 import styled from "styled-components";
-
-import { ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'react-bootstrap'
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
@@ -20,7 +18,7 @@ import { NavDropdown } from "react-bootstrap";
 
 function NavBar() {
   const history = useNavigate();
-
+  
   const token = getToken();
   useEffect(()=>{
     console.log(token);
@@ -32,9 +30,13 @@ function NavBar() {
   `
   const logoutHandler = () => {
     deleteToken();
+    window.localStorage.removeItem("login_user");
     history('/');
   }
 
+  const myPageHandler = () => {
+    history('/me');
+  }
   return (
     <>
       {[false].map((expand) => (
@@ -50,7 +52,7 @@ function NavBar() {
                   {/* <CgProfile className="profile" color="black" size="50" onClick={logoutHandler}></CgProfile> */}
                     <NavDropdown title="안녕하세요">
                      <NavDropdown.Item onClick={logoutHandler}>로그아웃</NavDropdown.Item>
-                     <NavDropdown.Item>마이페이지</NavDropdown.Item>
+                     <NavDropdown.Item onClick={myPageHandler}>마이페이지</NavDropdown.Item>
                     </NavDropdown>
                   </Nav>
                ):

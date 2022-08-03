@@ -31,6 +31,15 @@ public class UserResponse{
     String nickname;
     @ApiModelProperty(name="유저 이미지 주소", example="/res/...")
     String img;
+    @ApiModelProperty(name="유저 승리 횟수",example="3")
+    int numberOfWins;
+
+    @ApiModelProperty(name="유저 패배 횟수",example="3")
+    int numberOfLoses;
+
+    @ApiModelProperty(name="유저 권한(GENERAL 또는 MANAGER) 대문자로 적어줘야 한다.",example="GENERAL")
+    String authority;
+    
     @ApiModelProperty(name="유저 한줄소개(100자 이내)", example="난 나야")
     String description;
 	
@@ -49,8 +58,10 @@ public class UserResponse{
 			res.setNickname(user.getNickname());
 			res.setImg(user.getImg());
 			res.setDescription(user.getDescription());
+			res.setNumberOfWins(user.getNumberOfWins());
+			res.setNumberOfLoses(user.getNumberOfLoses());
+			res.setAuthority(user.getAuthority());
 			return res;
 		}
 	}
-	
 }
