@@ -1,9 +1,9 @@
 import './Game.css';
-import invite from './invite.png'
-import exit from './exit.png'
-import ready from './ready.png'
-import ready_ok from './ready_ok.png'
-import start from './start.png'
+import invite from '../../assets/images/invite.png'
+import exit from '../../assets/images/exit.png'
+import ready from '../../assets/images/ready.png'
+import ready_ok from '../../assets/images/ready_ok.png'
+import start from '../../assets/images/start.png'
 import axios from 'axios';
 import { OpenVidu } from 'openvidu-browser';
 import React, { Component, createRef } from 'react';
@@ -645,8 +645,10 @@ class Game extends Component {
     const mySession = this.state.session
     mySession.signal({
       to: [],
-      type:'countcoin'
-    }).then(console.log(this.state.kingList))
+      type:'countcoin',
+    })
+
+    console.log(this.state.kingList)
   }
 
   render(){
