@@ -4,6 +4,7 @@ import styled from "styled-components";
 import {Link} from "react-router-dom";
 import homebase from "../../../assets/images/homebase.png"
 import homelogo from "../../../assets/images/homelogo.png"
+import NavBar from "../../../common/navbar/NavBar";
 
 //메인페이지 배경화면 Container
 const Container = styled.div`
@@ -108,7 +109,7 @@ function home() {
     return (
         
             <Container>
-
+                <NavBar />
                 <Section>
                 <LogoWrapper>
                     <SecondLogoWrapper>

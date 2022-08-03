@@ -9,6 +9,9 @@ import Custom from '../features/custom/page/Custom';
 import Rank from '../features/rank/page/Rank';
 import RoomItem from '../features/rank/page/RoomItem';
 import MyPage from '../features/mypage/page/MyPage';
+import Help from '../features/help/page/Help';
+import Statistics from '../features/statistic/page/Statistics';
+import UserRank from '../features/userrank/page/UserRank';
 import NotFound from '../features/notfound/NotFound';
 // import NavBar from "../common/navbar/NavBar";
 
@@ -24,7 +27,11 @@ function App() {
           <Route exact path="/custom" element={<Custom/>}/>
           <Route exact path="/roomitem" element={<RoomItem/>}/>
           <Route exact path="/me" element={<MyPage/>}/>
-      	  <Route path="/game/:id" element={<Game />} />
+      	  <Route exact path="/game/:id" element={<Game />} />
+      	  <Route exact path="/help" element={<Help />} />
+      	  <Route exact path="/statistics" element={<Statistics />} />
+      	  <Route exact path="/userrank" element={<UserRank />} />
+      	  <Route exact path="/*" element={<NotFound />} />
         </Routes>
       </div>
     </Router>

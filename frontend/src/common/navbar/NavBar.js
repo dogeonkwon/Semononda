@@ -40,12 +40,12 @@ function NavBar() {
   return (
     <>
       {[false].map((expand) => (
-        <Navbar key={expand} bg="white" expand={expand} className="navbar mb-3">
+        <Navbar key={expand} expand={expand} className="navbar mb-3">
           <Container fluid>
             <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${expand}`} />
               <Link to="/rank"><button className="formula">공식경연</button></Link>  
               <Link to="/"><Logo className="logo" src={logo} /></Link>
-              <Link to="/free"><button className="free">자유경연</button></Link>
+              <Link to="/custom"><button className="custom">자유경연</button></Link>
               {token ?
                (
                   <Nav>   
