@@ -1,11 +1,50 @@
 import React, {useState} from 'react'
 import {Button, Form, FormGroup} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.css';
-//import axios from 'axios';
 import { useDispatch } from 'react-redux';
-import {useNavigate}from 'react-router-dom'
-import {signup, checkNickname} from '../UserSlice';
+import {Link, useNavigate}from 'react-router-dom'
 import { toast } from 'react-toastify';
+import styled from "styled-components";
+import {signup, checkNickname, checkId} from '../UserSlice';
+
+//이미지 파일 import
+import homebase from "../../../assets/images/homebase.png"
+import userform_img from "../../../assets/images/userform_img.png"
+import signup_img from "../../../assets/images/signup_img.png"
+
+//메인페이지 배경화면 Container
+const Container = styled.div`
+    display: block;
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    max-width: 100%;
+    max-height: 100%;
+    background: center;
+    background-color: black;
+    background-repeat: no-repeat;
+    background-image: url(${homebase});
+    background-size: cover;
+    overflow: scroll;`
+
+//로고 영역
+const LogoWrapper = styled.div`
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+  width: 40%;
+  height: 40%;
+  margin: 0 auto;
+  margin-bottom: 0.5em;
+  `
+//로고 이미지
+const SingUpLogo = styled.img`
+  width: 100%;
+  height: 100%;
+  flex: 1;
+  margin-bottom: 10px;
+  text-align: top;`
 
 function Signin() {
 
@@ -30,7 +69,6 @@ function Signin() {
     
      //오류메시지 상태저장
     const [idMessage, setIdMessage] = useState('')
-    const [nameMessage, setNameMessage] = useState('')
     const [nicknameMessage, setNicknameMessage] = useState('')
     const [passwordMessage, setPasswordMessage] = useState('')
     const [confirmPasswordMessage, setConfirmPasswordMessage] = useState('') 
@@ -38,7 +76,6 @@ function Signin() {
 
     // 유효성 검사 상태 저장
     const [isId, setIsId] = useState(false);
-    const [isName, setIsName] = useState(false);
     const [isNickname, setIsNickname] = useState(false)
     const [isPassword, setIsPassword] = useState(false)
     const [isConfirmPassword, setIsConfirmPassword] = useState(false)
@@ -73,11 +110,8 @@ function Signin() {
         });
         //글자 수 30자 이내로 제한
         if(e.target.value.length >30) {
-            setNameMessage('30자 이내로 입력 가능합니다.')
-            setIsName(false)
+            alert('30자 이내로 입력 가능합니다.')
         } else {
-            setNameMessage('확인되었습니다.')
-            setIsName(true)
         }
     }
 
@@ -96,7 +130,7 @@ function Signin() {
             setIsNickname(false)
         }else {
             setNicknameMessage('확인되었습니다.')
-            setIsName(true)
+            setIsNickname(true)
         }
     }
 
@@ -150,30 +184,13 @@ function Signin() {
         }
     }
 
-    // const onCheckNickname = async (event) => {
-        //     axios
-        //       .get(`/user/nickname-info/${nickname}`)
-        //       .then(function (response) {
-            //         console.log(response);
-            //       })
-            //       //실패 시 catch 실행
-            //       .catch(function (error) {
-                //         console.log(error);
-                //       })
-                //       //성공이던 실패던 항상 실행
-                //       .then(function () {
-                    //         // always executed
-                    //       });
-                    
-                    // };
-                    
     //닉네임 중복값 인증
     const onCheckNickname = (event) => {
         //입력값 남겨두는 함수
     event.preventDefault()
 
-    console.log(user)
-        dispatch(checkNickname(user))
+    console.log(user.nickname)
+        dispatch(checkNickname(user.nickname))
         .then(() => {
             history("/signin", {replace: true})
         })
@@ -182,6 +199,23 @@ function Signin() {
         })
         alert("사용가능한 닉네임입니다.")
     }
+
+    //닉네임 중복값 인증
+    const onCheckId = (event) => {
+        //입력값 남겨두는 함수
+    event.preventDefault()
+
+    console.log(user.id)
+        dispatch(checkId(user.id))
+        .then(() => {
+            history("/signin", {replace: true})
+        })
+        .catch((err) => {
+            console.log(err);
+        })
+        alert("사용가능한 ID입니다.")
+    }
+
     //가입버튼 눌렀을 때 호출되는 함수
     const onSubmit = (event) => {
     
@@ -198,6 +232,7 @@ function Signin() {
             history("/login", {replace: true})
           })
           .catch((err) => {
+            
             if (err.status === 400) {
               toast.error('😥 입력하신 정보를 다시 확인해주세요');
             } else if (err.status === 409) {
@@ -217,45 +252,72 @@ function Signin() {
 
   //회원가입 폼
   return (
-      <Form style={{margin:"1em"}}>
+    <Container >
+
+      <Form style={{ width:"50%", margin:"0 auto", top:"1em", position:"relative",padding:"1em", backgroundImage:`url(${userform_img})`, backgroundSize:"cover"}}>
+        
+        <LogoWrapper>
+          <SingUpLogo src={signup_img}></SingUpLogo>
+        </LogoWrapper>
+
         <FormGroup className='mb-3' controlId='formBasicId'>
-            <Form.Label>아이디</Form.Label>
-            <Form.Control name='id' type='id' placeholder='아이디' value={id} onChange={onChangeId}/>
-            {id.length > 0 && <span className={`message ${isId ? 'success' : 'error'}`}>{idMessage}</span>}
+            <Form.Label style={{marginLeft: "10%"}}>아이디</Form.Label>
+            <FormGroup style={{display: "flex"}}>
+                <Form.Control style={{width: "60%", textalign:"left", marginLeft:"10%"}} name='id' type='id' placeholder='아이디' value={id} onChange={onChangeId}/>
+                <Button style={{marginLeft:"1em"}} onClick={onCheckId} variant='primary'>중복검사</Button>
+            </FormGroup>
+            <FormGroup style={{marginLeft:"10%", marginTop:"3px"}}>
+                {id.length > 0 && <span className={`message ${isId ? 'success' : 'error'}`}>{idMessage}</span>}
+            </FormGroup>
         </FormGroup>
+
         <FormGroup className='mb-3' controlId='formBasicName'>
-            <Form.Label>이름</Form.Label>
-            <Form.Control name="name" type="text" placeholder="이름" value={name} onChange={onChangeName} />
-            {name.length > 0 && <span className={`message ${isName ? 'success' : 'error'}`}>{nameMessage}</span>}
+            <Form.Label style={{marginLeft: "10%"}}>이름</Form.Label>
+            <Form.Control style={{width: "60%", textalign:"left", marginLeft:"10%"}} name="name" type="text" placeholder="이름" value={name} onChange={onChangeName} />
         </FormGroup>
+
         <FormGroup className='mb-3' controlId='formBasicNickname'>
-            <Form.Label>별호</Form.Label>
-            <Form.Control name="nickname" type="text" placeholder="별호" value={nickname} onChange={onChangeNickname} />
-            {nickname.length > 0 && <span className={`message ${isNickname ? 'success' : 'error'}`}>{nicknameMessage}</span>}
-            <Button onClick={onCheckNickname} variant='primary'>중복검사</Button>
+            <Form.Label style={{marginLeft: "10%"}}>별호</Form.Label>
+            <FormGroup style={{display: "flex"}}>
+                <Form.Control style={{width: "60%", textalign:"left", marginLeft:"10%"}} name="nickname" type="text" placeholder="별호" value={nickname} onChange={onChangeNickname} />
+                <Button style={{marginLeft:"1em"}} onClick={onCheckNickname} variant='primary'>중복검사</Button>
+            </FormGroup>
+            <FormGroup style={{marginLeft:"10%", marginTop:"3px"}}>
+                {nickname.length > 0 && <span className={`message ${isNickname ? 'success' : 'error'}`}>{nicknameMessage}</span>}
+            </FormGroup>
         </FormGroup>
-        <FormGroup>
+
         <FormGroup className='mb-3' controlId='formBasicPassword'>
-            <Form.Label>비밀번호</Form.Label>
-            <Form.Control name="password" type="password" placeholder="비밀번호" value={password} onChange={onChangePassword} />
-            {password.length > 0 && <span className={`message ${isPassword ? 'success' : 'error'}`}>{passwordMessage}</span>}
+            <Form.Label  style={{marginLeft: "10%"}}>비밀번호</Form.Label>
+            <Form.Control style={{width: "60%", textalign:"left", marginLeft:"10%"}} name="password" type="password" placeholder="비밀번호" value={password} onChange={onChangePassword} />
+            <FormGroup style={{marginLeft:"10%", marginTop:"3px"}}>
+                {password.length > 0 && <span className={`message ${isPassword ? 'success' : 'error'}`}>{passwordMessage}</span>}
+            </FormGroup>
         </FormGroup>
+
         <FormGroup className='mb-3' controlId='formBasicConfirmPassword'>
-            <Form.Label>비밀번호 확인</Form.Label>
-            <Form.Control name="confirmPassword" type="password" placeholder="비밀번호 확인" value={confirmPassword} onChange={onChangeConfirmPassword} />
-            {confirmPassword.length > 0 && <span className={`message ${isConfirmPassword ? 'success' : 'error'}`}>{confirmPasswordMessage}</span>}
+            <Form.Label style={{marginLeft: "10%"}}>비밀번호 확인</Form.Label>
+            <Form.Control style={{width: "60%", textalign:"left", marginLeft:"10%"}} name="confirmPassword" type="password" placeholder="비밀번호 확인" value={confirmPassword} onChange={onChangeConfirmPassword} />
+            <FormGroup style={{marginLeft:"10%", marginTop:"3px"}}>
+                {confirmPassword.length > 0 && <span className={`message ${isConfirmPassword ? 'success' : 'error'}`}>{confirmPasswordMessage}</span>}
+            </FormGroup>
         </FormGroup>
-        <FormGroup></FormGroup>
+
         <FormGroup  className='mb-3' controlId='formBasicPhoneNumber'>
-            <Form.Label>휴대폰 번호</Form.Label>
-         <Form.Control name="phonenumber" type="text" placeholder="휴대폰 번호" value={phonenumber} onChange={onChangePhoneNumber}/>
-         {phonenumber.length > 0 && <span className={`message ${isPhonenumber ? 'success' : 'error'}`}>{phonenumberMessage}</span>}
+            <Form.Label style={{marginLeft: "10%"}}>휴대폰 번호</Form.Label>
+            <Form.Control style={{width: "60%", textalign:"left", marginLeft:"10%"}} name="phonenumber" type="text" placeholder="휴대폰 번호" value={phonenumber} onChange={onChangePhoneNumber}/>
+            <FormGroup style={{marginLeft:"10%", marginTop:"3px"}}>
+                {phonenumber.length > 0 && <span className={`message ${isPhonenumber ? 'success' : 'error'}`}>{phonenumberMessage}</span>}
+            </FormGroup>
         </FormGroup>
-        </FormGroup>
-        <FormGroup style={{textAlign:"center"}} >
+
+        <FormGroup style={{width:"60%", display:"flex", margin:"0 auto",justifyContent:'space-between'}} >
           <Button type="submit" onClick={onSubmit} variant="primary">계정 생성하기</Button>
+          <Link to="/"><Button variant="primary">메인으로</Button></Link>
         </FormGroup>
+
       </Form>
+    </Container>
   );
 }
 export default Signin;
