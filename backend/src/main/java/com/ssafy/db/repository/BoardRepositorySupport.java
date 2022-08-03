@@ -19,9 +19,17 @@ public class BoardRepositorySupport {
     private JPAQueryFactory jpaQueryFactory;
     QBoard qBoard = QBoard.board;
     
+<<<<<<< HEAD
     public Board findBoardByUid(int uid) {
         Board board = jpaQueryFactory.select(qBoard).from(qBoard)
                 .where(qBoard.uid.eq(uid)).fetchOne();
         return board;
+=======
+    public Optional<Board> findBoardByUid(int uid) {
+        Board board = jpaQueryFactory.select(qBoard).from(qBoard)
+                .where(qBoard.uid.eq(uid)).fetchOne();
+        if(board == null) return Optional.empty();
+        return Optional.ofNullable(board);
+>>>>>>> branch 'feature/front/waiting-room' of https://lab.ssafy.com/s07-webmobile1-sub2/S07P12E103.git
     }
 }

@@ -19,9 +19,12 @@ public class GameRecord extends BaseEntity{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	int uid;
 	
+<<<<<<< HEAD
 	@Column(name="user_uid")
 	int userUid;
 	
+=======
+>>>>>>> branch 'feature/front/waiting-room' of https://lab.ssafy.com/s07-webmobile1-sub2/S07P12E103.git
 	@Column(name="player_uid")
 	int playerUid;
 	

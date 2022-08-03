@@ -6,6 +6,10 @@ import reportWebVitals from './reportWebVitals';
 import './index.css';
 import configStore from './app/store'
 import { PersistGate } from 'redux-persist/integration/react';
+<<<<<<< HEAD
+=======
+import "./assets/fonts/JSArirangHON.css";
+>>>>>>> branch 'feature/front/waiting-room' of https://lab.ssafy.com/s07-webmobile1-sub2/S07P12E103.git
 const {store, persistor} = configStore();
 const container = document.getElementById('root');
 const root = createRoot(container);

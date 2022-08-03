@@ -23,10 +23,16 @@ public class QGameRecord extends EntityPathBase<GameRecord> {
 
 	private static final long serialVersionUID = 846542477L;
 
+<<<<<<< HEAD
     public static final QGameRecord gameRecord = new QGameRecord("gameRecord");
 	public final NumberPath<Integer> uid = createNumber("uid", Integer.class);
 
 	public final NumberPath<Integer> userUid = createNumber("userUid", Integer.class);
+=======
+//    public static final _QGameRecord user = new _QGameRecord("user");
+	public final NumberPath<Integer> uid = createNumber("uid", Integer.class);
+
+>>>>>>> branch 'feature/front/waiting-room' of https://lab.ssafy.com/s07-webmobile1-sub2/S07P12E103.git
 	public final NumberPath<Integer> playerUid = createNumber("playerUid", Integer.class);
 
 	public final NumberPath<Integer> totalGoldfinch = createNumber("totalGoldfinch", Integer.class);

@@ -35,8 +35,11 @@ public class QUser extends EntityPathBase<User> {
     public final StringPath nickname = createString("nickname");
     public final StringPath img = createString("img");
     public final StringPath description = createString("description");
+<<<<<<< HEAD
     public final NumberPath<Integer> numberOfWins = createNumber("numberOfWins",Integer.class);
     public final NumberPath<Integer> numberOfLoses = createNumber("numberOfLoses",Integer.class);
+=======
+>>>>>>> branch 'feature/front/waiting-room' of https://lab.ssafy.com/s07-webmobile1-sub2/S07P12E103.git
 
     public QUser(String variable) {
         super(User.class, forVariable(variable));

@@ -25,6 +25,7 @@ public class QPlayer extends EntityPathBase<Player> {
 	public final QBaseEntity _super = new QBaseEntity(this);
 
 	// inherited
+<<<<<<< HEAD
 	public final NumberPath<Integer> uid = createNumber("uid", Integer.class);
 
 	public final NumberPath<Integer> usersUid = createNumber("usersUid", Integer.class);
@@ -49,6 +50,29 @@ public class QPlayer extends EntityPathBase<Player> {
 	public final BooleanPath isMuted = createBoolean("isMuted");
 	public final BooleanPath isCamOff = createBoolean("isCamOff");
 	public final BooleanPath isChangeVoice = createBoolean("isChangeVoice");
+=======
+	public final NumberPath<Long> uid = createNumber("uid", Long.class);
+
+	public final NumberPath<Long> usersUid = createNumber("usersUid", Long.class);
+
+	public final NumberPath<Long> gameConferenceRoomUid = createNumber("gameConferenceRoomUid", Long.class);
+
+	public final NumberPath<Long> goldfinch = createNumber("goldfinch", Long.class);
+	public final NumberPath<Long> roleUid = createNumber("roleUid", Long.class);
+
+
+	public final NumberPath<Long> kingCount = createNumber("kingCount", Long.class);
+
+	public final StringPath team = createString("team");
+
+	public final NumberPath<Long> accusationCount = createNumber("accusationCount", Long.class);
+
+	public final NumberPath<Long> totalGoldfinch = createNumber("totalGoldfinch", Long.class);
+
+	public final BooleanPath randomKing = createBoolean("randomKing");
+
+	public final BooleanPath readyState = createBoolean("readyState");
+>>>>>>> branch 'feature/front/waiting-room' of https://lab.ssafy.com/s07-webmobile1-sub2/S07P12E103.git
 
 	public QPlayer(String variable) {
 		super(Player.class, forVariable(variable));

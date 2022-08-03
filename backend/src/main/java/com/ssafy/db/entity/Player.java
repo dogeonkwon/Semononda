@@ -46,6 +46,7 @@ public class Player extends BaseEntity{
 
 	@Column(name="ready_state")
 	boolean readyState;
+<<<<<<< HEAD
 	
 	@Column(name="is_muted")
 	boolean isMuted;
@@ -55,4 +56,6 @@ public class Player extends BaseEntity{
 	
 	@Column(name="is_change_voice")
 	boolean isChangeVoice;
+=======
+>>>>>>> branch 'feature/front/waiting-room' of https://lab.ssafy.com/s07-webmobile1-sub2/S07P12E103.git
 }

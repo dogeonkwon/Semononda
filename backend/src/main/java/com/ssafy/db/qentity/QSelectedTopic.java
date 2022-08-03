@@ -19,7 +19,10 @@ import com.ssafy.db.entity.SelectedTopic;
 public class QSelectedTopic extends EntityPathBase<SelectedTopic> {
 
     private static final long serialVersionUID = 846542477L;
+<<<<<<< HEAD
 	public static final QSelectedTopic selectedTopic = new QSelectedTopic("selectedTopic");
+=======
+>>>>>>> branch 'feature/front/waiting-room' of https://lab.ssafy.com/s07-webmobile1-sub2/S07P12E103.git
 
 //    public static final _QSelectedTopic user = new _QSelectedTopic("user");
 //    public final QBaseEntity _super = new QBaseEntity(this);

@@ -6,9 +6,13 @@ build/
 !**/src/test/**/build/
 
 ssafy-web.log
+<<<<<<< HEAD
 ### backend folder에 생성되는 log files
 *.log
 *.gz
+=======
+
+>>>>>>> branch 'feature/front/waiting-room' of https://lab.ssafy.com/s07-webmobile1-sub2/S07P12E103.git
 ### STS ###
 .apt_generated
 .classpath
