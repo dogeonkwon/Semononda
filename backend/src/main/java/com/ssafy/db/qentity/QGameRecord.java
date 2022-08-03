@@ -26,6 +26,7 @@ public class QGameRecord extends EntityPathBase<GameRecord> {
     public static final QGameRecord gameRecord = new QGameRecord("gameRecord");
 	public final NumberPath<Integer> uid = createNumber("uid", Integer.class);
 
+	public final NumberPath<Integer> userUid = createNumber("userUid", Integer.class);
 	public final NumberPath<Integer> playerUid = createNumber("playerUid", Integer.class);
 
 	public final NumberPath<Integer> totalGoldfinch = createNumber("totalGoldfinch", Integer.class);

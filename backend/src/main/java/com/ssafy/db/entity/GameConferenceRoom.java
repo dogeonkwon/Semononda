@@ -22,13 +22,13 @@ public class GameConferenceRoom extends BaseEntity{
 	int uid;
 	
 	@Column(name = "is_normal")
-	boolean Normal;
+	boolean isNormal;
 	
 	@Column(name= "Game_categories_uid")
 	int gameCategoriesUid;
 	
 	@Column(name="game_category_topics_uid")
-	int gameCategoryTopicsUid;
+	Integer gameCategoryTopicsUid;
 	
 	@Column(name="room_admin_user_uid")
 	int roomAdminUserUid;

@@ -16,6 +16,7 @@ import com.querydsl.core.types.Path;
 public class QGameCategory extends EntityPathBase<GameCategory> {
 
 	private static final long serialVersionUID = 846542477L;
+	public static final QGameCategory gameCategory = new QGameCategory("gameCategory");
 
 	public final NumberPath<Integer> uid = createNumber("uid", Integer.class);
 
