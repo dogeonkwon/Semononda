@@ -1,6 +1,5 @@
 package com.ssafy.db.repository;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -13,13 +12,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.ssafy.db.entity.Accusation;
 import com.ssafy.db.entity.GameCategoryTopic;
 import com.ssafy.db.entity.GameConferenceRoom;
 import com.ssafy.db.entity.GameRecord;
 import com.ssafy.db.entity.Player;
 import com.ssafy.db.entity.SelectedTopic;
 import com.ssafy.db.entity.User;
-import com.ssafy.db.qentity.QFriend;
+import com.ssafy.db.qentity.QGameCategory;
 import com.ssafy.db.qentity.QGameCategoryTopic;
 import com.ssafy.db.qentity.QGameConferenceRoom;
 import com.ssafy.db.qentity.QGameRecord;
@@ -40,6 +40,8 @@ public class PlayerRepositorySupport {
 	private UserRepository userRepository;
 	@Autowired
 	private GameRecordRepository gameRecordRepository;
+	@Autowired
+	private AccusationRepository accusationRepository;
 
 	@Autowired
 	private JPAQueryFactory jpaQueryFactory;
@@ -49,6 +51,7 @@ public class PlayerRepositorySupport {
 	QGameCategoryTopic qGameCategoryTopic = QGameCategoryTopic.gameCategoryTopic;
 	QSelectedTopic qSelectedTopic = QSelectedTopic.selectedTopic;
 	QGameRecord qGameRecord = QGameRecord.gameRecord;
+	QGameCategory qGameCategory = QGameCategory.gameCategory;
 	
 	static int calcRankPoint(int totalGoldFinch, boolean isWinner, boolean isRandomKing) {
 		int rankPoint = 0;
@@ -87,6 +90,9 @@ public class PlayerRepositorySupport {
 				.where(qGameConferenceRoom.uid.eq(gameConferenceRoomUid)).execute();
 		GameConferenceRoom g = jpaQueryFactory.selectFrom(qGameConferenceRoom)
 				.where(qGameConferenceRoom.uid.eq(gameConferenceRoomUid)).fetchFirst();
+		int categoryUid = g.getGameCategoriesUid();
+		long sel = jpaQueryFactory.select(qGameCategory.count()).from(qGameCategory).where(qGameCategory.uid.eq(categoryUid)).fetchOne();
+		jpaQueryFactory.update(qGameCategory).set(qGameCategory.subjectCount,(int) sel+1).execute();
 		System.out.println("UID " + g.getUid() + "번방 게임 시작");
 		System.out.println("방제목: " + g.getTitle());
 	}
@@ -341,9 +347,16 @@ public class PlayerRepositorySupport {
 			int randomIndex = random.nextInt(twoCoinList.size());
 			nextKing = twoCoinList.get(randomIndex);
 		} else { // 2개 이상 가지고 있는 플레이어가 없을 경우.
-			playerList = (ArrayList<Player>) jpaQueryFactory.select(qPlayer).from(qPlayer)
-					.where(qPlayer.gameConferenceRoomUid.eq(gameConferenceRoomUid))
-					.where(qPlayer.randomKing.isFalse()).fetchResults().getResults();
+			try {
+				playerList = (ArrayList<Player>) jpaQueryFactory.select(qPlayer).from(qPlayer)
+						.where(qPlayer.gameConferenceRoomUid.eq(gameConferenceRoomUid))
+						.where(qPlayer.randomKing.isFalse()).fetchResults().getResults();
+			} catch (Exception e) {
+				System.out.println("모든 플레이어가 랜덤왕을 해봤습니다.");
+				playerList = (ArrayList<Player>) jpaQueryFactory.select(qPlayer).from(qPlayer)
+						.where(qPlayer.gameConferenceRoomUid.eq(gameConferenceRoomUid))
+						.fetchResults().getResults();
+			}
 			int randomIndex = random.nextInt(playerList.size());
 			nextKing = playerList.get(randomIndex);
 			// 왕이된 플레이어의 randomKing true
@@ -412,6 +425,7 @@ public class PlayerRepositorySupport {
 			gameRecord.setTotalGoldfinch(playerList.get(i).getTotalGoldfinch());
 			gameRecord.setWinner(userUid==user.getUid());
 			gameRecord.setEndTime(endtime);
+			gameRecord.setUserUid(playerList.get(i).getUsersUid());
 			gameRecordRepository.save(gameRecord);
 		}
 		// 4. 모든 플레이어의 게임 정보를 초기화한다.
@@ -430,11 +444,21 @@ public class PlayerRepositorySupport {
 			.set(qPlayer.totalGoldfinch, 0)
 			.execute();
 		}
+		// 5. 해당 방의 conference uid를 가지고 있는 selected topic을 삭제한다.
+		jpaQueryFactory.delete(qSelectedTopic).where(qSelectedTopic.gameConferenceRoomUid
+				.eq(gameConferenceRoomUid)).execute();
 	}
-
+	@Transactional
 	public void customGameEnd(int gameConferenceRoomUid) {
+		// 해당 게임의 gameStart 상태를 false로 바꿈
 		jpaQueryFactory.update(qGameConferenceRoom).set(qGameConferenceRoom.gameStart, false)
 		.where(qGameConferenceRoom.uid.eq(gameConferenceRoomUid)).execute();
+	}
+
+	public void accusation(int gameConferenceRoomUid, int attackerUid, int reporterUid, int accusationUid) {
+		// 신고 테이블에 추가
+		Accusation accusation = new Accusation();
+		// 플레이어 테이블 수정 (필요한지 모르겠음)
 	}
 
 }
