@@ -54,15 +54,19 @@ public class RoomServiceImpl implements RoomService {
 		return roomRepositorySupport.findRoomByTitle(title);
 	}
 
-	@Override
-	public List<GameConferenceRoom> getNormalRoom() {
-		return roomRepository.findAll();
-	}
+//	@Override
+//	public List<GameConferenceRoom> findNormalRoomlist() {
+//		return roomRepository.findAll();
+//	}
 
 	@Override
-	public List<GameConferenceRoom> getCustomRoom() {
-		// TODO Auto-generated method stub
-		return null;
+	public List<GameConferenceRoom> findNormalRoomlist() {
+		return roomRepositorySupport.findNormalRoomlist();
+	}
+	
+	@Override
+	public List<GameConferenceRoom> findCustomRoomlist() {
+		return roomRepositorySupport.findCustomRoomlist();
 	}
 
 	@Override

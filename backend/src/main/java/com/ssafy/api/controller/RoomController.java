@@ -49,13 +49,26 @@ public class RoomController {
 
 		return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
 	}
-
-	@GetMapping("/list")
+	
+	@GetMapping("/normal/list")
 	@ApiOperation(value = "room list 정보", notes = "게임 방 전체 목록")
 	@ApiResponses({ @ApiResponse(code = 200, message = "성공"), @ApiResponse(code = 401, message = "인증 실패"),
 			@ApiResponse(code = 404, message = "게임 방 없음"), @ApiResponse(code = 500, message = "서버 오류") })
-	public ResponseEntity<List<GameConferenceRoom>> getRoomList() {
-		List<GameConferenceRoom> rooms = roomService.getNormalRoom();
+	public ResponseEntity<List<GameConferenceRoom>> findNormalRoomlist() {
+		List<GameConferenceRoom> rooms = roomService.findNormalRoomlist();
+		if (rooms == null) {
+			return new ResponseEntity<List<GameConferenceRoom>>(rooms, HttpStatus.BAD_REQUEST);
+		} else {
+			return new ResponseEntity<List<GameConferenceRoom>>(rooms, HttpStatus.OK);
+		}
+	}
+	
+	@GetMapping("/custom/list")
+	@ApiOperation(value = "room list 정보", notes = "게임 방 전체 목록")
+	@ApiResponses({ @ApiResponse(code = 200, message = "성공"), @ApiResponse(code = 401, message = "인증 실패"),
+			@ApiResponse(code = 404, message = "게임 방 없음"), @ApiResponse(code = 500, message = "서버 오류") })
+	public ResponseEntity<List<GameConferenceRoom>> findCustomRoomlist() {
+		List<GameConferenceRoom> rooms = roomService.findCustomRoomlist();
 		if (rooms == null) {
 			return new ResponseEntity<List<GameConferenceRoom>>(rooms, HttpStatus.BAD_REQUEST);
 		} else {

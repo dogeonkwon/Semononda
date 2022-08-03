@@ -33,6 +33,19 @@ public class RoomRepositorySupport {
 				.where(qRoom.title.like("%" + word + "%")).fetch();
 		return rooms;
 	}
+	
+	public List<GameConferenceRoom> findNormalRoomlist() {
+		List<GameConferenceRoom> rooms = jpaQueryFactory.select(qRoom).from(qRoom)
+				.where(qRoom.normal.eq(true)).fetch();
+		return rooms;
+	}
+	
+	
+	public List<GameConferenceRoom> findCustomRoomlist() {
+		List<GameConferenceRoom> rooms = jpaQueryFactory.select(qRoom).from(qRoom)
+				.where(qRoom.normal.eq(false)).fetch();
+		return rooms;
+	}
 //	//게임이 시작 되었는지 확인하는 메소드
 //	@Transactional
 //	public void gameStart(int gameConferenceRoomUid) {

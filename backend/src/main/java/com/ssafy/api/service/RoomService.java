@@ -14,8 +14,8 @@ public interface RoomService {
 	List<GameConferenceRoom> findRoomByRoomTitle(String title);
 	GameConferenceRoom findRoomByUid(int uid);
 	void deleteRoomByUid(GameConferenceRoom room);
-	List<GameConferenceRoom> getNormalRoom();
-	List<GameConferenceRoom> getCustomRoom();
+	List<GameConferenceRoom> findNormalRoomlist();
+	List<GameConferenceRoom> findCustomRoomlist();
 	GameConferenceRoom updateRoom(GameConferenceRoom room, RoomRequest roomRegisterInfo);
 	
 	//방 참가 어떻게??
