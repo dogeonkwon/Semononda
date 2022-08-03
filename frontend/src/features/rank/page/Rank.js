@@ -110,5 +110,4 @@ function Rank() {
 		</div>
 	);
 }
-
 export default Rank;

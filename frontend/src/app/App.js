@@ -23,6 +23,7 @@ function App() {
           <Route exact path="/rank" element={<Rank/>}/>
           <Route exact path="/custom" element={<Custom/>}/>
           <Route exact path="/roomitem" element={<RoomItem/>}/>
+          <Route exact path="/me" element={<MyPage/>}/>
       	  <Route path="/game/:id" element={<Game />} />
         </Routes>
       </div>

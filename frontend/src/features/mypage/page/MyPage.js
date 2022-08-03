@@ -1,6 +1,10 @@
 import React from "react";
+import {useSelector} from "react-redux";
 
-const myPage = () => {
+function MyPage(){
+  let user_info = useSelector(state => state.user.user);
+  console.log("user_info",user_info)
+
   return (
     <div>
       <h1>마이페이지!!</h1>
@@ -8,4 +12,4 @@ const myPage = () => {
   );
 };
 
-export default myPage;
+export default MyPage;

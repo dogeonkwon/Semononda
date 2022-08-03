@@ -25,18 +25,6 @@ const Section = styled.div`
     height: 50%;
     float: left;`
 
-//로그인 버튼(임시)
-const LoginButton = styled.button`
-    position: absolute;
-    right: 0px;
-    bottom: 0px;`
-
-//회원가입 버튼(임시)
-const JoinButton = styled.button`
-    position: absolute;
-    right: 0px;
-    bottom: 2em;`
-
 //로고 영역
 const LogoWrapper = styled.div`
   display: flex;
@@ -74,7 +62,7 @@ const ArguementGroup = styled.div`
 
 //공식 경연 버튼
 const OfficialButton = styled.button`
-    font-family: JsaHON;
+    font-family: JSArirangHON;
     position: relative;
     border: none;
     min-width: 200px;
@@ -94,7 +82,7 @@ const OfficialButton = styled.button`
 `
 //자유 경연 버튼
 const FreeButton = styled.button`
-    font-family: JsaHON;
+    font-family: JSArirangHON;
     position: relative;
     border: none;
     min-width: 200px;
@@ -112,6 +100,8 @@ const FreeButton = styled.button`
     transition: 0.3s;
     font-size: 40px;
 `
+
+
 
 function home() {
     
@@ -133,9 +123,6 @@ function home() {
                     <Link to="/custom"><FreeButton>자유 경연</FreeButton></Link>
                 </ArguementGroup>
                 </Section>
-
-                <LoginButton><Link to="/login">로그인테스트</Link></LoginButton>
-                <JoinButton><Link to="/signin">회원가입테스트</Link></JoinButton>
 
             </Container>
     );
