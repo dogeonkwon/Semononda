@@ -30,7 +30,7 @@ public class GameServiceImpl implements GameService {
 
 	@Override
 	public Player getPlayerByUserId(String userId) {
-		Player player =  playerRepositorySupport.findPlayerByUserId(userId).get();
+		Player player = playerRepositorySupport.findPlayerByUserId(userId).get();
 		System.out.println(player);
 		return player;
 	}
