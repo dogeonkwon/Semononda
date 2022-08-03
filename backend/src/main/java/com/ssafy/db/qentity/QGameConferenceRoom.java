@@ -37,8 +37,9 @@ public class QGameConferenceRoom extends EntityPathBase<GameConferenceRoom> {
 
 	public final DatePath<Date> startTime = createDate("startTime", Date.class);
 	public final DatePath<Date> endTime = createDate("endTime", Date.class);
-	public final NumberPath<Integer> customPassword = createNumber("customPassword",Integer.class);
-    public final StringPath title = createString("title");
+    
+	public final StringPath customPassword = createString("customPassword");
+	public final StringPath title = createString("title");
 
     public final StringPath customTopic = createString("customTopic");
     public final StringPath customAnswerA = createString("customAnswerA");
