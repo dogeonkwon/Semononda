@@ -87,6 +87,12 @@ public class GameServiceImpl implements GameService {
 		return;
 	}
 
+	@Override
+	public void accusation(int gameConferenceRoomUid, int attackerUid, int reporterUid, int accusationUid) {
+		// TODO Auto-generated method stub
+		
+	}
+
 	
 
 }

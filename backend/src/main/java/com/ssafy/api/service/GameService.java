@@ -17,4 +17,5 @@ public interface GameService {
 	Player getRoundEnd(int gameConferenceRoomUid, String winTeam);
 	void normalGameEnd(int gameConferenceRoomUid, int userUid);
 	void customGameEnd(int gameConferenceRoomUid);
+	void accusation(int gameConferenceRoomUid, int attackerUid, int reporterUid, int accusationUid);
 }
