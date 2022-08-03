@@ -49,13 +49,26 @@ public class RoomController {
 
 		return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
 	}
-
-	@GetMapping("/list")
+	
+	@GetMapping("/normal/list")
 	@ApiOperation(value = "room list 정보", notes = "게임 방 전체 목록")
 	@ApiResponses({ @ApiResponse(code = 200, message = "성공"), @ApiResponse(code = 401, message = "인증 실패"),
 			@ApiResponse(code = 404, message = "게임 방 없음"), @ApiResponse(code = 500, message = "서버 오류") })
-	public ResponseEntity<List<GameConferenceRoom>> getRoomList() {
-		List<GameConferenceRoom> rooms = roomService.getNormalRoom();
+	public ResponseEntity<List<GameConferenceRoom>> findNormalRoomlist() {
+		List<GameConferenceRoom> rooms = roomService.findNormalRoomlist();
+		if (rooms == null) {
+			return new ResponseEntity<List<GameConferenceRoom>>(rooms, HttpStatus.BAD_REQUEST);
+		} else {
+			return new ResponseEntity<List<GameConferenceRoom>>(rooms, HttpStatus.OK);
+		}
+	}
+	
+	@GetMapping("/custom/list")
+	@ApiOperation(value = "room list 정보", notes = "게임 방 전체 목록")
+	@ApiResponses({ @ApiResponse(code = 200, message = "성공"), @ApiResponse(code = 401, message = "인증 실패"),
+			@ApiResponse(code = 404, message = "게임 방 없음"), @ApiResponse(code = 500, message = "서버 오류") })
+	public ResponseEntity<List<GameConferenceRoom>> findCustomRoomlist() {
+		List<GameConferenceRoom> rooms = roomService.findCustomRoomlist();
 		if (rooms == null) {
 			return new ResponseEntity<List<GameConferenceRoom>>(rooms, HttpStatus.BAD_REQUEST);
 		} else {
@@ -87,7 +100,7 @@ public class RoomController {
 		GameConferenceRoom room = roomService.findRoomByUid(roomInfo.getUid());
 
 		if (room == null) {
-			System.out.println("없데이트 할 방이 없습니다.");
+			System.out.println("업데이트 할 방이 없습니다.");
 			return ResponseEntity.status(400).body(RoomResponse.of(400, "Success", room));
 		} else {
 			roomService.updateRoom(room, roomInfo);
@@ -119,6 +132,37 @@ public class RoomController {
 			@ApiParam(value = "room uid", required = true) @RequestParam("title") String title) {
 
 		List<GameConferenceRoom> rooms = roomService.findRoomByRoomTitle(title);
+		System.err.println("controller : " + title);
+		if (rooms == null) {
+			return new ResponseEntity<List<GameConferenceRoom>>(rooms, HttpStatus.BAD_REQUEST);
+		} else {
+			return new ResponseEntity<List<GameConferenceRoom>>(rooms, HttpStatus.OK);
+		}
+	}
+	@GetMapping("/normal/search")
+	@ApiOperation(value = "title로 room 검색 ", notes = "title로 room 검색")
+	@ApiResponses({ @ApiResponse(code = 200, message = "성공"), @ApiResponse(code = 401, message = "인증 실패"),
+			@ApiResponse(code = 404, message = "게임방 없음"), @ApiResponse(code = 500, message = "서버 오류") })
+	public ResponseEntity<List<GameConferenceRoom>> findNormalRoomByTitle(
+			@ApiParam(value = "room uid", required = true) @RequestParam("title") String title) {
+
+		List<GameConferenceRoom> rooms = roomService.findNormalRoomByRoomTitle(title);
+		System.err.println("controller : " + title);
+		if (rooms == null) {
+			return new ResponseEntity<List<GameConferenceRoom>>(rooms, HttpStatus.BAD_REQUEST);
+		} else {
+			return new ResponseEntity<List<GameConferenceRoom>>(rooms, HttpStatus.OK);
+		}
+	}
+	
+	@GetMapping("/custom/search")
+	@ApiOperation(value = "title로 room 검색 ", notes = "title로 room 검색")
+	@ApiResponses({ @ApiResponse(code = 200, message = "성공"), @ApiResponse(code = 401, message = "인증 실패"),
+			@ApiResponse(code = 404, message = "게임방 없음"), @ApiResponse(code = 500, message = "서버 오류") })
+	public ResponseEntity<List<GameConferenceRoom>> findCustomRoomByTitle(
+			@ApiParam(value = "room uid", required = true) @RequestParam("title") String title) {
+
+		List<GameConferenceRoom> rooms = roomService.findCustomRoomByRoomTitle(title);
 		System.err.println("controller : " + title);
 		if (rooms == null) {
 			return new ResponseEntity<List<GameConferenceRoom>>(rooms, HttpStatus.BAD_REQUEST);

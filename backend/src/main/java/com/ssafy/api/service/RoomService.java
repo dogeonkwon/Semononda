@@ -11,11 +11,13 @@ import com.ssafy.db.entity.GameConferenceRoom;
 
 public interface RoomService {
 	GameConferenceRoom createRoom(RoomRequest roomRegisterInfo);
+	List<GameConferenceRoom> findNormalRoomByRoomTitle(String title);
+	List<GameConferenceRoom> findCustomRoomByRoomTitle(String title);
 	List<GameConferenceRoom> findRoomByRoomTitle(String title);
 	GameConferenceRoom findRoomByUid(int uid);
 	void deleteRoomByUid(GameConferenceRoom room);
-	List<GameConferenceRoom> getNormalRoom();
-	List<GameConferenceRoom> getCustomRoom();
+	List<GameConferenceRoom> findNormalRoomlist();
+	List<GameConferenceRoom> findCustomRoomlist();
 	GameConferenceRoom updateRoom(GameConferenceRoom room, RoomRequest roomRegisterInfo);
 	
 	//방 참가 어떻게??
