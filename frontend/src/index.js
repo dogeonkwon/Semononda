@@ -6,10 +6,11 @@ import reportWebVitals from './reportWebVitals';
 import './index.css';
 import configStore from './app/store'
 import { PersistGate } from 'redux-persist/integration/react';
-<<<<<<< HEAD
-=======
+import { BrowserRouter } from 'react-router-dom';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import "./assets/fonts/JSArirangHON.css";
->>>>>>> branch 'feature/front/waiting-room' of https://lab.ssafy.com/s07-webmobile1-sub2/S07P12E103.git
+
+import "./assets/fonts/JSArirangHON.css";
 const {store, persistor} = configStore();
 const container = document.getElementById('root');
 const root = createRoot(container);
@@ -18,7 +19,9 @@ root.render(
   <React.StrictMode>
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-      <App />
+  		<BrowserRouter>
+  		  <App />
+ 		</BrowserRouter>,
       </PersistGate>
     </Provider>
   </React.StrictMode>

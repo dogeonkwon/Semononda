@@ -9,6 +9,7 @@
 
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
+<<<<<<< HEAD
     animation: App-logo-float infinite 3s ease-in-out;
   }
 }
@@ -35,5 +36,32 @@
   }
   100% {
     transform: translateY(0px);
+=======
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+>>>>>>> branch 'feature/front/game' of https://lab.ssafy.com/s07-webmobile1-sub2/S07P12E103.git
   }
 }

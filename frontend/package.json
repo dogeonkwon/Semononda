@@ -9,7 +9,9 @@
     "@testing-library/user-event": "^14.3.0",
     "axios": "^0.27.2",
     "bootstrap": "^5.2.0",
-<<<<<<< HEAD
+    "jquery": "^3.6.0",
+    "lodash": "^4.17.21",
+    "openvidu-react": "^2.22.0",
     "react": "^18.2.0",
     "react-bootstrap": "^2.4.0",
     "react-dom": "^18.2.0",
@@ -18,19 +20,10 @@
     "react-scripts": "5.0.1",
     "react-toastify": "^9.0.7",
     "redux-persist": "^6.0.0",
-=======
     "global": "^4.4.0",
-    "react": "^18.2.0",
-    "react-bootstrap": "^2.4.0",
-    "react-dom": "^18.2.0",
     "react-icons": "^4.4.0",
-    "react-redux": "^8.0.2",
-    "react-router-dom": "^6.3.0",
-    "react-scripts": "^5.0.1",
-    "react-toastify": "^9.0.7",
-    "redux-persist": "^6.0.0",
+    "socket.io": "^4.5.1",
     "styled-components": "^5.3.5",
->>>>>>> branch 'feature/front/waiting-room' of https://lab.ssafy.com/s07-webmobile1-sub2/S07P12E103.git
     "web-vitals": "^2.1.4"
   },
   "scripts": {
