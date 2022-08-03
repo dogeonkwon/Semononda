@@ -45,6 +45,7 @@ class Game extends Component {
         readyState : 'ready',
         coin : 0,
         kingCount : 0,
+        kingList: [],
     };
 
     this.joinSession = this.joinSession.bind(this);
@@ -213,11 +214,13 @@ class Game extends Component {
                 alert('이번 왕은' + event.data + '님입니다.')
                 if (this.state.myUserName === event.data) {
                   this.setState({
-                    isKing: true
+                    isKing: true,
+                    servant: undefined,
                   })
                 } else {
                   this.setState({
-                    isKing: false
+                    isKing: false,
+                    servant: undefined,
                   })
                 }
               })
@@ -246,6 +249,45 @@ class Game extends Component {
                 subb.innerText = '나. ' + topics[2]
                 alert(`이번 주제는 ${topics[0]} 입니다.`)
               })
+
+              mySession.on('signal:choice-a', (event) => {
+                alert('왕이 가. 를 선택하였습니다.')
+                if (this.state.servant === '가') {
+                  this.setState({
+                    coin: this.state.coin +1
+                  })
+                  alert('코인을 1개 휙득하였습니다.')
+                }
+              })
+
+              mySession.on('signal:choice-b', (event) => {
+                alert('왕이 나. 를 선택하였습니다.')
+                if (this.state.servant === '나') {
+                  this.setState({
+                    coin : this.state.coin + 1
+                  })
+                  alert('코인을 1개 휙득하였습니다.')
+                }
+              })
+
+              mySession.on('signal:countcoin', (event) => {
+                if (this.state.coin > 1) {
+                  mySession.signal({
+                    data: this.state.myUserName,
+                    to: [],
+                    type:'doublecoin'
+                  })
+                }
+              })
+
+              mySession.on('signal:doublecoin', (event) => {
+                if (!this.state.kingList.includes(event.data)) {
+                  this.setState({
+                    kingList : [...this.state.kingList, event.data]
+                  })
+                }
+              })
+
               // --- 4) Connect to the session with a valid user token ---
             
               // 'getToken' method is simulating what your server-side should do.
@@ -491,7 +533,7 @@ class Game extends Component {
         data: JSON.parse(RandomKing.clientData).clientData,
         to: [],
         type: 'random-king'
-      })
+      }).then()
       
       for (var i = 0; i < content.length; i++) {
         if (content[i] === RandomKing) {
@@ -499,20 +541,18 @@ class Game extends Component {
           i--;
         }
       }
-
       console.log(content)
-      if (content.length % 2 === 1){
-        const len = _.sample([(content.length+1)/2, (content.length-1)/2])
-        console.log(len)
-      } else {
-        const len = content.length / 2
-        console.log(len)
+      console.log('왕빼고 남은 유저' + content)
+      
+      let len = content.length / 2
+      console.log(len)
+      if ( len % 1 === 0.5) {
+        const x = _.sample([0.5 , -0.5])
+        len = len + x
       }
+      console.log(len)
 
-      console.log(this.len)
-      console.log(this.len)
-      console.log(this.len)
-      let suba = _.sampleSize(content, this.len)
+      let suba = _.sampleSize(content, len)
       let subb = content.filter((element) => !suba.includes(element))
       console.log('hi')
       console.log(suba)
@@ -583,6 +623,32 @@ class Game extends Component {
     })
   }
 
+  choiceA() {
+    const mySession = this.state.session
+    
+    mySession.signal({
+      to:[],
+      type:'choice-a'
+    })
+  }
+
+  choiceB() {
+    const mySession = this.state.session
+    
+    mySession.signal({
+      to:[],
+      type:'choice-b'
+    })
+  }
+
+  countCoin() {
+    const mySession = this.state.session
+    mySession.signal({
+      to: [],
+      type:'countcoin'
+    }).then(console.log(this.state.kingList))
+  }
+
   render(){
     const messages = this.state.messages;
     const sub1 = this.state.subscribers.slice(0,3)
@@ -617,8 +683,8 @@ class Game extends Component {
               {this.state.readyState === 'start' ? (
                 this.state.isKing === true? (
                   <div className='buttondiv'>
-                    <Button className="button" variant="danger">가. </Button>{' '}
-                    <Button className="button" variant="warning">나. </Button>
+                    <Button className="button" variant="danger" onClick={() => this.choiceA()}>가. </Button>{' '}
+                    <Button className="button" variant="warning" onClick={() => this.choiceB()}>나. </Button>
                   </div>
                 ) : (this.state.servant === '가' ? 
                   <div className="servantdiv">
@@ -688,7 +754,7 @@ class Game extends Component {
             ):(this.state.isReady === false ?
               <img className="ready-icon" alt="ready" src={ready} onClick={() => this.readyClick()}/>
               :<img className="ready-icon" alt="ready" src={ready_ok} onClick={() => this.readyClick()}/>)}
-            <img className="icon" alt="invite" src={invite} />
+            <img className="icon" alt="invite" src={invite} onClick={() => this.countCoin()}/>
             <img className="icon" alt="exit" src={exit} onClick={() => this.updateHost()}/>
           </div>
         </div>
