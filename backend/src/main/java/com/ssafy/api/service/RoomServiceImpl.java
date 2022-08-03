@@ -93,4 +93,16 @@ public class RoomServiceImpl implements RoomService {
 
 	}
 
+	@Override
+	public List<GameConferenceRoom> findNormalRoomByRoomTitle(String title) {
+		System.err.println("Normal ServiceImpl title: " + title);
+		return roomRepositorySupport.findNormalRoomByTitle(title);
+	}
+
+	@Override
+	public List<GameConferenceRoom> findCustomRoomByRoomTitle(String title) {
+		System.err.println("custom ServiceImpl title: " + title);
+		return roomRepositorySupport.findCustomRoomByTitle(title);
+	}
+
 }
