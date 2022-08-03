@@ -1,10 +1,4 @@
 import React from "react";
-<<<<<<< HEAD
-
-function home() {
-    return (
-        <h1>Home</h1>
-=======
 import 'bootstrap/dist/css/bootstrap.css';
 import styled from "styled-components";
 import {Link} from "react-router-dom";
@@ -119,8 +113,6 @@ const FreeButton = styled.button`
     font-size: 40px;
 `
 
-
-
 function home() {
     
     return (
@@ -146,7 +138,6 @@ function home() {
                 <JoinButton><Link to="/signin">회원가입테스트</Link></JoinButton>
 
             </Container>
->>>>>>> branch 'feature/front/waiting-room' of https://lab.ssafy.com/s07-webmobile1-sub2/S07P12E103.git
     );
 }
 
