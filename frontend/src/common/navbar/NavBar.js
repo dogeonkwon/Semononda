@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import './NavBar.css';
 import { CgProfile } from "react-icons/cg";
@@ -19,19 +19,19 @@ import ProgressBar from 'react-bootstrap/ProgressBar';
 function NavBar() {
 
   const Logo = styled.img`
-    width: 11vh;
-    height: 11vh;
+    width: 9vh;
+    height: 9vh;
   `
 
   return (
     <>
       {[false].map((expand) => (
-        <Navbar key={expand} bg="white" expand={expand} className="navbar mb-3">
+        <Navbar key={expand} bg="white" expand={expand} className="navbar">
           <Container fluid>
             <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${expand}`} />
               <Link to="/rank"><button className="formula">공식경연</button></Link>  
               <Link to="/"><Logo className="logo" src={logo} /></Link>
-              <Link to="/free"><button className="free">자유경연</button></Link>
+              <Link to="/custom"><button className="custom">자유경연</button></Link>
               <Link to="/myPage"><CgProfile className="profile" color="black" size="50"></CgProfile></Link>
             <Navbar.Offcanvas
               id={`offcanvasNavbar-expand-${expand}`}

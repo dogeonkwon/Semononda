@@ -6,6 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import './index.css';
 import configStore from './app/store'
 import { PersistGate } from 'redux-persist/integration/react';
+import "./assets/fonts/JSArirangHON.css";
 const {store, persistor} = configStore();
 const container = document.getElementById('root');
 const root = createRoot(container);

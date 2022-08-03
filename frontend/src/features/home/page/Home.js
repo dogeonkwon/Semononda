@@ -74,7 +74,7 @@ const ArguementGroup = styled.div`
 
 //공식 경연 버튼
 const OfficialButton = styled.button`
-    font-family: JSArirangHON;
+    font-family: JsaHON;
     position: relative;
     border: none;
     min-width: 200px;
@@ -94,7 +94,7 @@ const OfficialButton = styled.button`
 `
 //자유 경연 버튼
 const FreeButton = styled.button`
-    font-family: JSArirangHON;
+    font-family: JsaHON;
     position: relative;
     border: none;
     min-width: 200px;
