@@ -8,7 +8,7 @@ import styled from "styled-components";
 import {signup, checkNickname, checkId} from '../UserSlice';
 
 //이미지 파일 import
-import homebase from "../../../assets/images/homebase.png"
+import dark_base from "../../../assets/images/dark_base.PNG"
 import userform_img from "../../../assets/images/userform_img.png"
 import signup_img from "../../../assets/images/signup_img.png"
 
@@ -23,7 +23,7 @@ const Container = styled.div`
     background: center;
     background-color: black;
     background-repeat: no-repeat;
-    background-image: url(${homebase});
+    background-image: url(${dark_base});
     background-size: cover;
     overflow: scroll;`
 
@@ -46,6 +46,10 @@ const SingUpLogo = styled.img`
   margin-bottom: 10px;
   text-align: top;`
 
+//커스텀 버튼 
+const StyledButton = styled.button`
+    width: 50%;
+`
 function Signin() {
 
     const dispatch = useDispatch();
@@ -183,6 +187,26 @@ function Signin() {
             setIsPhonenumber(true)
         }
     }
+    
+    //아이디 중복값 인증
+    const onCheckId = (event) => {
+        //입력값 남겨두는 함수
+    event.preventDefault()
+
+    console.log(user.id)
+        dispatch(checkId(user.id))
+        .then((response) => {
+            if(response.payload.status === 200){
+                history("/signin", {replace: true})
+                alert("사용가능한 ID입니다.")
+            }else{
+                alert("사용 불가능한 ID입니다.")
+            }
+        })
+        .catch((err) => {
+            console.log("idcheck_err",err);
+        })
+    }
 
     //닉네임 중복값 인증
     const onCheckNickname = (event) => {
@@ -191,31 +215,25 @@ function Signin() {
 
     console.log(user.nickname)
         dispatch(checkNickname(user.nickname))
-        .then(() => {
-            history("/signin", {replace: true})
+        .then((response) => {
+            if(response.payload.status === 200){
+                history("/signin", {replace: true})
+                alert("사용가능한 닉네임입니다.")
+            }else{
+                alert("사용 불가능한 닉네임입니다.")
+            }
         })
         .catch((err) => {
-            console.log(err);
+            console.log("nicknamecheck_err",err);
         })
-        alert("사용가능한 닉네임입니다.")
     }
 
-    //닉네임 중복값 인증
-    const onCheckId = (event) => {
-        //입력값 남겨두는 함수
-    event.preventDefault()
+    //메인으로 가는 함수
+    const onGoMain = (event) => {
+        event.preventDefault();
+        history("/");
 
-    console.log(user.id)
-        dispatch(checkId(user.id))
-        .then(() => {
-            history("/signin", {replace: true})
-        })
-        .catch((err) => {
-            console.log(err);
-        })
-        alert("사용가능한 ID입니다.")
     }
-
     //가입버튼 눌렀을 때 호출되는 함수
     const onSubmit = (event) => {
     
@@ -228,23 +246,29 @@ function Signin() {
     }else{
         dispatch(signup(user))
     
-        .then(() => {
-            history("/login", {replace: true})
-          })
-          .catch((err) => {
-            
-            if (err.status === 400) {
-              toast.error('😥 입력하신 정보를 다시 확인해주세요');
-            } else if (err.status === 409) {
-              toast.error('😥 이미 로그인된 사용자입니다');
-            } else if (err.status === 401) {
-              toast.error('😥 아이디와 비밀번호를 다시 확인해주세요');
-              history.push('/login');
-            } else if (err.status === 500) {
-              history.push('/error');
+        .then((response) => {
+            console.log("signin_response",response)
+            if(response.payload.status === 200){
+                history("/login", {replace: true})
+                alert("회원가입 완료.")
+            }else{
+                history("/signin", {replace:true})
+                alert("중복검사를 완료 후, 다시 시도해주세요.")
             }
-          });
-        alert('회원가입 완료');
+            
+          })
+        //   .catch((err) => {
+        //     if (err.status === 400) {
+        //       toast.error('😥 입력하신 정보를 다시 확인해주세요');
+        //     } else if (err.status === 409) {
+        //       toast.error('😥 이미 로그인된 사용자입니다');
+        //     } else if (err.status === 401) {
+        //       toast.error('😥 아이디와 비밀번호를 다시 확인해주세요');
+        //       history.push('/login');
+        //     } else if (err.status === 500) {
+        //       history.push('/error');
+        //     }
+        //   });
         console.log(user);
     }
     
@@ -254,7 +278,7 @@ function Signin() {
   return (
     <Container >
 
-      <Form style={{ width:"50%", margin:"0 auto", top:"1em", position:"relative",padding:"1em", backgroundImage:`url(${userform_img})`, backgroundSize:"cover"}}>
+      <Form style={{ width:"40%", margin:"0 auto", top:"1em", position:"relative",padding:"1em", backgroundImage:`url(${userform_img})`, backgroundSize:"cover"}}>
         
         <LogoWrapper>
           <SingUpLogo src={signup_img}></SingUpLogo>
@@ -264,7 +288,8 @@ function Signin() {
             <Form.Label style={{marginLeft: "10%"}}>아이디</Form.Label>
             <FormGroup style={{display: "flex"}}>
                 <Form.Control style={{width: "60%", textalign:"left", marginLeft:"10%"}} name='id' type='id' placeholder='아이디' value={id} onChange={onChangeId}/>
-                <Button style={{marginLeft:"1em"}} onClick={onCheckId} variant='primary'>중복검사</Button>
+                {id.length === 0 ? <Button style={{marginLeft:"1em"}} onClick={onCheckId} disabled variant='secondary'>중복검사</Button>
+                 : <Button style={{marginLeft:"1em"}} onClick={onCheckId} variant='primary'>중복검사</Button>}
             </FormGroup>
             <FormGroup style={{marginLeft:"10%", marginTop:"3px"}}>
                 {id.length > 0 && <span className={`message ${isId ? 'success' : 'error'}`}>{idMessage}</span>}
@@ -280,7 +305,8 @@ function Signin() {
             <Form.Label style={{marginLeft: "10%"}}>별호</Form.Label>
             <FormGroup style={{display: "flex"}}>
                 <Form.Control style={{width: "60%", textalign:"left", marginLeft:"10%"}} name="nickname" type="text" placeholder="별호" value={nickname} onChange={onChangeNickname} />
-                <Button style={{marginLeft:"1em"}} onClick={onCheckNickname} variant='primary'>중복검사</Button>
+                {nickname.length === 0 ? <Button style={{marginLeft:"1em"}} onClick={onCheckNickname} disabled variant='secondary'>중복검사</Button>
+                : <Button style={{marginLeft:"1em"}} onClick={onCheckNickname} variant='primary'>중복검사</Button>}
             </FormGroup>
             <FormGroup style={{marginLeft:"10%", marginTop:"3px"}}>
                 {nickname.length > 0 && <span className={`message ${isNickname ? 'success' : 'error'}`}>{nicknameMessage}</span>}
@@ -311,9 +337,9 @@ function Signin() {
             </FormGroup>
         </FormGroup>
 
-        <FormGroup style={{width:"60%", display:"flex", margin:"0 auto",justifyContent:'space-between'}} >
-          <Button type="submit" onClick={onSubmit} variant="primary">계정 생성하기</Button>
-          <Link to="/"><Button variant="primary">메인으로</Button></Link>
+        <FormGroup style={{width:"80%", display:"flex", margin:"0 auto"}} >
+          <Button style={{marginBottom: "1em", width: "50%", backgroundColor:"#8C4D25", border:"0"}} type="submit" onClick={onSubmit} variant="primary">계정 생성하기</Button>
+          <Button style={{marginBottom: "1em", width: "50%", backgroundColor:"grey", marginLeft:"1em"}} variant="secondary" onClick={onGoMain}>메인으로</Button>
         </FormGroup>
 
       </Form>

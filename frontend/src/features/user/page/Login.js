@@ -8,7 +8,7 @@ import styled from "styled-components";
 
 
 //이미지 파일
-import homebase from "../../../assets/images/homebase.png"
+import darkbase from "../../../assets/images/dark_base.PNG"
 import userform_img from "../../../assets/images/userform_img.png"
 import login_img from "../../../assets/images/login_img.png"
 
@@ -24,7 +24,7 @@ const Container = styled.div`
     background: center;
     background-color: black;
     background-repeat: no-repeat;
-    background-image: url(${homebase});
+    background-image: url(${darkbase});
     background-size: cover;`
 
 //로고 영역
@@ -93,8 +93,17 @@ function Login() {
 
           dispatch(loadUser(data.userId))
             .then((response) => {
-              console.log("rrrr",response.payload);
-              window.localStorage.setItem('login_user', JSON.stringify(response.payload));
+
+              const response_user = response.payload;
+              const login_user = {
+                id: response_user.id,
+                nickname: response_user.nickname,
+                name: response_user.name,
+                phonenumber: response_user.phonenumber,
+                description: response_user.description,
+              }
+
+              window.localStorage.setItem('login_user',JSON.stringify(login_user));
             })
 
           history('/');
@@ -113,7 +122,7 @@ function Login() {
 
   return (
     <Container>
-      <Form style={{width: "50%", textalign:"center",padding:"1em", backgroundImage:`url(${userform_img})`, backgroundSize:"cover", margin: "0 auto", position:"relative", top:"15%"}}>
+      <Form style={{width: "50%", textalign:"center",padding:"0.5em", backgroundImage:`url(${userform_img})`, backgroundSize:"cover", margin: "0 auto", position:"relative", top:"15%"}}>
         <LogoWrapper>
           <LoginLogo src={login_img}></LoginLogo>
         </LogoWrapper>
@@ -127,8 +136,8 @@ function Login() {
             {userId.length > 0 && <span style={{animation:"motion 0.3s linear 0s infinite alternate", color:"red", marginLeft:"25%", marginTop:"1em"}}>{errorMessage}</span>}
         </FormGroup>
         <FormGroup style={{marginTop: "3em", marginBottom: "3em"}}>
-            <Button style={{marginBottom: "1em", marginLeft: "25%", width: "50%", backgroundColor:"#8C4D25"}} type="submit" onClick={onSubmit}>로그인</Button>
-            <StyledLink to={"/signin"}><Button style={{marginBottom: "1em", marginLeft: "25%", width: "50%", backgroundColor:"#CC8960"}}>회원가입</Button></StyledLink>
+            <Button style={{marginBottom: "1em", marginLeft: "25%", width: "50%", backgroundColor:"#8C4D25", border:"0"}} type="submit" onClick={onSubmit}>로그인</Button>
+            <StyledLink to={"/signin"}><Button style={{marginBottom: "1em", marginLeft: "25%", width: "50%", backgroundColor:"#CC8960", border:"0"}}>회원가입</Button></StyledLink>
         </FormGroup>
       </Form>
     </Container>

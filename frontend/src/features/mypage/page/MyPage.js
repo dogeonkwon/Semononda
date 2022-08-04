@@ -4,7 +4,6 @@ import 'bootstrap/dist/css/bootstrap.css';
 import { useDispatch, useSelector } from 'react-redux';
 import {Link, useNavigate}from 'react-router-dom'
 import styled from "styled-components";
-import {handleShow} from "./Example"
 
 //이미지 파일
 import infobase from "../../../assets/images/dark_base.PNG"
@@ -18,7 +17,7 @@ const Container = styled.div`
     display: block;
     position: relative;
     width: 100%;  
-    height: 100%;
+    height: 100vh;
     max-width: 100%;
     max-height: 100%;
     background: center;
@@ -61,7 +60,6 @@ const TitleLabel = styled.label`
 `
 //프로필 이미지 영역
 const ProfileImgArea = styled.div`
-  background-color: yellow;
   width: 30%;
   height: auto;
 `
@@ -72,7 +70,6 @@ const ProfileImg = styled.img`
 `
 //프로필 정보 영역
 const ProfileInfoArea = styled.div`
-  background-color: red;
   width: 70%;
   padding: 1em;
 `
@@ -100,23 +97,50 @@ function MyPage() {
   let user_info = useSelector(state => state.user.user);
   console.log("user_info",user_info)
 
+  //로컬스토리지 
+  let loginInfoString = window.localStorage.getItem("login_user");
+  let loginInfo = JSON.parse(loginInfoString);
+
+  //전화번호 파싱함수
+  function parsePhonenumber(phonenumber){
+    let resultNumber = [];
+    let first = "";
+    let second = "";
+    let third = "";
+    if(phonenumber.length === 11){
+        first = phonenumber.substring(0,3);
+        second = phonenumber.substring(3,7);
+        third = phonenumber.substring(7,11);      
+    }
+    resultNumber.push(first);
+    resultNumber.push(second);
+    resultNumber.push(third);
+
+    console.log(phonenumber);
+    console.log(resultNumber);
+    return resultNumber.filter((val) => val).join("-");
+  }
+
+  //파싱된 전화번호
+  const parsedPhonenumber = parsePhonenumber(loginInfo.phonenumber);
+
   const history = useNavigate();
   
   //로그인 버튼 누르면 실행되는 함수
   const onSubmit = (e) => {
     e.preventDefault();
-    handleShow();
+    alert("준비중입니다.")
   }
 
   //회원정보 수정 버튼 누르면 실행되는 함수
   const onEditPage = (e) => {
     e.preventDefault();
-    history("/editme");
+    history("/editprofile");
   }
 
   return (
     <Container>
-      <Form style={{width: "50%", heigth:"100%", textalign:"center",padding:"1em", backgroundImage:`url(${userform_img})`, backgroundSize:"cover", margin: "0 auto", position:"relative", top:"4%"}}>
+      <Form style={{width: "50%", heigth:"fit-content", textalign:"center",padding:"1em", backgroundImage:`url(${userform_img})`, backgroundSize:"cover", margin: "0 auto", position:"relative", top:"4%"}}>
         <LogoWrapper>
           <LoginLogo src={mypage_img}></LoginLogo>
         </LogoWrapper>
@@ -128,33 +152,33 @@ function MyPage() {
 
         <FormGroup className='mb-3'>
             <TitleLabel> 아이디</TitleLabel>
-            <FormLabel style={{width: "100%", textalign:"center"}}>한산</FormLabel>
+            <FormLabel style={{width: "100%", textalign:"center"}}>{loginInfo.id}</FormLabel>
         </FormGroup>
         <FormGroup className='mb-3'>
           <ProfileNicknameNameArea>
             <ProfileDetialInfo>
             <TitleLabel> 별호</TitleLabel>
-            <FormLabel style={{width: "100%", textalign:"center"}}>충무공</FormLabel>
+            <FormLabel style={{width: "100%", textalign:"center"}}>{loginInfo.nickname}</FormLabel>
             </ProfileDetialInfo>
             <ProfileDetialInfo>
             <TitleLabel> 이름</TitleLabel>
-            <FormLabel style={{width: "100%", textalign:"center"}}>이순신</FormLabel>
+            <FormLabel style={{width: "100%", textalign:"center"}}>{loginInfo.name}</FormLabel>
             </ProfileDetialInfo>
           </ProfileNicknameNameArea>
         </FormGroup>
         <FormGroup className='mb-3'>
             <TitleLabel> 전화번호</TitleLabel>
-            <FormLabel style={{width: "100%", height:"fit-content", textalign:"center"}}>010-1234-1234</FormLabel>
+            <FormLabel style={{width: "100%", height:"fit-content", textalign:"center"}}>{parsedPhonenumber}</FormLabel>
         </FormGroup>
         <FormGroup>
             <TitleLabel> 한줄 소개 </TitleLabel>
-            <FormLabel style={{width: "100%", height:"fit-content", textalign:"center"}}>마! 내가 이순신이다</FormLabel>
+            <FormLabel style={{width: "100%", height:"fit-content", textalign:"center"}}>{loginInfo.description}</FormLabel>
         </FormGroup>
         </ProfileInfoArea>
         </IdBox>
         <FormGroup style={{marginTop: "3em", marginBottom: "3em"}}>
-            <StyledLink to={"/editme"}><Button style={{marginBottom: "1em", width: "100%", backgroundColor:"#8C4D25"}} onClick={onEditPage}>회원정보 수정</Button></StyledLink>
-            <StyledLink to={"/signin"}><Button style={{marginBottom: "1em", width: "100%", backgroundColor:"#CC8960"}} onClick={onSubmit}>비밀번호 변경</Button></StyledLink>
+            <Button style={{marginBottom: "3em", width: "100%", backgroundColor:"#8C4D25", border:"0"}} onClick={onEditPage}>회원정보 수정</Button>
+            <StyledLink to={"/signin"}><Button style={{marginBottom: "1em", width: "100%", backgroundColor:"#CC8960",border:"0"}} onClick={onSubmit}>비밀번호 변경</Button></StyledLink>
         </FormGroup>
         
       </Form>

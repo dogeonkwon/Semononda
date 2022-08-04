@@ -1,10 +1,10 @@
 import React from 'react'
-import {Button, Form, FormGroup, FormLabel} from 'react-bootstrap';
+import {Button, Form, FormGroup} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.css';
-import { useDispatch, useSelector } from 'react-redux';
-import {Link, useNavigate}from 'react-router-dom'
+import { useDispatch } from 'react-redux';
+import { useNavigate }from 'react-router-dom'
 import styled from "styled-components";
-import {handleShow} from "./Example"
+import {modifyUserInfo} from "../../user/UserSlice";
 
 //이미지 파일
 import infobase from "../../../assets/images/dark_base.PNG"
@@ -18,7 +18,7 @@ const Container = styled.div`
     display: block;
     position: relative;
     width: 100%;  
-    height: 100%;
+    height: 100vh;
     max-width: 100%;
     max-height: 100%;
     background: center;
@@ -61,7 +61,6 @@ const TitleLabel = styled.label`
 `
 //프로필 이미지 영역
 const ProfileImgArea = styled.div`
-  background-color: yellow;
   width: 30%;
   height: auto;
 `
@@ -72,7 +71,6 @@ const ProfileImg = styled.img`
 `
 //프로필 정보 영역
 const ProfileInfoArea = styled.div`
-  background-color: red;
   width: 70%;
   padding: 1em;
 `
@@ -86,28 +84,47 @@ const ProfileDetialInfo = styled.div`
   width: 50%;
   display: block;
 `
-//링크
-const StyledLink = styled(Link)`
-  text-decoration: none;
-
-  &:focus, &:hover, &:visited, &:link, &:active {
-    text-decoration: none;
-}
-`
 
 function MyPage() {
   
-  let user_info = useSelector(state => state.user.user);
-  console.log("user_info",user_info)
-
+  //로컬스토리지 값 파싱해서 가져오기
+  let loginInfoString = window.localStorage.getItem("login_user");
+  let loginInfo = JSON.parse(loginInfoString);
+  
   const dispatch = useDispatch();
   const history = useNavigate();
   
-  //로그인 버튼 누르면 실행되는 함수
-  const onSubmit = (e) => {
+   
+  //취소 버튼 누르면 실행되는 함수
+  const onCancle = (e) => {
     e.preventDefault();
-    handleShow();
-  }
+    history("/profile");
+    }
+
+  const onEdit = (e) => {
+    e.preventDefault();
+
+    //  마이페이지 수정 내역을 반영하기위해 만드는 유저 객체
+    const user_info = {
+     id : document.getElementById("input_id").value,
+     nickname : document.getElementById("input_nickname").value,
+     name : document.getElementById("input_name").value,
+     phonenumber : document.getElementById("input_phonenumber").value,
+     description : document.getElementById("input_description").value,
+    }
+
+    //axios를 통한 DB수정
+    dispatch(modifyUserInfo(user_info))
+        .then(() => {
+            console.log(user_info);
+            window.localStorage.setItem("login_user",JSON.stringify(user_info));
+            history("/profile");
+        })
+        .catch((err) => {
+            console.log(err);
+        })
+
+    }
 
   return (
     <Container>
@@ -123,35 +140,35 @@ function MyPage() {
 
         <FormGroup className='mb-3'>
             <TitleLabel> 아이디</TitleLabel>
-            <Form.Control style={{width: "100%", textalign:"center"}}>한산</Form.Control>
+            <Form.Control id="input_id" style={{width: "100%", textalign:"center" ,backgroundColor:"grey"}} defaultValue={loginInfo.id} disabled></Form.Control>
         </FormGroup>
         <FormGroup className='mb-3'>
           <ProfileNicknameNameArea>
             <ProfileDetialInfo>
             <TitleLabel> 별호</TitleLabel>
-            <Form.Control style={{width: "100%", textalign:"center"}}>충무공</Form.Control>
+            <Form.Control id="input_nickname" style={{width: "100%", textalign:"center" ,backgroundColor:"grey"}} defaultValue={loginInfo.nickname} disabled></Form.Control>
             </ProfileDetialInfo>
-            <ProfileDetialInfo>
+            <ProfileDetialInfo style={{marginLeft:"1em"}}>
             <TitleLabel> 이름</TitleLabel>
-            <Form.Control style={{width: "100%", textalign:"center"}}>이순신</Form.Control>
+            <Form.Control id="input_name" style={{width: "100%", textalign:"center"}} defaultValue={loginInfo.name}></Form.Control>
             </ProfileDetialInfo>
           </ProfileNicknameNameArea>
         </FormGroup>
         <FormGroup className='mb-3'>
             <TitleLabel> 전화번호</TitleLabel>
-            <Form.Control style={{width: "100%", height:"fit-content", textalign:"center"}}>010-1234-1234</Form.Control>
+            <Form.Control id="input_phonenumber" style={{width: "100%", height:"fit-content", textalign:"center"}} defaultValue={loginInfo.phonenumber}></Form.Control>
         </FormGroup>
         <FormGroup>
             <TitleLabel> 한줄 소개 </TitleLabel>
-            <Form.Control style={{width: "100%", height:"fit-content", textalign:"center"}}>마! 내가 이순신이다</Form.Control>
+            <Form.Control id="input_description" style={{width: "100%", height:"fit-content", textalign:"center"}} defaultValue={loginInfo.description}></Form.Control>
         </FormGroup>
         </ProfileInfoArea>
         </IdBox>
         <FormGroup style={{marginTop: "3em", marginBottom: "3em"}}>
-            <Button style={{marginBottom: "1em", width: "100%", backgroundColor:"#8C4D25"}} type="submit" >회원정보 수정</Button>
-            <StyledLink to={"/signin"}><Button style={{marginBottom: "1em", width: "100%", backgroundColor:"#CC8960"}} onClick={onSubmit}>비밀번호 변경</Button></StyledLink>
+            <Button style={{marginBottom: "1em", width: "100%", backgroundColor:"#8C4D25", border:"0"}} onClick={onEdit} >수정하기</Button>
+            <Button style={{marginBottom: "1em", width: "100%", backgroundColor:"grey", border:"0"}} onClick={onCancle}>취소</Button>
         </FormGroup>
-        
+
       </Form>
     </Container>
     );

@@ -17,6 +17,7 @@ import { getToken, deleteToken } from '../../common/api/JWT-common';
 import { NavDropdown } from "react-bootstrap";
 
 function NavBar() {
+
   const history = useNavigate();
   
   const token = getToken();
@@ -35,7 +36,7 @@ function NavBar() {
   }
 
   const myPageHandler = () => {
-    history('/me');
+    history('/profile');
   }
   return (
     <>
