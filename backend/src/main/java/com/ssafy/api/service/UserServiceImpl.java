@@ -101,4 +101,32 @@ public class UserServiceImpl implements UserService {
 	public User getUserByUid(int uid) {
 		return userRepository.findByUid(uid);
 	}
+
+
+	/**
+	  * @Method Name : updateUser
+	  * @작성일 : 2022. 8. 4
+	  * @작성자 : 김동우
+	  * @변경이력 : 
+	
+	  * @Method 설명 :
+	  * @param userRegisterInfo
+	  * @return
+	  */
+	
+	@Override
+	public User updateUser(User user, UserRegisterPostReq userRegisterInfo) {
+		user.setName(userRegisterInfo.getName());
+		user.setPhonenumber(userRegisterInfo.getPhonenumber());
+		user.setDescription(userRegisterInfo.getDescription());
+		return userRepository.save(user);
+		
+	}
+	
+	@Override
+	public User updateUserPassword(User user, UserRegisterPostReq userRegisterInfo) {
+		user.setPassword(userRegisterInfo.getNewPassword());
+		return userRepository.save(user);
+	}
+	
 }
