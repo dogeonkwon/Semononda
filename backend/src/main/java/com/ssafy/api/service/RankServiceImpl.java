@@ -19,14 +19,12 @@ public class RankServiceImpl implements RankService {
 
 	@Override
 	public List<User> findUserListAll() {
-		System.err.println("여기까지 오는가");
 		return rankRepositorySupport.findUserListAll();
 	}
 
 	@Override
 	public List<User> findUserListOfWeek() {
-		// TODO Auto-generated method stub
-		return null;
+		return rankRepositorySupport.findUserListOfWeek();
 	}
 
 }

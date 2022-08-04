@@ -16,9 +16,7 @@ public class RankRepositorySupport {
 	QUser quser = QUser.user;
 	
 	public  List<User> findUserListAll() {
-		System.err.println("여기는????????");
-		List<User> users = jpaQueryFactory.select(quser).from(quser).fetch();
-		System.err.println("쿼리가 이상한가????????");
+		List<User> users = jpaQueryFactory.select(quser).from(quser).orderBy(quser.rankpoint.desc()).fetch();
 		return users;
 
 	}

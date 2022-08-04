@@ -24,14 +24,12 @@ public class RankController {
 	@Autowired
 	RankService rankService;
 	
-	@GetMapping("")
+	@GetMapping("/all")
 	@ApiOperation(value = "rank 전체 보기", notes = "rank 전체 보기")
 	@ApiResponses({ @ApiResponse(code = 200, message = "성공"), @ApiResponse(code = 401, message = "인증 실패"),
 			@ApiResponse(code = 404, message = "rank 없음"), @ApiResponse(code = 500, message = "서버 오류") })
 	public ResponseEntity<List<User>> findUserListAll() {
-		System.err.println("컨트롤러안1");
 		List<User> users = rankService.findUserListAll();
-		System.err.println("컨트롤러안");
 		if (users == null) {
 			return new ResponseEntity<List<User>>(users, HttpStatus.BAD_REQUEST);
 		} else {
