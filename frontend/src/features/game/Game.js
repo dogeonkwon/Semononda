@@ -4,7 +4,7 @@ import exit from '../../assets/images/exit.png'
 import ready from '../../assets/images/ready.png'
 import ready_ok from '../../assets/images/ready_ok.png'
 import start from '../../assets/images/start.png'
-import axios from 'axios';
+import axios1 from 'axios';
 import { OpenVidu } from 'openvidu-browser';
 import React, { Component, createRef } from 'react';
 import UserVideoComponent from './UserVideoComponent'
@@ -60,6 +60,7 @@ class Game extends Component {
     this.sendmessageByEnter = this.sendmessageByEnter.bind(this);
     this.handleChatMessageChange = this.handleChatMessageChange.bind(this);
     this.readyClick = this.readyClick.bind(this);
+
   }
 
   componentDidMount() {
@@ -623,21 +624,29 @@ class Game extends Component {
     })
   }
 
-  choiceA() {
+  async choiceA() {
     const mySession = this.state.session
     
     mySession.signal({
       to:[],
       type:'choice-a'
     })
+    await mySession.signal({
+      to:[],
+      type:'countcoin',
+    })
   }
 
-  choiceB() {
+  async choiceB() {
     const mySession = this.state.session
     
     mySession.signal({
       to:[],
       type:'choice-b'
+    })
+    await mySession.signal({
+      to:[],
+      type:'countcoin',
     })
   }
 
@@ -647,8 +656,6 @@ class Game extends Component {
       to: [],
       type:'countcoin',
     })
-
-    console.log(this.state.kingList)
   }
 
   render(){
@@ -756,7 +763,7 @@ class Game extends Component {
             ):(this.state.isReady === false ?
               <img className="ready-icon" alt="ready" src={ready} onClick={() => this.readyClick()}/>
               :<img className="ready-icon" alt="ready" src={ready_ok} onClick={() => this.readyClick()}/>)}
-            <img className="icon" alt="invite" src={invite} onClick={() => this.countCoin()}/>
+            <img className="icon" alt="invite" src={invite} onClick={() => console.log(this.state.kingList)}/>
             <img className="icon" alt="exit" src={exit} onClick={() => this.updateHost()}/>
           </div>
         </div>
@@ -771,7 +778,7 @@ class Game extends Component {
   createSession(sessionId) {
       return new Promise((resolve, reject) => {
           var data = JSON.stringify({ customSessionId: sessionId });
-          axios
+          axios1
               .post(OPENVIDU_SERVER_URL + '/openvidu/api/sessions', data, {
                   headers: {
                       Authorization: 'Basic ' + btoa('OPENVIDUAPP:' + OPENVIDU_SERVER_SECRET),
@@ -812,7 +819,7 @@ class Game extends Component {
   createToken(sessionId) {
       return new Promise((resolve, reject) => {
           var data = {};
-          axios
+          axios1
               .post(OPENVIDU_SERVER_URL + "/openvidu/api/sessions/" + sessionId + "/connection", data, {
                   headers: {
                       Authorization: 'Basic ' + btoa('OPENVIDUAPP:' + OPENVIDU_SERVER_SECRET),
