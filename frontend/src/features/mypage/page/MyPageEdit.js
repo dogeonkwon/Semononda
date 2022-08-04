@@ -100,18 +100,13 @@ function MyPage() {
   let user_info = useSelector(state => state.user.user);
   console.log("user_info",user_info)
 
+  const dispatch = useDispatch();
   const history = useNavigate();
   
   //로그인 버튼 누르면 실행되는 함수
   const onSubmit = (e) => {
     e.preventDefault();
     handleShow();
-  }
-
-  //회원정보 수정 버튼 누르면 실행되는 함수
-  const onEditPage = (e) => {
-    e.preventDefault();
-    history("/editme");
   }
 
   return (
@@ -128,32 +123,32 @@ function MyPage() {
 
         <FormGroup className='mb-3'>
             <TitleLabel> 아이디</TitleLabel>
-            <FormLabel style={{width: "100%", textalign:"center"}}>한산</FormLabel>
+            <Form.Control style={{width: "100%", textalign:"center"}}>한산</Form.Control>
         </FormGroup>
         <FormGroup className='mb-3'>
           <ProfileNicknameNameArea>
             <ProfileDetialInfo>
             <TitleLabel> 별호</TitleLabel>
-            <FormLabel style={{width: "100%", textalign:"center"}}>충무공</FormLabel>
+            <Form.Control style={{width: "100%", textalign:"center"}}>충무공</Form.Control>
             </ProfileDetialInfo>
             <ProfileDetialInfo>
             <TitleLabel> 이름</TitleLabel>
-            <FormLabel style={{width: "100%", textalign:"center"}}>이순신</FormLabel>
+            <Form.Control style={{width: "100%", textalign:"center"}}>이순신</Form.Control>
             </ProfileDetialInfo>
           </ProfileNicknameNameArea>
         </FormGroup>
         <FormGroup className='mb-3'>
             <TitleLabel> 전화번호</TitleLabel>
-            <FormLabel style={{width: "100%", height:"fit-content", textalign:"center"}}>010-1234-1234</FormLabel>
+            <Form.Control style={{width: "100%", height:"fit-content", textalign:"center"}}>010-1234-1234</Form.Control>
         </FormGroup>
         <FormGroup>
             <TitleLabel> 한줄 소개 </TitleLabel>
-            <FormLabel style={{width: "100%", height:"fit-content", textalign:"center"}}>마! 내가 이순신이다</FormLabel>
+            <Form.Control style={{width: "100%", height:"fit-content", textalign:"center"}}>마! 내가 이순신이다</Form.Control>
         </FormGroup>
         </ProfileInfoArea>
         </IdBox>
         <FormGroup style={{marginTop: "3em", marginBottom: "3em"}}>
-            <StyledLink to={"/editme"}><Button style={{marginBottom: "1em", width: "100%", backgroundColor:"#8C4D25"}} onClick={onEditPage}>회원정보 수정</Button></StyledLink>
+            <Button style={{marginBottom: "1em", width: "100%", backgroundColor:"#8C4D25"}} type="submit" >회원정보 수정</Button>
             <StyledLink to={"/signin"}><Button style={{marginBottom: "1em", width: "100%", backgroundColor:"#CC8960"}} onClick={onSubmit}>비밀번호 변경</Button></StyledLink>
         </FormGroup>
         
