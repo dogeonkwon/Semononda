@@ -24,10 +24,10 @@ public class RankResponse {
 	@ApiModelProperty(name = "유저 랭크포인트", example = "100")
 	int rankpoint;
 
-	@ApiModelProperty(name = "유저 이미지 주소", example = "9")
+	@ApiModelProperty(name = "게임 우승 횟수", example = "9")
 	int numberOfWins;
 
-	@ApiModelProperty(name = "유저 한줄소개(100자 이내)", example = "4")
+	@ApiModelProperty(name = "게임에서 진 횟수", example = "4")
 	int numberOfLoses;
 
 	public static RankResponse of(Integer statusCode, String message, User user) {
