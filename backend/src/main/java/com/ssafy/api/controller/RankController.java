@@ -24,7 +24,7 @@ public class RankController {
 	@Autowired
 	RankService rankService;
 	
-	@GetMapping("/all")
+	@GetMapping("/total")
 	@ApiOperation(value = "rank 전체 보기", notes = "rank 전체 보기")
 	@ApiResponses({ @ApiResponse(code = 200, message = "성공"), @ApiResponse(code = 401, message = "인증 실패"),
 			@ApiResponse(code = 404, message = "rank 없음"), @ApiResponse(code = 500, message = "서버 오류") })
@@ -37,4 +37,16 @@ public class RankController {
 		}
 	}
 	
+	@GetMapping("/week")
+	@ApiOperation(value = "rank 전체 보기", notes = "rank 전체 보기")
+	@ApiResponses({ @ApiResponse(code = 200, message = "성공"), @ApiResponse(code = 401, message = "인증 실패"),
+			@ApiResponse(code = 404, message = "rank 없음"), @ApiResponse(code = 500, message = "서버 오류") })
+	public ResponseEntity<List<User>> findUserListOfWeek() {
+		List<User> users = rankService.findUserListOfWeek();
+		if (users == null) {
+			return new ResponseEntity<List<User>>(users, HttpStatus.BAD_REQUEST);
+		} else {
+			return new ResponseEntity<List<User>>(users, HttpStatus.OK);
+		}
+	}
 }
