@@ -35,8 +35,10 @@ public class RoomRepositorySupport {
 	}
 	
 	public List<GameConferenceRoom> findNormalRoomlist() {
+		System.err.println("여기는????????");
 		List<GameConferenceRoom> rooms = jpaQueryFactory.select(qRoom).from(qRoom)
 				.where(qRoom.normal.eq(true)).fetch();
+		System.err.println("쿼리가 이상한가????????");
 		return rooms;
 	}
 	

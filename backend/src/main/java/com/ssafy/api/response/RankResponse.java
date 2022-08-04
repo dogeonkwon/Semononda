@@ -9,8 +9,12 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@ApiModel("RankUserListResponse")
-public class RankUserListResponse {
+@ApiModel("RankResponse")
+public class RankResponse {
+	
+	//얘는 필요없는듯 삭제?
+	
+	
 	@ApiModelProperty(name = "유저 ID", example = "ssafy")
 	String id;
 
@@ -26,11 +30,11 @@ public class RankUserListResponse {
 	@ApiModelProperty(name = "유저 한줄소개(100자 이내)", example = "4")
 	int numberOfLoses;
 
-	public static RankUserListResponse of(Integer statusCode, String message, User user) {
+	public static RankResponse of(Integer statusCode, String message, User user) {
 		if (user == null) {
 			return null;
 		} else {
-			RankUserListResponse res = new RankUserListResponse();
+			RankResponse res = new RankResponse();
 			res.setId(user.getId());
 			res.setNickname(user.getNickname());
 			res.setRankpoint(user.getRankpoint());

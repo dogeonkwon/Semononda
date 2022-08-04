@@ -61,6 +61,7 @@ public class RoomServiceImpl implements RoomService {
 
 	@Override
 	public List<GameConferenceRoom> findNormalRoomlist() {
+		System.err.println("여기까지 오는가");
 		return roomRepositorySupport.findNormalRoomlist();
 	}
 	
