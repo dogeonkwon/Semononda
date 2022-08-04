@@ -48,11 +48,19 @@ public class User extends BaseEntity{
 	@Column(name="number_of_loses")
     int numberOfLoses;
     
-//    @OneToMany(mappedBy="user_uid")
-//    private List<Board> boardList = new ArrayList<Board>();
-//    
-//    public void add(Board board) {
-//    	this.boardList.add(board);
-//    }
+    @Column(name="number_of_wins")
+    int numberOfWins;
+    
+    @Column(name="number_of_loses")
+    int numberOfLoses;
+    
+    String authority;
+    
+    @OneToMany(mappedBy="userUid")
+    private List<Board> boardList = new ArrayList<Board>();
+    
+    public void add(Board board) {
+    	this.boardList.add(board);
+    }
     
 }
