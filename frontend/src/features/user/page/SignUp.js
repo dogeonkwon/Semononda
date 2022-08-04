@@ -2,8 +2,7 @@ import React, {useState} from 'react'
 import {Button, Form, FormGroup} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.css';
 import { useDispatch } from 'react-redux';
-import {Link, useNavigate}from 'react-router-dom'
-import { toast } from 'react-toastify';
+import { useNavigate}from 'react-router-dom'
 import styled from "styled-components";
 import {signup, checkNickname, checkId} from '../UserSlice';
 
@@ -46,10 +45,6 @@ const SingUpLogo = styled.img`
   margin-bottom: 10px;
   text-align: top;`
 
-//커스텀 버튼 
-const StyledButton = styled.button`
-    width: 50%;
-`
 function Signin() {
 
     const dispatch = useDispatch();

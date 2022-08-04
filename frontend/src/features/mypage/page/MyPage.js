@@ -1,15 +1,18 @@
-import React from 'react'
+import React,{useCallback, useState} from 'react'
 import {Button, Form, FormGroup, FormLabel} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.css';
-import { useDispatch, useSelector } from 'react-redux';
-import {Link, useNavigate}from 'react-router-dom'
+import { useSelector } from 'react-redux';
+import {useNavigate}from 'react-router-dom'
 import styled from "styled-components";
-
+import '../../../common/modal/Modal.css'
 //이미지 파일
-import infobase from "../../../assets/images/dark_base.PNG"
-import userform_img from "../../../assets/images/userform_img.png"
-import mypage_img from "../../../assets/images/mypage_img.png"
-import human from "../../../assets/images/human.png"
+import infobase from "../../../assets/images/dark_base.PNG";
+import userform_img from "../../../assets/images/userform_img.png";
+import mypage_img from "../../../assets/images/mypage_img.png";
+import human from "../../../assets/images/human.png";
+
+//컴포넌트
+import Modal from "../../../common/modal/Modal";
 
 //메인페이지 배경화면 Container
 
@@ -83,20 +86,34 @@ const ProfileDetialInfo = styled.div`
   width: 50%;
   display: block;
 `
-//링크
-const StyledLink = styled(Link)`
-  text-decoration: none;
-
-  &:focus, &:hover, &:visited, &:link, &:active {
-    text-decoration: none;
-}
-`
 
 function MyPage() {
   
   let user_info = useSelector(state => state.user.user);
   console.log("user_info",user_info)
 
+  //모달)모달관련 state
+  const [isOpenModal, setOpenModal] = useState(false);
+  const [password, setPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [checkNewPassword, setCheckNewPassword] = useState("");
+  
+  //모달)open 동작
+  const onClickToggleModal = useCallback(() => {
+    setOpenModal(!isOpenModal);
+  },[isOpenModal]);
+
+  //
+  //모달) 비밀번호 변경 누르면 실행하는 동작
+  const onChangePassword = (e) => {
+    e.preventDefault();
+    alert("준비중입니다.")
+  }
+  //모달) 닫기 버튼 누르면 실행하는 동작
+  const onCloseModal = (e) => {
+    e.preventDefault();
+    setOpenModal(false);
+  }
   //로컬스토리지 
   let loginInfoString = window.localStorage.getItem("login_user");
   let loginInfo = JSON.parse(loginInfoString);
@@ -126,11 +143,7 @@ function MyPage() {
 
   const history = useNavigate();
   
-  //로그인 버튼 누르면 실행되는 함수
-  const onSubmit = (e) => {
-    e.preventDefault();
-    alert("준비중입니다.")
-  }
+
 
   //회원정보 수정 버튼 누르면 실행되는 함수
   const onEditPage = (e) => {
@@ -178,9 +191,29 @@ function MyPage() {
         </IdBox>
         <FormGroup style={{marginTop: "3em", marginBottom: "3em"}}>
             <Button style={{marginBottom: "3em", width: "100%", backgroundColor:"#8C4D25", border:"0"}} onClick={onEditPage}>회원정보 수정</Button>
-            <StyledLink to={"/signin"}><Button style={{marginBottom: "1em", width: "100%", backgroundColor:"#CC8960",border:"0"}} onClick={onSubmit}>비밀번호 변경</Button></StyledLink>
+            <Button style={{marginBottom: "1em", width: "100%", backgroundColor:"#CC8960",border:"0"}} onClick={onClickToggleModal}>비밀번호 변경</Button>
         </FormGroup>
         
+      {isOpenModal&& (
+      <Modal onClickToggleModal={onClickToggleModal}>
+        <FormGroup className='mb-3'>
+            <FormLabel style={{float:"left"}}> 현재 비밀번호 </FormLabel>
+            <Form.Control style={{width: "100%", textalign:"center"}} type="password"/>
+        </FormGroup>
+        <FormGroup className='mb-3'>
+            <FormLabel style={{float:"left"}}> 새로운 비밀번호</FormLabel>
+            <Form.Control style={{width: "100%", textalign:"center"}} type="password"/>
+        </FormGroup>
+        <FormGroup className='mb-3'>
+            <FormLabel style={{float:"left"}}> 새로운 비밀번호 확인</FormLabel>
+            <Form.Control style={{width: "100%", textalign:"center"}} type="password"/>
+        </FormGroup>
+        <FormGroup style={{marginTop: "3em", marginBottom: "3em"}}>
+            <Button style={{marginBottom: "1em",  width: "100%", backgroundColor:"#8C4D25", border:"0"}} onClick={onChangePassword}>비밀번호 변경</Button>
+            <Button style={{marginBottom: "1em",  width: "100%", backgroundColor:"grey", border:"0"}} onClick={onCloseModal}>취소</Button>
+        </FormGroup>
+      </Modal>
+      )}
       </Form>
     </Container>
     );
