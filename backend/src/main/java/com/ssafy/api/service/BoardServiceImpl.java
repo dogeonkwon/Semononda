@@ -120,7 +120,6 @@ public class BoardServiceImpl implements BoardService {
 	  */
 	@Override
 	public void deleteBoardByUid(Board board) {
-		
 		boardRepository.delete(board);
 	}
 

@@ -25,23 +25,23 @@ public class QPlayer extends EntityPathBase<Player> {
 	public final QBaseEntity _super = new QBaseEntity(this);
 
 	// inherited
-	public final NumberPath<Long> uid = createNumber("uid", Long.class);
+	public final NumberPath<Integer> uid = createNumber("uid", Integer.class);
 
-	public final NumberPath<Long> usersUid = createNumber("usersUid", Long.class);
+	public final NumberPath<Integer> usersUid = createNumber("usersUid", Integer.class);
 
-	public final NumberPath<Long> gameConferenceRoomUid = createNumber("gameConferenceRoomUid", Long.class);
+	public final NumberPath<Integer> gameConferenceRoomUid = createNumber("gameConferenceRoomUid", Integer.class);
 
-	public final NumberPath<Long> goldfinch = createNumber("goldfinch", Long.class);
-	public final NumberPath<Long> roleUid = createNumber("roleUid", Long.class);
+	public final NumberPath<Integer> goldfinch = createNumber("goldfinch", Integer.class);
+	public final NumberPath<Integer> roleUid = createNumber("roleUid", Integer.class);
 
 
-	public final NumberPath<Long> kingCount = createNumber("kingCount", Long.class);
+	public final NumberPath<Integer> kingCount = createNumber("kingCount", Integer.class);
 
 	public final StringPath team = createString("team");
 
-	public final NumberPath<Long> accusationCount = createNumber("accusationCount", Long.class);
+	public final NumberPath<Integer> accusationCount = createNumber("accusationCount", Integer.class);
 
-	public final NumberPath<Long> totalGoldfinch = createNumber("totalGoldfinch", Long.class);
+	public final NumberPath<Integer> totalGoldfinch = createNumber("totalGoldfinch", Integer.class);
 
 	public final BooleanPath randomKing = createBoolean("randomKing");
 

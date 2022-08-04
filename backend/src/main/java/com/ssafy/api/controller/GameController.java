@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ssafy.api.request.UserRequest;
 import com.ssafy.api.request.UserLoginPostReq;
 import com.ssafy.api.request.UserRegisterPostReq;
+import com.ssafy.api.response.GameCategoryTopicsRes;
 import com.ssafy.api.response.PlayerRes;
 import com.ssafy.api.response.UserLoginPostRes;
 import com.ssafy.api.response.UserResponse;
@@ -22,6 +23,7 @@ import com.ssafy.api.service.UserService;
 import com.ssafy.common.auth.SsafyUserDetails;
 import com.ssafy.common.model.response.BaseResponseBody;
 import com.ssafy.common.util.JwtTokenUtil;
+import com.ssafy.db.entity.GameCategoryTopic;
 import com.ssafy.db.entity.Player;
 import com.ssafy.db.entity.User;
 import com.ssafy.db.repository.UserRepositorySupport;
@@ -52,7 +54,6 @@ public class GameController {
     })
 	public ResponseEntity<PlayerRes> getPlayerInfo(
 			@RequestBody @ApiParam(value="아이디 정보", required = true) UserRequest idInfo) {
-		//임의로 리턴된 User 인스턴스. 현재 코드는 회원 가입 성공 여부만 판단하기 때문에 굳이 Insert 된 유저 정보를 응답하지 않음.
 
 		Player player = gameService.getPlayerByUserId(idInfo.getId());
 		return ResponseEntity.status(200).body(PlayerRes.of(player));
@@ -68,7 +69,6 @@ public class GameController {
     })
 	public ResponseEntity<? extends BaseResponseBody> playerReady(
 			@RequestBody @ApiParam(value="아이디 정보", required = true) UserRequest idInfo) {
-		//임의로 리턴된 User 인스턴스. 현재 코드는 회원 가입 성공 여부만 판단하기 때문에 굳이 Insert 된 유저 정보를 응답하지 않음.
 
 		gameService.changePlayerReady(idInfo.getId());
 		return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
@@ -84,7 +84,6 @@ public class GameController {
     })
 	public ResponseEntity<? extends BaseResponseBody> gameStart(
 			@RequestParam("gameConferenceRoomUid") @ApiParam(value="게임 컨퍼런스룸 Uid 정보", required = true) int gameConferenceRoomUid) {
-		//임의로 리턴된 User 인스턴스. 현재 코드는 회원 가입 성공 여부만 판단하기 때문에 굳이 Insert 된 유저 정보를 응답하지 않음.
 
 		gameService.gameStart(gameConferenceRoomUid);
 		return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
@@ -102,7 +101,6 @@ public class GameController {
 			@RequestParam("gameConferenceRoomUid") @ApiParam(value="게임 컨퍼런스룸 Uid 정보", required = true) int gameConferenceRoomUid,
 			@RequestParam("userID") @ApiParam(value="플레이어의 user ID", required = true) String userID, 
 			@RequestParam("penalty") @ApiParam(value="제한 종류(0:스피커, 1:카메라, 2:음성변조)", required = true) int penalty) {
-		//임의로 리턴된 User 인스턴스. 현재 코드는 회원 가입 성공 여부만 판단하기 때문에 굳이 Insert 된 유저 정보를 응답하지 않음.
 
 		gameService.changePenalty(gameConferenceRoomUid, userID, penalty);
 		return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
@@ -118,7 +116,6 @@ public class GameController {
     })
 	public ResponseEntity<? extends BaseResponseBody> randomKing(
 			@RequestParam("gameConferenceRoomUid") @ApiParam(value="게임 컨퍼런스룸 Uid 정보", required = true) int gameConferenceRoomUid) {
-		//임의로 리턴된 User 인스턴스. 현재 코드는 회원 가입 성공 여부만 판단하기 때문에 굳이 Insert 된 유저 정보를 응답하지 않음.
 
 		gameService.makeRandomKing(gameConferenceRoomUid);
 		return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
@@ -134,9 +131,87 @@ public class GameController {
     })
 	public ResponseEntity<? extends BaseResponseBody> randomTeam(
 			@RequestParam("gameConferenceRoomUid") @ApiParam(value="게임 컨퍼런스룸 Uid 정보", required = true) int gameConferenceRoomUid) {
-		//임의로 리턴된 User 인스턴스. 현재 코드는 회원 가입 성공 여부만 판단하기 때문에 굳이 Insert 된 유저 정보를 응답하지 않음.
 
 		gameService.makeRandomTeam(gameConferenceRoomUid);
+		return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
+	}
+	
+	@PostMapping("/normal/round-start")
+	@ApiOperation(value = "라운드 시작", notes = "왕으로 선정된 플레이어의 goldfinch 등 플레이어들의 라운드 게임변수를 초기화하고 랜덤 주제를 리턴한다.") 
+    @ApiResponses({
+        @ApiResponse(code = 200, message = "성공"),
+        @ApiResponse(code = 401, message = "인증 실패"),
+        @ApiResponse(code = 404, message = "사용자 없음"),
+        @ApiResponse(code = 500, message = "서버 오류")
+    })
+	public ResponseEntity<GameCategoryTopicsRes> getRoundStart(
+			@RequestParam("gameConferenceRoomUid") @ApiParam(value="게임 컨퍼런스룸 Uid 정보", required = true) int gameConferenceRoomUid) {
+
+		GameCategoryTopic topic = gameService.getRoundStart(gameConferenceRoomUid);
+		return ResponseEntity.status(200).body(GameCategoryTopicsRes.of(topic));
+	}
+	
+	@GetMapping("/normal/round-end")
+	@ApiOperation(value = "라운드 끝", notes = "승리팀에게 금화를 분배하고 다음 턴의 왕을 선정한다. 왕으로 세번 째 선정된 플레이어가 있다면 리턴한다.") 
+    @ApiResponses({
+        @ApiResponse(code = 200, message = "성공"),
+        @ApiResponse(code = 401, message = "인증 실패"),
+        @ApiResponse(code = 404, message = "사용자 없음"),
+        @ApiResponse(code = 500, message = "서버 오류")
+    })
+	public ResponseEntity<PlayerRes> getRoundEnd(
+			@RequestParam("gameConferenceRoomUid") @ApiParam(value="게임 컨퍼런스룸 Uid 정보", required = true) int gameConferenceRoomUid,
+			@RequestParam("winTeam") @ApiParam(value="승리팀 정보", required = true) String winTeam) {
+
+		Player winner = gameService.getRoundEnd(gameConferenceRoomUid, winTeam);
+		System.out.println(winner.getKingCount());
+		return ResponseEntity.status(200).body(PlayerRes.of(winner));
+	}
+	
+	@PostMapping("/normal/game-end")
+	@ApiOperation(value = "normal 게임 종료", notes = "normal 게임을 종료한다. 1. 게임 방의 game-start 상태를 false로 바꾼다. 2. total_gold_finch 대로 점수를 배분한다.3. game_records에 게임 기록을 추가한다.4. 모든 플레이어의 게임 정보를 초기화한다.") 
+    @ApiResponses({
+        @ApiResponse(code = 200, message = "성공"),
+        @ApiResponse(code = 401, message = "인증 실패"),
+        @ApiResponse(code = 404, message = "사용자 없음"),
+        @ApiResponse(code = 500, message = "서버 오류")
+    })
+	public ResponseEntity<? extends BaseResponseBody> normalGameEnd(
+			@RequestParam("gameConferenceRoomUid") @ApiParam(value="게임 컨퍼런스룸 Uid 정보", required = true) int gameConferenceRoomUid,
+			@RequestParam("userUid") @ApiParam(value="승리한 플레이어의 userUid", required = true) int userUid) {
+
+		gameService.normalGameEnd(gameConferenceRoomUid, userUid);
+		return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
+	}
+	@PostMapping("/custom/game-end")
+	@ApiOperation(value = "custom 게임 종료", notes = "custom 게임을 종료한다. 게임 방의 game-start 상태를 false로 바꾼다.") 
+    @ApiResponses({
+        @ApiResponse(code = 200, message = "성공"),
+        @ApiResponse(code = 401, message = "인증 실패"),
+        @ApiResponse(code = 404, message = "사용자 없음"),
+        @ApiResponse(code = 500, message = "서버 오류")
+    })
+	public ResponseEntity<? extends BaseResponseBody> customGameEnd(
+			@RequestParam("gameConferenceRoomUid") @ApiParam(value="게임 컨퍼런스룸 Uid 정보", required = true) int gameConferenceRoomUid) {
+
+		gameService.customGameEnd(gameConferenceRoomUid);
+		return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
+	}
+	@PostMapping("/common/accustion")
+	@ApiOperation(value = "플레이어 신고", notes = "플레이어가 다른 플레이어를 신고한 내용을 신고사유와 함께 저장한다.") 
+    @ApiResponses({
+        @ApiResponse(code = 200, message = "성공"),
+        @ApiResponse(code = 401, message = "인증 실패"),
+        @ApiResponse(code = 404, message = "사용자 없음"),
+        @ApiResponse(code = 500, message = "서버 오류")
+    })
+	public ResponseEntity<? extends BaseResponseBody> accusation(
+			@RequestParam("gameConferenceRoomUid") @ApiParam(value="게임 컨퍼런스룸 Uid 정보", required = true) int gameConferenceRoomUid,
+			@RequestParam("attackerUid") @ApiParam(value="신고 당한 플레이어의 userUid", required = true) int attackerUid,
+			@RequestParam("reporterUid") @ApiParam(value="신고한 플레이어의 userUid", required = true) int reporterUid,
+			@RequestParam("accusationUid") @ApiParam(value="accustion의 userUid", required = true) int accusationUid) {
+
+		gameService.accusation(gameConferenceRoomUid, attackerUid, reporterUid, accusationUid);
 		return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
 	}
 }

@@ -5,10 +5,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.ssafy.api.request.UserRegisterPostReq;
+import com.ssafy.db.entity.GameCategoryTopic;
 import com.ssafy.db.entity.Player;
+import com.ssafy.db.entity.SelectedTopic;
 import com.ssafy.db.entity.User;
 import com.ssafy.db.repository.PlayerRepository;
 import com.ssafy.db.repository.PlayerRepositorySupport;
+import com.ssafy.db.repository.SelectedTopicRepository;
 import com.ssafy.db.repository.UserRepository;
 import com.ssafy.db.repository.UserRepositorySupport;
 
@@ -19,6 +22,8 @@ import com.ssafy.db.repository.UserRepositorySupport;
 public class GameServiceImpl implements GameService {
 	@Autowired
 	PlayerRepository playerRepository;
+	@Autowired
+	SelectedTopicRepository selectedTopicRepository;
 	
 	@Autowired
 	PlayerRepositorySupport playerRepositorySupport;
@@ -56,6 +61,36 @@ public class GameServiceImpl implements GameService {
 	public void makeRandomTeam(int gameConferenceRoomUid) {
 		playerRepositorySupport.makeRandomTeam(gameConferenceRoomUid);
 		return;
+	}
+
+	@Override
+	public GameCategoryTopic getRoundStart(int gameConferenceRoomUid) {
+		GameCategoryTopic topic = playerRepositorySupport.getRoundStart(gameConferenceRoomUid);
+		return topic;
+	}
+
+	@Override
+	public Player getRoundEnd(int gameConferenceRoomUid, String winTeam) {
+		Player winner = playerRepositorySupport.getRoundEnd(gameConferenceRoomUid, winTeam);
+		return winner;
+	}
+
+	@Override
+	public void normalGameEnd(int gameConferenceRoomUid, int userUid) {
+		playerRepositorySupport.normalGameEnd(gameConferenceRoomUid, userUid);
+		return;
+	}
+
+	@Override
+	public void customGameEnd(int gameConferenceRoomUid) {
+		playerRepositorySupport.customGameEnd(gameConferenceRoomUid);
+		return;
+	}
+
+	@Override
+	public void accusation(int gameConferenceRoomUid, int attackerUid, int reporterUid, int accusationUid) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	

@@ -37,6 +37,8 @@ public class QUser extends EntityPathBase<User> {
     public final StringPath nickname = createString("nickname");
     public final StringPath img = createString("img");
     public final StringPath description = createString("description");
+    public final NumberPath<Integer> numberOfWins = createNumber("numberOfWins",Integer.class);
+    public final NumberPath<Integer> numberOfLoses = createNumber("numberOfLoses",Integer.class);
 
     public final NumberPath<Integer> numberOfWins = createNumber("numberOfWins",Integer.class);
     
