@@ -6,6 +6,8 @@ import com.querydsl.core.types.dsl.*;
 import com.ssafy.db.entity.User;
 import com.querydsl.core.types.PathMetadata;
 import javax.annotation.Generated;
+import javax.persistence.Column;
+
 import com.querydsl.core.types.Path;
 
 
@@ -38,6 +40,9 @@ public class QUser extends EntityPathBase<User> {
     public final NumberPath<Integer> numberOfWins = createNumber("numberOfWins",Integer.class);
     public final NumberPath<Integer> numberOfLoses = createNumber("numberOfLoses",Integer.class);
 
+    public final StringPath authority = createString("authority");
+    
+    
     public QUser(String variable) {
         super(User.class, forVariable(variable));
     }

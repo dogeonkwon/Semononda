@@ -45,6 +45,7 @@ public class Board extends BaseEntity implements Serializable {
 
 	/**
 	 * 1. 자유 게시글, 2. 소식, 3. 업데이트, 4. 댓글
+	 *  게임 소개, 게임 룰, 게임 모드
 	 */
 	@Column(name = "category_middle")
 	int categoryMiddle;
@@ -65,7 +66,7 @@ public class Board extends BaseEntity implements Serializable {
 	@Column(name="user_uid")
 	int userUid;
 	
-//	@ManyToOne()
-//	@JoinColumn(name="uid")
-//	private User user;
+	@ManyToOne()
+	@JoinColumn(name="boardList")
+	private User user;
 }
