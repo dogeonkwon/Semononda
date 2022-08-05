@@ -5,7 +5,7 @@
   
   /* 공식경연 */
   .formula{
-    font-family: JSArirangHON;
+    font-family: JsaHON;
     position: relative;
     border: none;
     min-width: 200px;
@@ -32,7 +32,7 @@
   
   /* 자유경연 */
   .custom{
-    font-family: JSArirangHON;
+    font-family: JsaHON;
     position: relative;
     border: none;
     min-width: 200px;
@@ -81,10 +81,10 @@
   .side-text :hover {
     background-color: #1a83ff;
   }
-/* 
+
   .navbar {
-    opacity: 0.5;
-  } */
+    position: absolute;
+  }
 
 /* 사이드바 */
 /* .nav-menu {

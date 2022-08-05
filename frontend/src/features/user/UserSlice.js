@@ -6,12 +6,13 @@ import axios from '../../common/api/http-common';
 // 회원가입
 export const signup = createAsyncThunk(
   'SIGNUP',
-  async (userInfo, { rejectWithValue }) => {
+  async (userInfo) => {
     try {
       const response = await axios.post('/user/signin', userInfo);
       return response;
     } catch (err) {
-      return rejectWithValue(err.response);
+      console.log(err.response);
+      return err.response.status;
     }
   }
 );
@@ -19,7 +20,7 @@ export const signup = createAsyncThunk(
 // 닉네임 중복 검사
 export const checkNickname = createAsyncThunk(
   'CHECK_NICKNAME',
-  async (nickname, { rejectWithValue }) => {
+  async (nickname) => {
     try {
       console.log(nickname)
       const response = await axios.get('/user/nickname-info',{
@@ -27,15 +28,15 @@ export const checkNickname = createAsyncThunk(
       });
       return response;
     } catch (err) {
-      return rejectWithValue(err.response);
+      return err.response.status;
     }
   }
 );
 
 // 아이디 중복 검사
 export const checkId = createAsyncThunk(
-  'CHECK_NICKNAME',
-  async (user_id, { rejectWithValue }) => {
+  'CHECK_ID',
+  async (user_id) => {
     try {
       console.log("user_id",user_id)
       const response = await axios.get('/user/id-info',{
@@ -43,7 +44,8 @@ export const checkId = createAsyncThunk(
       });
       return response;
     } catch (err) {
-      return rejectWithValue(err.response);
+      console.log("err_response",err.response.status);
+      return err.response.status;
     }
   }
 );
@@ -51,7 +53,7 @@ export const checkId = createAsyncThunk(
 // 로그인
 export const login = createAsyncThunk(
   'LOGIN',
-  async (loginInfo, { rejectWithValue }) => {
+  async (loginInfo) => {
     try {
       console.log("loginInfo", loginInfo)
       const response = await axios.post('/v1/auth/login', loginInfo);
@@ -97,21 +99,20 @@ export const checkPassword = createAsyncThunk(
   }
 );
 
-// 닉네임 변경
-export const modifyNickname = createAsyncThunk(
+// 유저정보 변경
+export const modifyUserInfo = createAsyncThunk(
   'MODIFY_NICKNAME',
-  async ({ newNickname }, { rejectWithValue }) => {
-    const data = {
-      changeNickname: newNickname,
-    };
+  async (userInfo, { rejectWithValue }) => {
     try {
-      const response = await axios.put('/api/user/nickname', data);
+      const response = await axios.put('/user/profile', userInfo);
+      console.log("modify_response",response);
       return response;
     } catch (err) {
       return rejectWithValue(err.response);
     }
   }
 );
+
 
 // 비밀번호 변경
 export const modifyPassword = createAsyncThunk(
@@ -196,9 +197,10 @@ const userSlice = createSlice({
       state.isIdChecked = true;
     },
     [checkId.rejected]: (state) => {
+      console.log("state",state);
       state.isIdChecked = false;
     },
-    [modifyNickname.fulfilled]: (state) => {
+    [modifyUserInfo.fulfilled]: (state) => {
       state.isNicknameChecked = false;
     },
     [loadUser.fulfilled]: (state, action) => {

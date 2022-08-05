@@ -12,11 +12,13 @@ import * as BiIcons from 'react-icons/bi';
 import * as RiIcons from 'react-icons/ri';
 import * as GoIcons from 'react-icons/go';
 import * as IoIcons from 'react-icons/io';
+import * as GiIcons from 'react-icons/gi';
 import ProgressBar from 'react-bootstrap/ProgressBar';
 import { getToken, deleteToken } from '../../common/api/JWT-common';
 import { NavDropdown } from "react-bootstrap";
 
 function NavBar() {
+
   const history = useNavigate();
   
   const token = getToken();
@@ -35,14 +37,16 @@ function NavBar() {
   }
 
   const myPageHandler = () => {
-    history('/me');
+    history('/profile');
   }
   return (
     <>
       {[false].map((expand) => (
         <Navbar key={expand} expand={expand} className="navbar mb-3">
           <Container fluid>
-            <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${expand}`} />
+            <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${expand}`}>
+              <GiIcons.GiHamburgerMenu color="ghostwhite" size="30px"/>
+            </Navbar.Toggle>
               <Link to="/rank"><button className="formula">공식경연</button></Link>  
               <Link to="/"><Logo className="logo" src={logo} /></Link>
               <Link to="/custom"><button className="custom">자유경연</button></Link>
