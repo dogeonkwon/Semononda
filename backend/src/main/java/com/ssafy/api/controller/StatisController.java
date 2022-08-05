@@ -23,6 +23,7 @@ import com.ssafy.api.service.UserService;
 import com.ssafy.common.model.response.BaseResponseBody;
 import com.ssafy.db.entity.Board;
 import com.ssafy.db.entity.GameCategory;
+import com.ssafy.db.entity.GameCategoryTopic;
 import com.ssafy.db.entity.User;
 import com.ssafy.db.repository.BoardRepository;
 import com.ssafy.infos.Authority;
@@ -45,15 +46,21 @@ public class StatisController {
 
 	@Autowired
 	StatisService statisService;
-	
+
 	@PostMapping("/topic")
-	@ApiOperation(value = "주제 채택률 정보", notes = "<strong>주제 채택률을</strong>내림차순으로 반환한다.")
+	@ApiOperation(value = "카테고리 채택률 정보", notes = "<strong>카테고리 채택률을</strong>내림차순으로 반환한다.")
 	@ApiResponses({ @ApiResponse(code = 200, message = "성공"), @ApiResponse(code = 401, message = "인증 실패"),
 			@ApiResponse(code = 404, message = "게시물 없음"), @ApiResponse(code = 500, message = "서버 오류") })
 	public ResponseEntity<List<GameCategory>> getTopic() {
 		List<GameCategory> res = statisService.getTopic();
 		return ResponseEntity.status(200).body(res);
 	}
-	
-	
+	@PostMapping("/subject")
+	@ApiOperation(value = "주제 승률 정보", notes = "<strong>주제 승률을</strong>내림차순으로 반환한다.")
+	@ApiResponses({ @ApiResponse(code = 200, message = "성공"), @ApiResponse(code = 401, message = "인증 실패"),
+			@ApiResponse(code = 404, message = "게시물 없음"), @ApiResponse(code = 500, message = "서버 오류") })
+	public ResponseEntity<List<GameCategoryTopic>> getSubject() {
+		List<GameCategoryTopic> res = statisService.getSubject();
+		return ResponseEntity.status(200).body(res);
+	}
 }

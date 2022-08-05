@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.ssafy.api.request.BoardRequest;
 import com.ssafy.db.entity.Board;
 import com.ssafy.db.entity.GameCategory;
+import com.ssafy.db.entity.GameCategoryTopic;
 import com.ssafy.db.repository.BoardRepository;
 import com.ssafy.db.repository.BoardRepositorySupport;
 import com.ssafy.db.repository.GameCategoryRepositorySupport;
@@ -45,6 +46,11 @@ public class StatisServiceImpl implements StatisService {
 	@Override
 	public List<GameCategory> getTopic() {
 		List<GameCategory> res = gameCategoryRepositorySupport.getTopic();
+		return res;
+	}
+	@Override
+	public List<GameCategoryTopic> getSubject() {
+		List<GameCategoryTopic> res = gameCategoryRepositorySupport.getSubject();
 		return res;
 	}
 }
