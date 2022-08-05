@@ -1,10 +1,13 @@
-import React,{useCallback, useState} from 'react'
+import React,{useCallback, useState, useEffect} from 'react'
 import {Button, Form, FormGroup, FormLabel} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.css';
-import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import {useNavigate}from 'react-router-dom'
 import styled from "styled-components";
-import '../../../common/modal/Modal.css'
+import '../../../common/modal/Modal.css';
+import './MyPage.css';
+import { modifyPassword } from '../../user/UserSlice';
+
 //이미지 파일
 import infobase from "../../../assets/images/dark_base.PNG";
 import userform_img from "../../../assets/images/userform_img.png";
@@ -87,27 +90,112 @@ const ProfileDetialInfo = styled.div`
   display: block;
 `
 
+//모달)오류 메세지
+const Message = styled.div`
+  float: left;
+  margin-bottom: 1em;
+`
+
 function MyPage() {
-  
-  let user_info = useSelector(state => state.user.user);
-  console.log("user_info",user_info)
+
+  const dispatch = useDispatch();
+  const history = useNavigate();
 
   //모달)모달관련 state
   const [isOpenModal, setOpenModal] = useState(false);
+  const [isOnButton, setIsOnButton] = useState(false);
   const [password, setPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [checkNewPassword, setCheckNewPassword] = useState("");
+
+  //모달)모달 내 오류메세지 상태관리 state
+  const [checkPasswordMessage, setCheckPasswordMessage] = useState("");
+  const [newPasswordMessage, setNewPasswordMessage] = useState("");
+
+  //모달)유효성 검사 후, 상태 저장
+  const [isCheckPassword, setIsCheckpassword] = useState(false);
+  const [isNewPassword, setIsNewPassword] = useState(false);
+
   
+  useEffect(() => {
+    if(password!=="" ){
+
+      if(isCheckPassword){
+        setIsOnButton(true);
+      }
+      else{
+        setIsOnButton(false);
+      }
+
+    }else{
+      setIsOnButton(false);
+    }
+
+  }, [isCheckPassword, password]);
+
   //모달)open 동작
   const onClickToggleModal = useCallback(() => {
     setOpenModal(!isOpenModal);
   },[isOpenModal]);
 
-  //
-  //모달) 비밀번호 변경 누르면 실행하는 동작
+  //모달) 현재 비밀번호 입력
   const onChangePassword = (e) => {
+
+    setPassword(e.target.value);
+
+  }
+  //모달) 새 비밀번호 입력 및 유효성 검사
+  const onChangeNewPassword = (e) => {
+    
+    setNewPassword(e.target.value);
+    console.log(newPassword);
+
+    //9~16글자 작성가능
+    if(e.target.value.length <9 || e.target.value.length >16){
+        setNewPasswordMessage('9~16글자로 입력해주세요')
+        setIsNewPassword(false)
+    } else {
+        setNewPasswordMessage('확인되었습니다.')
+        setIsNewPassword(true)
+    }
+  }
+
+  //모달) 새 비밀번호 확인 입력 및 일치여부 확인
+  const onChangeCheckNewPassword = (e) => {
+
+    setCheckNewPassword(e.target.value);
+    console.log(checkNewPassword);
+    //비밀번호와 비밀번호 확인이 다른경우
+    if(newPassword !== e.target.value){
+      setCheckPasswordMessage('입력값이 일치하지 않습니다.')
+      setIsCheckpassword(false)
+   } else {
+      setCheckPasswordMessage('확인되었습니다.')
+      setIsCheckpassword(true)
+      
+    }
+
+  }
+
+  //모달) 비밀번호 변경 누르면 실행하는 동작
+  const onConfirmChangePassword = (e) => {
     e.preventDefault();
-    alert("준비중입니다.")
+    const data = {
+      id: loginInfo.id,
+      password: password,
+      newPassword: newPassword,
+    }
+    console.log(data);
+    dispatch(modifyPassword(data))
+      .then((respnose) => {
+        
+        if(respnose.payload.status === 200){
+          alert("변경완료 되었습니다.");
+          setOpenModal(false);
+        }else if(respnose.payload.status === 403){
+          alert("현재 비밀번호가 일치하지 않습니다.")
+        };
+      })
   }
   //모달) 닫기 버튼 누르면 실행하는 동작
   const onCloseModal = (e) => {
@@ -133,18 +221,12 @@ function MyPage() {
     resultNumber.push(second);
     resultNumber.push(third);
 
-    console.log(phonenumber);
-    console.log(resultNumber);
     return resultNumber.filter((val) => val).join("-");
   }
 
   //파싱된 전화번호
   const parsedPhonenumber = parsePhonenumber(loginInfo.phonenumber);
-
-  const history = useNavigate();
   
-
-
   //회원정보 수정 버튼 누르면 실행되는 함수
   const onEditPage = (e) => {
     e.preventDefault();
@@ -198,18 +280,21 @@ function MyPage() {
       <Modal onClickToggleModal={onClickToggleModal}>
         <FormGroup className='mb-3'>
             <FormLabel style={{float:"left"}}> 현재 비밀번호 </FormLabel>
-            <Form.Control style={{width: "100%", textalign:"center"}} type="password"/>
+            <Form.Control style={{width: "100%", textalign:"center"}} type="password" onChange={onChangePassword}/>
         </FormGroup>
         <FormGroup className='mb-3'>
             <FormLabel style={{float:"left"}}> 새로운 비밀번호</FormLabel>
-            <Form.Control style={{width: "100%", textalign:"center"}} type="password"/>
+            <Form.Control style={{width: "100%", textalign:"center"}} type="password" onChange={onChangeNewPassword}/>
+            {newPassword.length > 0 && <Message className={`message${isNewPassword ? 'success' : 'error'}`}>{newPasswordMessage}</Message>}
         </FormGroup>
         <FormGroup className='mb-3'>
             <FormLabel style={{float:"left"}}> 새로운 비밀번호 확인</FormLabel>
-            <Form.Control style={{width: "100%", textalign:"center"}} type="password"/>
+            <Form.Control style={{width: "100%", textalign:"center"}} type="password" onChange={onChangeCheckNewPassword}/>
+            {checkNewPassword.length > 0 && <Message className={`message${isCheckPassword ? 'success' : 'error'}`}>{checkPasswordMessage}</Message>}
         </FormGroup>
         <FormGroup style={{marginTop: "3em", marginBottom: "3em"}}>
-            <Button style={{marginBottom: "1em",  width: "100%", backgroundColor:"#8C4D25", border:"0"}} onClick={onChangePassword}>비밀번호 변경</Button>
+          {isOnButton ? <Button style={{marginBottom: "1em",  width: "100%", backgroundColor:"#8C4D25", border:"0"}} onClick={onConfirmChangePassword}>비밀번호 변경</Button>
+          : <Button style={{marginBottom: "1em",  width: "100%", backgroundColor:"#8C4D25", border:"0"}} onClick={onConfirmChangePassword} disabled>비밀번호 변경</Button>}
             <Button style={{marginBottom: "1em",  width: "100%", backgroundColor:"grey", border:"0"}} onClick={onCloseModal}>취소</Button>
         </FormGroup>
       </Modal>
