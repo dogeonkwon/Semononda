@@ -2,6 +2,7 @@ package com.ssafy.api.service;
 
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,11 +33,34 @@ public class RoomServiceImpl implements RoomService {
 		GameConferenceRoom room = new GameConferenceRoom();
 		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 
+		// 랜덤 문자열 생성
+		Random random = new Random();
+		int length = random.nextInt(10) + 10;
+
+		StringBuffer sb = new StringBuffer();
+		for (int i = 0; i < length; i++) {
+			int choice = random.nextInt(5);
+			switch (choice) {
+			case 0:
+				sb.append((char) ((int) random.nextInt(25) + 97));
+				break;
+			case 1:
+				sb.append((char) ((int) random.nextInt(25) + 65));
+				break;
+			case 2:
+				sb.append((char) ((int) random.nextInt(10) + 48));
+				break;
+			default:
+				break;
+			}
+		}
+		String url = sb.toString();
+
 		room.setNormal(roomRegisterInfo.isNormal());
 		room.setGameCategoriesUid(roomRegisterInfo.getGameCategoriesUid());
 		room.setGameCategoryTopicsUid(roomRegisterInfo.getGameCategoryTopicsUid());
 		room.setRoomAdminUserUid(roomRegisterInfo.getRoomAdminUserUid());
-		room.setConferenceRoomUrl(roomRegisterInfo.getConferenceRoomUrl());
+		room.setConferenceRoomUrl(url);
 		room.setStartTime(timestamp);
 		room.setCustomPassword(roomRegisterInfo.getCustomPassword());
 		room.setTitle(roomRegisterInfo.getTitle());
@@ -64,7 +88,7 @@ public class RoomServiceImpl implements RoomService {
 		System.err.println("여기까지 오는가");
 		return roomRepositorySupport.findNormalRoomlist();
 	}
-	
+
 	@Override
 	public List<GameConferenceRoom> findCustomRoomlist() {
 		return roomRepositorySupport.findCustomRoomlist();
