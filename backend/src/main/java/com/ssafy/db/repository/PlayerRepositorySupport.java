@@ -457,6 +457,11 @@ public class PlayerRepositorySupport {
 	public void accusation(int gameConferenceRoomUid, int attackerUid, int reporterUid, int accusationUid) {
 		// 신고 테이블에 추가
 		Accusation accusation = new Accusation();
+		accusation.setGameConferenceRoomUid(gameConferenceRoomUid);
+		accusation.setAttackerUid(attackerUid);
+		accusation.setReporterUid(reporterUid);
+		accusation.setAccusationInfosUid(accusationUid);
+		accusationRepository.save(accusation);
 		// 플레이어 테이블 수정 (필요한지 모르겠음)
 	}
 
