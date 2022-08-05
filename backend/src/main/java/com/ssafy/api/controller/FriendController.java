@@ -3,6 +3,7 @@ package com.ssafy.api.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -77,5 +78,21 @@ public class FriendController {
 
 		return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
 	}
+	
+	@GetMapping("/follower")
+	@ApiOperation(value = "내 팔로워 정보", notes = "내 팔로워 정보")
+	@ApiResponses({ @ApiResponse(code = 200, message = "성공"), @ApiResponse(code = 401, message = "인증 실패"),
+			@ApiResponse(code = 404, message = "팔로워 방 없음"), @ApiResponse(code = 500, message = "서버 오류") })
+	public ResponseEntity<List<Friend>> findReceiverFriendList(
+			@ApiParam(value = "user uid", required = true) @RequestParam("uid") int uid) {
+
+		List<Friend> friends = friendService.findReceiverFriendList(uid);
+		if (friends == null) {
+			return new ResponseEntity<List<Friend>>(friends, HttpStatus.BAD_REQUEST);
+		} else {
+			return new ResponseEntity<List<Friend>>(friends, HttpStatus.OK);
+		}
+	}
+	
 
 }

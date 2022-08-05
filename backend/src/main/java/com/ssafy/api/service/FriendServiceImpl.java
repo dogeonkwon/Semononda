@@ -32,10 +32,15 @@ public class FriendServiceImpl implements FriendService {
 	@Override
 	public Friend AddFriend(FriendRequest friendInfo) {
 		Friend friend = new Friend();
-
 		friend.setFriendReceiverUid(friendInfo.getFriendReceiverUid());
 		friend.setFriendRequesterUid(friendInfo.getFriendRequesterUid());
 		return friendRepository.save(friend);
 	}
 
+	@Override
+	public List<Friend> findReceiverFriendList(int uid) {
+		
+		return friendRepositorySupport.findReceiverFriendList(uid);
+	}
+	
 }
