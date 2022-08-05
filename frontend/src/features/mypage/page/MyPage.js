@@ -172,7 +172,6 @@ function MyPage() {
    } else {
       setCheckPasswordMessage('확인되었습니다.')
       setIsCheckpassword(true)
-      
     }
 
   }
@@ -188,10 +187,15 @@ function MyPage() {
     console.log(data);
     dispatch(modifyPassword(data))
       .then((respnose) => {
-        
+
         if(respnose.payload.status === 200){
           alert("변경완료 되었습니다.");
           setOpenModal(false);
+          //상태값초기화
+          setCheckPasswordMessage("");
+          setNewPasswordMessage("");
+          setIsCheckpassword(false);
+          setIsNewPassword(false);
         }else if(respnose.payload.status === 403){
           alert("현재 비밀번호가 일치하지 않습니다.")
         };
@@ -201,6 +205,11 @@ function MyPage() {
   const onCloseModal = (e) => {
     e.preventDefault();
     setOpenModal(false);
+    //상태값초기화
+    setCheckPasswordMessage("");
+    setNewPasswordMessage("");
+    setIsCheckpassword(false);
+    setIsNewPassword(false);
   }
   //로컬스토리지 
   let loginInfoString = window.localStorage.getItem("login_user");
