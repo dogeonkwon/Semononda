@@ -5,13 +5,20 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssafy.api.request.FriendRequest;
+import com.ssafy.api.request.RoomRequest;
 import com.ssafy.api.response.UserListResponse;
 import com.ssafy.api.response.UserResponse;
 import com.ssafy.api.service.FriendService;
+import com.ssafy.common.model.response.BaseResponseBody;
+import com.ssafy.db.entity.Friend;
+import com.ssafy.db.entity.GameConferenceRoom;
 import com.ssafy.db.entity.User;
 
 import io.swagger.annotations.Api;
@@ -56,6 +63,19 @@ public class FriendController {
 		} else {
 			return ResponseEntity.status(200).body(UserListResponse.of(200, "Success", users));
 		}
+	}
+	
+	@PostMapping("/create")
+	@ApiOperation(value = "친구 신청", notes = "친구 신청")
+	@ApiResponses({ @ApiResponse(code = 200, message = "성공"), @ApiResponse(code = 401, message = "인증 실패"),
+			@ApiResponse(code = 404, message = "신청 없음"), @ApiResponse(code = 500, message = "서버 오류") })
+	public ResponseEntity<? extends BaseResponseBody> AddFriend(
+			@RequestBody @ApiParam(value = "친구 신청 정보", required = true) FriendRequest friendInfo) {
+
+		System.out.println(friendInfo.toString());
+		Friend friend = friendService.AddFriend(friendInfo);
+
+		return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
 	}
 
 }
