@@ -55,7 +55,9 @@ public class RoomController {
 	@ApiResponses({ @ApiResponse(code = 200, message = "성공"), @ApiResponse(code = 401, message = "인증 실패"),
 			@ApiResponse(code = 404, message = "게임 방 없음"), @ApiResponse(code = 500, message = "서버 오류") })
 	public ResponseEntity<List<GameConferenceRoom>> findNormalRoomlist() {
+		System.err.println("컨트롤러안1");
 		List<GameConferenceRoom> rooms = roomService.findNormalRoomlist();
+		System.err.println("컨트롤러안");
 		if (rooms == null) {
 			return new ResponseEntity<List<GameConferenceRoom>>(rooms, HttpStatus.BAD_REQUEST);
 		} else {
