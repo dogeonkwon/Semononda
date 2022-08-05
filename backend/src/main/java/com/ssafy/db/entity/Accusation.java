@@ -27,4 +27,7 @@ public class Accusation extends BaseEntity{
 	
 	@Column(name = "attacker_uid")
 	int attackerUid;
+	
+	@Column(name = "game_conference_room_uid")
+	int gameConferenceRoomUid;
 }
