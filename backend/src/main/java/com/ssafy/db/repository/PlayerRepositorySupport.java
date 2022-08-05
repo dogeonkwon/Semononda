@@ -465,4 +465,17 @@ public class PlayerRepositorySupport {
 		// 플레이어 테이블 수정 (필요한지 모르겠음)
 	}
 
+	@Transactional
+	public void join(String userId, int gameConferenceRoomUid) {
+		int userUid = jpaQueryFactory.select(qUser.uid).from(qUser).where(qUser.id.eq(userId)).fetchFirst();
+		Player player = new Player();
+		player.setGameConferenceRoomUid(gameConferenceRoomUid);
+		player.setUsersUid(userUid);
+		player.setTeam("A");
+		player.setRoleUid(2);
+		playerRepository.save(player);
+		
+	}
+
+
 }
