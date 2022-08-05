@@ -39,7 +39,7 @@ import springfox.documentation.annotations.ApiIgnore;
 @Api(value = "게임 API", tags = {"Game"})
 @RestController
 @RequestMapping("/api/game")
-public class GameController {
+public class GameController { 
 	
 	@Autowired
 	GameService gameService;
