@@ -131,4 +131,11 @@ public class RoomServiceImpl implements RoomService {
 		return roomRepositorySupport.findCustomRoomByTitle(title);
 	}
 
+	@Override
+	public GameConferenceRoom findRoomByUrl(String url) {
+		GameConferenceRoom room = new GameConferenceRoom();
+		room = roomRepositorySupport.findRoomByUrl(url);
+		return room;
+	}
+
 }

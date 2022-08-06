@@ -47,10 +47,6 @@ public class RoomController {
 		System.out.println(roomInfo.toString());
 		GameConferenceRoom room = roomService.createRoom(roomInfo);
 
-<<<<<<< Updated upstream
-		
-=======
->>>>>>> Stashed changes
 		return ResponseEntity.status(200).body(RoomResponse.of(200, "Success", room));
 	}
 
@@ -82,7 +78,7 @@ public class RoomController {
 		}
 	}
 
-	@GetMapping("")
+	@GetMapping("/uid")
 	@ApiOperation(value = "uid로 room 검색 ", notes = "uid로 room검색")
 	@ApiResponses({ @ApiResponse(code = 200, message = "성공"), @ApiResponse(code = 401, message = "인증 실패"),
 			@ApiResponse(code = 404, message = "게임방 없음"), @ApiResponse(code = 500, message = "서버 오류") })
@@ -90,6 +86,21 @@ public class RoomController {
 			@ApiParam(value = "room uid", required = true) @RequestParam("uid") int uid) {
 
 		GameConferenceRoom room = roomService.findRoomByUid(uid);
+		if (room == null) {
+			return ResponseEntity.status(400).body(RoomResponse.of(400, "Bad responce", room));
+		} else {
+			return ResponseEntity.status(200).body(RoomResponse.of(200, "Success", room));
+		}
+	}
+	
+	@GetMapping("/url")
+	@ApiOperation(value = "url로 room 검색 ", notes = "url로 room검색")
+	@ApiResponses({ @ApiResponse(code = 200, message = "성공"), @ApiResponse(code = 401, message = "인증 실패"),
+			@ApiResponse(code = 404, message = "게임방 없음"), @ApiResponse(code = 500, message = "서버 오류") })
+	public ResponseEntity<RoomResponse> findRoomByUrl(
+			@ApiParam(value = "room url", required = true) @RequestParam("url") String url) {
+
+		GameConferenceRoom room = roomService.findRoomByUrl(url);
 		if (room == null) {
 			return ResponseEntity.status(400).body(RoomResponse.of(400, "Bad responce", room));
 		} else {

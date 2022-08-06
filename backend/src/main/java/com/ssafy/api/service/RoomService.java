@@ -19,7 +19,7 @@ public interface RoomService {
 	List<GameConferenceRoom> findNormalRoomlist();
 	List<GameConferenceRoom> findCustomRoomlist();
 	GameConferenceRoom updateRoom(GameConferenceRoom room, RoomRequest roomRegisterInfo);
+	GameConferenceRoom findRoomByUrl(String url);
 	
 	//방 참가 어떻게??
-//	GameConferenceRoom enterRoom();
 }
