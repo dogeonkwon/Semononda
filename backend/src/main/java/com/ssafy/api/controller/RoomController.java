@@ -47,10 +47,13 @@ public class RoomController {
 		System.out.println(roomInfo.toString());
 		GameConferenceRoom room = roomService.createRoom(roomInfo);
 
+<<<<<<< Updated upstream
 		
+=======
+>>>>>>> Stashed changes
 		return ResponseEntity.status(200).body(RoomResponse.of(200, "Success", room));
 	}
-	
+
 	@GetMapping("/normal/list")
 	@ApiOperation(value = "room list 정보", notes = "게임 방 전체 목록")
 	@ApiResponses({ @ApiResponse(code = 200, message = "성공"), @ApiResponse(code = 401, message = "인증 실패"),
@@ -65,7 +68,7 @@ public class RoomController {
 			return new ResponseEntity<List<GameConferenceRoom>>(rooms, HttpStatus.OK);
 		}
 	}
-	
+
 	@GetMapping("/custom/list")
 	@ApiOperation(value = "room list 정보", notes = "게임 방 전체 목록")
 	@ApiResponses({ @ApiResponse(code = 200, message = "성공"), @ApiResponse(code = 401, message = "인증 실패"),
@@ -142,6 +145,7 @@ public class RoomController {
 			return new ResponseEntity<List<GameConferenceRoom>>(rooms, HttpStatus.OK);
 		}
 	}
+
 	@GetMapping("/normal/search")
 	@ApiOperation(value = "title로 room 검색 ", notes = "title로 room 검색")
 	@ApiResponses({ @ApiResponse(code = 200, message = "성공"), @ApiResponse(code = 401, message = "인증 실패"),
@@ -157,7 +161,7 @@ public class RoomController {
 			return new ResponseEntity<List<GameConferenceRoom>>(rooms, HttpStatus.OK);
 		}
 	}
-	
+
 	@GetMapping("/custom/search")
 	@ApiOperation(value = "title로 room 검색 ", notes = "title로 room 검색")
 	@ApiResponses({ @ApiResponse(code = 200, message = "성공"), @ApiResponse(code = 401, message = "인증 실패"),
