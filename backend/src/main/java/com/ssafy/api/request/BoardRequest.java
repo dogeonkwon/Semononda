@@ -2,19 +2,15 @@ package com.ssafy.api.request;
 
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
+@ToString
 @ApiModel("UserLoginIdRequest")
 public class BoardRequest {
 	

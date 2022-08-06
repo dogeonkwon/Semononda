@@ -4,13 +4,15 @@ import exit from '../../assets/images/exit.png'
 import ready from '../../assets/images/ready.png'
 import ready_ok from '../../assets/images/ready_ok.png'
 import start from '../../assets/images/start.png'
-import axios from 'axios';
+import axios1 from 'axios';
 import { OpenVidu } from 'openvidu-browser';
 import React, { Component, createRef } from 'react';
 import UserVideoComponent from './UserVideoComponent'
 import Messages from './Messages'
 import { useParams } from 'react-router-dom';
 import $ from 'jquery'; 
+import _ from 'lodash';
+import Button from 'react-bootstrap/Button';
 
 const OPENVIDU_SERVER_URL = 'https://' + window.location.hostname + ':4443';
 const OPENVIDU_SERVER_SECRET = 'MY_SECRET';
@@ -37,10 +39,13 @@ class Game extends Component {
         isReady: false,
         isHost: false,
         isKing: false,
+        servant: undefined,
         isLeaved: false,
-        player : 1,
         readyPlayer: 1,
         readyState : 'ready',
+        coin : 0,
+        kingCount : 0,
+        kingList: [],
     };
 
     this.joinSession = this.joinSession.bind(this);
@@ -55,6 +60,7 @@ class Game extends Component {
     this.sendmessageByEnter = this.sendmessageByEnter.bind(this);
     this.handleChatMessageChange = this.handleChatMessageChange.bind(this);
     this.readyClick = this.readyClick.bind(this);
+
   }
 
   componentDidMount() {
@@ -173,9 +179,10 @@ class Game extends Component {
                 // Remove the stream from 'subscribers' array
                 this.deleteSubscriber(event.stream.streamManager);
               });
+
               mySession.on('signal:update-host',(event) => {
                 if(this.state.myUserName === event.data) {
-                  this.setState({ 
+                  this.setState({
                   isHost:true,
                   isReady:true,
                   })
@@ -198,16 +205,88 @@ class Game extends Component {
                 })
               })
 
-              mySession.on('signal:player-come', (event) => {
+              mySession.on('signal:game-start', (event)=>{
                 this.setState({
-                  player : this.state.player + 1
+                  readyState: 'start'
                 })
               })
 
-              mySession.on('signal: player-out', (event) => {
+              mySession.on('signal:random-king', (event) => {
+                alert('이번 왕은' + event.data + '님입니다.')
+                if (this.state.myUserName === event.data) {
+                  this.setState({
+                    isKing: true,
+                    servant: undefined,
+                  })
+                } else {
+                  this.setState({
+                    isKing: false,
+                    servant: undefined,
+                  })
+                }
+              })
+
+              mySession.on('signal:you-are-a', (event) => {
                 this.setState({
-                  player : this.state.player - 1
+                  isKing:false,
+                  servant:'가',
                 })
+              })
+
+              mySession.on('signal:you-are-b', (event)=> {
+                this.setState({
+                  isKing:false,
+                  servant:'나',
+                })
+              })
+
+              mySession.on('signal:topic-choice', (event) =>{
+                const topics = event.data.split('***')
+                const title = document.querySelector('.subjectcontent')
+                const suba = document.querySelector('.subjecta')
+                const subb = document.querySelector('.subjectb')
+                title.innerText = topics[0]
+                suba.innerText = '가. ' + topics[1]
+                subb.innerText = '나. ' + topics[2]
+                alert(`이번 주제는 ${topics[0]} 입니다.`)
+              })
+
+              mySession.on('signal:choice-a', (event) => {
+                alert('왕이 가. 를 선택하였습니다.')
+                if (this.state.servant === '가') {
+                  this.setState({
+                    coin: this.state.coin +1
+                  })
+                  alert('코인을 1개 휙득하였습니다.')
+                }
+              })
+
+              mySession.on('signal:choice-b', (event) => {
+                alert('왕이 나. 를 선택하였습니다.')
+                if (this.state.servant === '나') {
+                  this.setState({
+                    coin : this.state.coin + 1
+                  })
+                  alert('코인을 1개 휙득하였습니다.')
+                }
+              })
+
+              mySession.on('signal:countcoin', (event) => {
+                if (this.state.coin > 1) {
+                  mySession.signal({
+                    data: this.state.myUserName,
+                    to: [],
+                    type:'doublecoin'
+                  })
+                }
+              })
+
+              mySession.on('signal:doublecoin', (event) => {
+                if (!this.state.kingList.includes(event.data)) {
+                  this.setState({
+                    kingList : [...this.state.kingList, event.data]
+                  })
+                }
               })
 
               // --- 4) Connect to the session with a valid user token ---
@@ -382,7 +461,6 @@ class Game extends Component {
 
   readyClick() {
     const mySession = this.state.session;
-
     if (this.state.isReady === false) {
       mySession.signal({
         to: [],
@@ -424,19 +502,75 @@ class Game extends Component {
     });
   }
 
+  getPlayer() {
+    return new Promise((resolve, reject) => {
+      $.ajax({
+        type: 'GET',
+        url: `https://${window.location.hostname}:4443/openvidu/api/sessions/${
+          this.state.mySessionId
+        }/connection`,
+
+        headers: {
+          Authorization: `Basic ${btoa(
+            `OPENVIDUAPP:${OPENVIDU_SERVER_SECRET}`
+          )}`,
+        },
+        success: (response) => {
+          let content = response.content;
+          resolve(content);
+        },
+        error: (error) => reject(error),
+      })
+    })
+  }
+
+  getRandomKing() {
+    this.getPlayer().then((content) => {
+      const RandomKing = _.sample(content)
+      console.log(JSON.parse(RandomKing.clientData).clientData)
+      console.log(content)
+      const mySession = this.state.session
+      mySession.signal({
+        data: JSON.parse(RandomKing.clientData).clientData,
+        to: [],
+        type: 'random-king'
+      }).then()
+      
+      for (var i = 0; i < content.length; i++) {
+        if (content[i] === RandomKing) {
+          content.splice(i,1);
+          i--;
+        }
+      }
+      console.log(content)
+      console.log('왕빼고 남은 유저' + content)
+      
+      let len = content.length / 2
+      console.log(len)
+      if ( len % 1 === 0.5) {
+        const x = _.sample([0.5 , -0.5])
+        len = len + x
+      }
+      console.log(len)
+
+      let suba = _.sampleSize(content, len)
+      let subb = content.filter((element) => !suba.includes(element))
+      console.log('hi')
+      console.log(suba)
+      mySession.signal({
+        to: suba,
+        type: 'you-are-a'
+      })
+      console.log(subb)
+      mySession.signal({
+        to: subb,
+        type: 'you-are-b'
+      })
+    });
+  }
+
   start() {
     let players = this.state.subscribers.length +1
-    console.log(this.state.readyPlayer +'준비된자')
-    console.log(this.state.subscribers.length + 1)
-    // if (players < 3 ) {
-    //   alert('게임에 필요한 인원수 가 부족합니다.')
-    // } else {
-    //   if ( this.state.readyPlayer !== players ) {
-    //     alert('모든 플레이어가 준비되지 않았습니다.')
-    //   } else {
-    //     alert('게임 시작!!')
-    //   }
-    // }
 
     if (players < 3 ) {
       alert('게임에 필요한 인원이 부족합니다.')
@@ -450,15 +584,85 @@ class Game extends Component {
         this.setState ({
           readyState : 'start'
         })
+
+        const mySession = this.state.session
+        mySession.signal({
+          to: [],
+          type: 'game-start'
+        })
+        .then(this.getRandomKing())
+        .then(this.choiceTopic());
       }
     }
   };
 
-  render(){
+  choiceTopic() {
+    const topic1 = {
+      "topic":"안건1",
+      "answer_A":"A1",
+      "answer_B":"B1",
+      }
+    const topic2 = {
+      "topic":"안건2",
+      "answer_A":"A2",
+      "answer_B":"B2",
+      }
+    const topic3 = {
+      "topic":"안건3",
+      "answer_A":"A3",
+      "answer_B":"B3",
+    }
+    const topics = [topic1, topic2, topic3]
+
+    const topic = _.sample(topics)
+    console.log(topic)
+    const mySession = this.state.session
+    mySession.signal({
+      data: `${topic.topic}***${topic.answer_A}***${topic.answer_B}`,
+      to: [],
+      type: 'topic-choice',
+    })
+  }
+
+  async choiceA() {
+    const mySession = this.state.session
     
+    mySession.signal({
+      to:[],
+      type:'choice-a'
+    })
+    await mySession.signal({
+      to:[],
+      type:'countcoin',
+    })
+  }
+
+  async choiceB() {
+    const mySession = this.state.session
+    
+    mySession.signal({
+      to:[],
+      type:'choice-b'
+    })
+    await mySession.signal({
+      to:[],
+      type:'countcoin',
+    })
+  }
+
+  countCoin() {
+    const mySession = this.state.session
+    mySession.signal({
+      to: [],
+      type:'countcoin',
+    })
+  }
+
+  render(){
     const messages = this.state.messages;
     const sub1 = this.state.subscribers.slice(0,3)
     const sub2 = this.state.subscribers.slice(3,6)
+
     console.log(this.state.subscribers)
     return (
       <div className="gamediv">
@@ -482,9 +686,38 @@ class Game extends Component {
               <div className="titlecontent">
                 <p className="subject">안건</p>
                 <p className="subjectcontent">남녀사이엔 친구가 존재하는가.</p>
-                <p>가. 남녀사이엔 친구가 존재 한다.</p>
-                <p>나. 아니다. 남녀사이에 친구가 왠 말이냐</p>
+                <p className="subjecta">가. 남녀사이엔 친구가 존재 한다.</p>
+                <p className="subjectb">나. 아니다. 남녀사이에 친구가 왠 말이냐</p>
               </div>
+              {this.state.readyState === 'start' ? (
+                this.state.isKing === true? (
+                  <div className='buttondiv'>
+                    <Button className="button" variant="danger" onClick={() => this.choiceA()}>가. </Button>{' '}
+                    <Button className="button" variant="warning" onClick={() => this.choiceB()}>나. </Button>
+                  </div>
+                ) : (this.state.servant === '가' ? 
+                  <div className="servantdiv">
+                    <p>가. 진영</p>
+                    <div className="servantinfo">
+                      <p>코인 : {this.state.coin}개</p>
+                      <p>왕 : {this.state.kingCount}회</p>
+                    </div>
+                  </div>
+                 : 
+                 <div className="servantdiv">
+                  <p>나. 진영</p>
+                  <div className="servantinfo">
+                    <p>코인 : {this.state.coin}개</p>
+                    <p>왕 : {this.state.kingCount}회</p>
+                  </div>
+                 </div>)
+              ): null}
+              {/* {this.state.isKing === true ? (
+                <div className='buttondiv'>
+                  <Button className="button" variant="danger">가. </Button>{' '}
+                  <Button className="button" variant="warning">나. </Button>
+                </div>
+              ): null} */}
             </div>
           </div>
         </div>
@@ -530,13 +763,7 @@ class Game extends Component {
             ):(this.state.isReady === false ?
               <img className="ready-icon" alt="ready" src={ready} onClick={() => this.readyClick()}/>
               :<img className="ready-icon" alt="ready" src={ready_ok} onClick={() => this.readyClick()}/>)}
-            {/* {this.state.isHost === true ? (
-                    <img className="ready-icon" alt="ready" src={start} onClick={() => this.readyClick()}/>
-                ) : <img className="ready-icon" alt="ready" src={ready_ok} onClick={() => this.readyClick()}/>}
-            {this.state.isReady === false ? (
-                    <img className="ready-icon" alt="ready" src={ready} onClick={() => this.readyClick()}/>
-                ) : <img className="ready-icon" alt="ready" src={ready_ok} onClick={() => this.readyClick()}/>} */}
-            <img className="icon" alt="invite" src={invite}/>
+            <img className="icon" alt="invite" src={invite} onClick={() => console.log(this.state.kingList)}/>
             <img className="icon" alt="exit" src={exit} onClick={() => this.updateHost()}/>
           </div>
         </div>
@@ -551,7 +778,7 @@ class Game extends Component {
   createSession(sessionId) {
       return new Promise((resolve, reject) => {
           var data = JSON.stringify({ customSessionId: sessionId });
-          axios
+          axios1
               .post(OPENVIDU_SERVER_URL + '/openvidu/api/sessions', data, {
                   headers: {
                       Authorization: 'Basic ' + btoa('OPENVIDUAPP:' + OPENVIDU_SERVER_SECRET),
@@ -592,7 +819,7 @@ class Game extends Component {
   createToken(sessionId) {
       return new Promise((resolve, reject) => {
           var data = {};
-          axios
+          axios1
               .post(OPENVIDU_SERVER_URL + "/openvidu/api/sessions/" + sessionId + "/connection", data, {
                   headers: {
                       Authorization: 'Basic ' + btoa('OPENVIDUAPP:' + OPENVIDU_SERVER_SECRET),

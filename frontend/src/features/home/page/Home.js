@@ -4,6 +4,7 @@ import styled from "styled-components";
 import {Link} from "react-router-dom";
 import homebase from "../../../assets/images/homebase.png"
 import homelogo from "../../../assets/images/homelogo.png"
+import NavBar from "../../../common/navbar/NavBar";
 
 //메인페이지 배경화면 Container
 const Container = styled.div`
@@ -23,19 +24,8 @@ const Container = styled.div`
 const Section = styled.div`
     width: 100%;
     height: 50%;
-    float: left;`
-
-//로그인 버튼(임시)
-const LoginButton = styled.button`
-    position: absolute;
-    right: 0px;
-    bottom: 0px;`
-
-//회원가입 버튼(임시)
-const JoinButton = styled.button`
-    position: absolute;
-    right: 0px;
-    bottom: 2em;`
+    float: left;
+    `
 
 //로고 영역
 const LogoWrapper = styled.div`
@@ -47,6 +37,7 @@ const LogoWrapper = styled.div`
   height: fit-content;
   margin: 0 auto;
   `
+  
 //로고 세부 영역
 const SecondLogoWrapper = styled.div`
   align-self: self-start;
@@ -91,6 +82,9 @@ const OfficialButton = styled.button`
     font-weight: 500;
     transition: 0.3s;
     font-size: 40px;
+    &:hover {
+        transform: scale(1.2);
+      }
 `
 //자유 경연 버튼
 const FreeButton = styled.button`
@@ -111,6 +105,9 @@ const FreeButton = styled.button`
     font-weight: 500;
     transition: 0.3s;
     font-size: 40px;
+    &:hover {
+        transform: scale(1.2);
+    }
 `
 
 
@@ -120,8 +117,9 @@ function home() {
     return (
         
             <Container>
-
                 <Section>
+                <NavBar>
+                </NavBar>
                 <LogoWrapper>
                     <SecondLogoWrapper>
                         <Logo src={homelogo}></Logo>
@@ -135,9 +133,6 @@ function home() {
                     <Link to="/custom"><FreeButton>자유 경연</FreeButton></Link>
                 </ArguementGroup>
                 </Section>
-
-                <LoginButton><Link to="/login">로그인테스트</Link></LoginButton>
-                <JoinButton><Link to="/signin">회원가입테스트</Link></JoinButton>
 
             </Container>
     );

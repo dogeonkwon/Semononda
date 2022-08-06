@@ -19,8 +19,8 @@ public class GameRecord extends BaseEntity{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	int uid;
 	
-	@Column(name="player_uid")
-	int playerUid;
+	@Column(name="user_uid")
+	int userUid;
 	
 	@Column(name="total_goldfinch")
 	int totalGoldfinch;

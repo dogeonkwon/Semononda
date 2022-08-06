@@ -1,17 +1,18 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { deleteToken, saveToken } from '../../common/api/JWT-common';
+import { saveToken } from '../../common/api/JWT-common';
 import axios from '../../common/api/http-common';
 
 // 메서드 전체 REST API, params 필요
 // 회원가입
 export const signup = createAsyncThunk(
   'SIGNUP',
-  async (userInfo, { rejectWithValue }) => {
+  async (userInfo) => {
     try {
       const response = await axios.post('/user/signin', userInfo);
       return response;
     } catch (err) {
-      return rejectWithValue(err.response);
+      console.log(err.response);
+      return err.response.status;
     }
   }
 );
@@ -19,7 +20,7 @@ export const signup = createAsyncThunk(
 // 닉네임 중복 검사
 export const checkNickname = createAsyncThunk(
   'CHECK_NICKNAME',
-  async (nickname, { rejectWithValue }) => {
+  async (nickname) => {
     try {
       console.log(nickname)
       const response = await axios.get('/user/nickname-info',{
@@ -27,15 +28,15 @@ export const checkNickname = createAsyncThunk(
       });
       return response;
     } catch (err) {
-      return rejectWithValue(err.response);
+      return err.response.status;
     }
   }
 );
 
 // 아이디 중복 검사
 export const checkId = createAsyncThunk(
-  'CHECK_NICKNAME',
-  async (user_id, { rejectWithValue }) => {
+  'CHECK_ID',
+  async (user_id) => {
     try {
       console.log("user_id",user_id)
       const response = await axios.get('/user/id-info',{
@@ -43,7 +44,8 @@ export const checkId = createAsyncThunk(
       });
       return response;
     } catch (err) {
-      return rejectWithValue(err.response);
+      console.log("err_response",err.response.status);
+      return err.response.status;
     }
   }
 );
@@ -51,41 +53,32 @@ export const checkId = createAsyncThunk(
 // 로그인
 export const login = createAsyncThunk(
   'LOGIN',
-  async (loginInfo, { rejectWithValue }) => {
+  async (loginInfo) => {
     try {
       console.log("loginInfo", loginInfo)
       const response = await axios.post('/v1/auth/login', loginInfo);
       console.log("response",response)
       const {
-        data: { token },
+        data: { accessToken },
       } = response;
-      saveToken(token);
+      saveToken(accessToken);
       return response;
     } catch (err) {
-      return rejectWithValue(err.response);
+      console.log("Axios",err.response.status)
+      //console.log("rejectWithValue",rejectWithValue(err.response.status));
+      return (err.response.status);
     }
   }
 );
 
-// 로그아웃
-export const logout = createAsyncThunk(
-  'LOGOUT',
-  async (arg, { rejectWithValue }) => {
-    try {
-      const response = await axios.post('/api/auth/logout');
-      deleteToken();
-      return response;
-    } catch (err) {
-      return rejectWithValue(err.response);
-    }
-  }
-);
-
+//내 정보 가져오기
 export const loadUser = createAsyncThunk(
   'LOAD_USER',
-  async (arg, { rejectWithValue }) => {
+  async (id, { rejectWithValue }) => {
     try {
-      const response = await axios.get('api/user/me');
+      const response = await axios.get('/user/user-info',{
+      params: {id}
+      });
       return response.data;
     } catch (err) {
       return rejectWithValue(err.response);
@@ -106,21 +99,20 @@ export const checkPassword = createAsyncThunk(
   }
 );
 
-// 닉네임 변경
-export const modifyNickname = createAsyncThunk(
+// 유저정보 변경
+export const modifyUserInfo = createAsyncThunk(
   'MODIFY_NICKNAME',
-  async ({ newNickname }, { rejectWithValue }) => {
-    const data = {
-      changeNickname: newNickname,
-    };
+  async (userInfo, { rejectWithValue }) => {
     try {
-      const response = await axios.put('/api/user/nickname', data);
+      const response = await axios.put('/user/profile', userInfo);
+      console.log("modify_response",response);
       return response;
     } catch (err) {
       return rejectWithValue(err.response);
     }
   }
 );
+
 
 // 비밀번호 변경
 export const modifyPassword = createAsyncThunk(
@@ -154,6 +146,7 @@ export const deleteUser = createAsyncThunk(
 const initialState = {
   user: {},
   isAdmin: false,
+  isAuthenticated: false,
   isNicknameChecked: false,
   isLoading: false,
   isIdChecked: false,
@@ -161,7 +154,7 @@ const initialState = {
 
 // slice
 const userSlice = createSlice({
-  name: 'auth',
+  name: 'user',
   initialState,
   reducers: {
     setNicknameCheckedFalse: (state) => {
@@ -171,8 +164,10 @@ const userSlice = createSlice({
       state.isIdChecked = false;
     },
     resetUser: (state) => {
+      console.log(state.user);
       state.user = {};
       state.isAdmin = false;
+      console.log(state);
     },
   },
   extraReducers: {
@@ -189,9 +184,7 @@ const userSlice = createSlice({
       state.isAuthenticated = true;
     },
     [login.rejected]: (state) => {
-      state.isAuthenticated = false;
-    },
-    [logout.fulfilled]: (state) => {
+      console.log("state",state);
       state.isAuthenticated = false;
     },
     [checkNickname.fulfilled]: (state) => {
@@ -204,17 +197,14 @@ const userSlice = createSlice({
       state.isIdChecked = true;
     },
     [checkId.rejected]: (state) => {
+      console.log("state",state);
       state.isIdChecked = false;
     },
-    [modifyNickname.fulfilled]: (state) => {
+    [modifyUserInfo.fulfilled]: (state) => {
       state.isNicknameChecked = false;
     },
     [loadUser.fulfilled]: (state, action) => {
-      const { roles } = action.payload;
-      if (roles[0].roleName === 'ROLE_ADMIN') {
-        state.isAdmin = true;
-      }
-      state.user = action.payload;
+      state.user = action.payload;;
     },
   },
 });

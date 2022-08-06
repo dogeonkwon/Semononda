@@ -12,14 +12,14 @@ import javax.persistence.*;
 @Entity
 @Getter
 @Setter
-@Table(name="selected_topic")
+@Table(name="selected_topics")
 public class SelectedTopic extends BaseEntity{
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	int uid;
 	
-	@Column(name="game_conference_room_uid")
+	@Column(name="game_conference_rooms_uid")
 	int gameConferenceRoomUid;
 	
 	@Column(name="game_category_topics_uid")
