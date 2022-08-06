@@ -61,7 +61,7 @@ public class RoomResponse {
 			return null;
 		} else {
 			RoomResponse res = new RoomResponse();
-			res.setUid(room.getGameCategoriesUid());
+			res.setUid(room.getUid());
 			res.setNormal(room.isNormal());
 			res.setGameCategoriesUid(room.getGameCategoriesUid());
 			res.setGameCategoryTopicsUid(room.getGameCategoryTopicsUid());

@@ -14,13 +14,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ssafy.api.request.BoardRequest;
 import com.ssafy.api.request.RoomRequest;
-import com.ssafy.api.response.BoardResponse;
 import com.ssafy.api.response.RoomResponse;
 import com.ssafy.api.service.RoomService;
 import com.ssafy.common.model.response.BaseResponseBody;
-import com.ssafy.db.entity.Board;
 import com.ssafy.db.entity.GameConferenceRoom;
 
 import io.swagger.annotations.Api;
