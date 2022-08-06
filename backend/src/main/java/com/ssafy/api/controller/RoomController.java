@@ -40,14 +40,15 @@ public class RoomController {
 	@ApiOperation(value = "게임 방 생성(등록)", notes = "게임방 생성(등록)")
 	@ApiResponses({ @ApiResponse(code = 200, message = "성공"), @ApiResponse(code = 401, message = "인증 실패"),
 			@ApiResponse(code = 404, message = "게임방 없음"), @ApiResponse(code = 500, message = "서버 오류") })
-	public ResponseEntity<? extends BaseResponseBody> createRoom(
+	public ResponseEntity<RoomResponse> createRoom(
 			@RequestBody @ApiParam(value = "방 정보", required = true) RoomRequest roomInfo) {
 
 		System.out.println("방 생성 controller");
 		System.out.println(roomInfo.toString());
 		GameConferenceRoom room = roomService.createRoom(roomInfo);
 
-		return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
+		
+		return ResponseEntity.status(200).body(RoomResponse.of(200, "Success", room));
 	}
 	
 	@GetMapping("/normal/list")
