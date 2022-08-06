@@ -110,8 +110,8 @@ function home() {
         
             <Container>
                 
-                <NavBar />
                 <Section>
+                <NavBar />
                 <LogoWrapper>
                     <SecondLogoWrapper>
                         <Logo src={homelogo}></Logo>

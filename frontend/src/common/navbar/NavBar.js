@@ -14,12 +14,16 @@ import * as GoIcons from 'react-icons/go';
 import * as IoIcons from 'react-icons/io';
 import ProgressBar from 'react-bootstrap/ProgressBar';
 import { getToken, deleteToken } from '../../common/api/JWT-common';
-import { NavDropdown } from "react-bootstrap";
+import { Dropdown, NavDropdown } from "react-bootstrap";
 
 function NavBar() {
 
   const history = useNavigate();
   
+  //로컬스토리지 
+  let loginInfoString = window.localStorage.getItem("login_user");
+  let loginInfo = JSON.parse(loginInfoString);
+
   const token = getToken();
   useEffect(()=>{
     console.log(token);
@@ -41,21 +45,25 @@ function NavBar() {
   return (
     <>
       {[false].map((expand) => (
-        <Navbar key={expand} expand={expand} className="navbar mb-3">
-          <Container fluid>
+        <Navbar key={expand} expand={expand} className="navbar mb-3" style={{width:"100%", justifyContent:"space-between", textAlign:"center"}}>
+          <Container >
             <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${expand}`} />
               <Link to="/rank"><button className="formula">공식경연</button></Link>  
               <Link to="/"><Logo className="logo" src={logo} /></Link>
               <Link to="/custom"><button className="custom">자유경연</button></Link>
               {token ?
                (
-                  <Nav>   
+                  <Dropdown align={"start"}>   
                   {/* <CgProfile className="profile" color="black" size="50" onClick={logoutHandler}></CgProfile> */}
-                    <NavDropdown title="안녕하세요">
-                     <NavDropdown.Item onClick={logoutHandler}>로그아웃</NavDropdown.Item>
-                     <NavDropdown.Item onClick={myPageHandler}>마이페이지</NavDropdown.Item>
-                    </NavDropdown>
-                  </Nav>
+                    <Dropdown.Toggle variant="Secondary" style={{backgroundColor: "#4A4A4A", color: "white", fontWeight:"bold"}}>
+                      {loginInfo.nickname}
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu variant="dark" style={{float:"right", textAlign:"center"}}>
+                     <Dropdown.Item onClick={logoutHandler}>로그아웃</Dropdown.Item>
+                     <Dropdown.Divider/>
+                     <Dropdown.Item onClick={myPageHandler}>마이페이지</Dropdown.Item>
+                    </Dropdown.Menu>
+                  </Dropdown>
                ):
                (<Link to="/login"><button className="btn-login">로그인</button></Link>)
               }

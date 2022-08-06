@@ -211,6 +211,7 @@ function MyPage() {
     setIsCheckpassword(false);
     setIsNewPassword(false);
   }
+  
   //로컬스토리지 
   let loginInfoString = window.localStorage.getItem("login_user");
   let loginInfo = JSON.parse(loginInfoString);
