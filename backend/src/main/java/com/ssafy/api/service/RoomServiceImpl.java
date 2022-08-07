@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 
 import com.ssafy.api.request.RoomRequest;
 import com.ssafy.db.entity.GameConferenceRoom;
+import com.ssafy.db.entity.User;
+import com.ssafy.db.repository.GameCategoryRepositorySupport;
 import com.ssafy.db.repository.RoomRepository;
 import com.ssafy.db.repository.RoomRepositorySupport;
 
@@ -33,6 +35,10 @@ public class RoomServiceImpl implements RoomService {
 		GameConferenceRoom room = new GameConferenceRoom();
 		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 
+		// 유저 id 받아서 uid로 변경
+		System.err.println("id : " + roomRegisterInfo.getId());
+		User user = roomRepositorySupport.findUserUidById(roomRegisterInfo.getId());
+		System.err.println(user.getId());
 		// 랜덤 문자열 생성
 		Random random = new Random();
 		int length = random.nextInt(10) + 10;
@@ -59,7 +65,8 @@ public class RoomServiceImpl implements RoomService {
 		room.setNormal(roomRegisterInfo.isNormal());
 		room.setGameCategoriesUid(roomRegisterInfo.getGameCategoriesUid());
 		room.setGameCategoryTopicsUid(roomRegisterInfo.getGameCategoryTopicsUid());
-		room.setRoomAdminUserUid(roomRegisterInfo.getRoomAdminUserUid());
+		// room.setRoomAdminUserUid(roomRegisterInfo.getRoomAdminUserUid());
+		room.setRoomAdminUserUid(user.getUid());
 		room.setConferenceRoomUrl(url);
 		room.setStartTime(timestamp);
 		room.setCustomPassword(roomRegisterInfo.getCustomPassword());
@@ -68,7 +75,8 @@ public class RoomServiceImpl implements RoomService {
 		room.setCustomAnswerA(roomRegisterInfo.getCustomAnswerA());
 		room.setCustomAnswerB(roomRegisterInfo.getCustomAnswerB());
 		room.setGameStart(roomRegisterInfo.isGameStart());
-		return roomRepository.save(room);
+		roomRepository.save(room);
+		return room;
 
 	}
 
@@ -128,6 +136,19 @@ public class RoomServiceImpl implements RoomService {
 	public List<GameConferenceRoom> findCustomRoomByRoomTitle(String title) {
 		System.err.println("custom ServiceImpl title: " + title);
 		return roomRepositorySupport.findCustomRoomByTitle(title);
+	}
+
+	@Override
+	public GameConferenceRoom findRoomByUrl(String url) {
+		GameConferenceRoom room = new GameConferenceRoom();
+		room = roomRepositorySupport.findRoomByUrl(url);
+		return room;
+	}
+
+	@Override
+	public User findUserUidById(String id) {
+
+		return roomRepositorySupport.findUserUidById(id);
 	}
 
 }
