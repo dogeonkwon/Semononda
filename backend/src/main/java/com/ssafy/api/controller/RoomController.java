@@ -16,9 +16,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.api.request.RoomRequest;
 import com.ssafy.api.response.RoomResponse;
+import com.ssafy.api.response.UserResponse;
 import com.ssafy.api.service.RoomService;
 import com.ssafy.common.model.response.BaseResponseBody;
 import com.ssafy.db.entity.GameConferenceRoom;
+import com.ssafy.db.entity.User;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -33,13 +35,30 @@ public class RoomController {
 	@Autowired
 	RoomService roomService;
 
+///////////////////////////
+	@GetMapping("/user")
+	@ApiOperation(value = "uid로 room 검색 ", notes = "uid로 room검색")
+	@ApiResponses({ @ApiResponse(code = 200, message = "성공"), @ApiResponse(code = 401, message = "인증 실패"),
+			@ApiResponse(code = 404, message = "게임방 없음"), @ApiResponse(code = 500, message = "서버 오류") })
+	public ResponseEntity<UserResponse> findUserUidById(
+			@ApiParam(value = "room uid", required = true) @RequestParam("id") String id) {
+
+		User user = roomService.findUserUidById(id);
+		if (user == null) {
+			return ResponseEntity.status(400).body(UserResponse.of(400, "Bad responce", user));
+		} else {
+			return ResponseEntity.status(200).body(UserResponse.of(200, "Success", user));
+		}
+	}
+	//////////////////////////
+
 	@PostMapping("/create")
 	@ApiOperation(value = "게임 방 생성(등록)", notes = "게임방 생성(등록)")
 	@ApiResponses({ @ApiResponse(code = 200, message = "성공"), @ApiResponse(code = 401, message = "인증 실패"),
 			@ApiResponse(code = 404, message = "게임방 없음"), @ApiResponse(code = 500, message = "서버 오류") })
 	public ResponseEntity<RoomResponse> createRoom(
 			@RequestBody @ApiParam(value = "방 정보", required = true) RoomRequest roomInfo) {
-
+		
 		System.out.println("방 생성 controller");
 		System.out.println(roomInfo.toString());
 		GameConferenceRoom room = roomService.createRoom(roomInfo);
@@ -89,7 +108,7 @@ public class RoomController {
 			return ResponseEntity.status(200).body(RoomResponse.of(200, "Success", room));
 		}
 	}
-	
+
 	@GetMapping("/url")
 	@ApiOperation(value = "url로 room 검색 ", notes = "url로 room검색")
 	@ApiResponses({ @ApiResponse(code = 200, message = "성공"), @ApiResponse(code = 401, message = "인증 실패"),
