@@ -1,24 +1,23 @@
 package com.ssafy.db.repository;
 
 import java.util.List;
-import java.util.Optional;
-
-import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.ssafy.api.request.RoomRequest;
-import com.ssafy.db.entity.Board;
 import com.ssafy.db.entity.GameConferenceRoom;
+import com.ssafy.db.entity.User;
 import com.ssafy.db.qentity.QGameConferenceRoom;
+import com.ssafy.db.qentity.QUser;
 
 @Repository
 public class RoomRepositorySupport {
 	@Autowired
 	private JPAQueryFactory jpaQueryFactory;
 	QGameConferenceRoom qRoom = QGameConferenceRoom.gameConferenceRoom;
+	QUser quser = QUser.user;
 
 	public GameConferenceRoom findRoomByUid(int uid) {
 		GameConferenceRoom room = jpaQueryFactory.select(qRoom).from(qRoom).where(qRoom.uid.eq(uid)).fetchOne();
@@ -67,6 +66,15 @@ public class RoomRepositorySupport {
 		GameConferenceRoom room = jpaQueryFactory.select(qRoom).from(qRoom).where(qRoom.conferenceRoomUrl.eq(url))
 				.fetchOne();
 		return room;
+	}
+
+	public User findUserUidById(String id) {
+		System.err.println("support");
+		System.err.println(id);
+		User user = jpaQueryFactory.select(Projections.fields(User.class, quser.uid.as("uid"))).from(quser)
+				.where(quser.id.eq(id)).fetchOne();
+		System.err.println("들어오나?");
+		return user;
 	}
 
 //	//게임이 시작 되었는지 확인하는 메소드

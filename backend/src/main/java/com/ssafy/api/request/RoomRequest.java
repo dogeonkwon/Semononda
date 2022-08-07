@@ -27,6 +27,9 @@ public class RoomRequest {
 	@ApiModelProperty(name = "방 고유  Uid", example = "1")
 	int uid;
 
+	@ApiModelProperty(name = "방장 id", example = "ssafy")
+	String id;
+	
 	@ApiModelProperty(name = "노말모드 인지 확인하는 변수", example = "True")
 	boolean normal;
 
@@ -36,8 +39,8 @@ public class RoomRequest {
 	@ApiModelProperty(name = "게임 토픽별 Uid", example = "1")
 	int gameCategoryTopicsUid;
 
-	@ApiModelProperty(name = "방장 Uid", example = "1")
-	int roomAdminUserUid;
+	@ApiModelProperty(name = "방장 id", example = "ssafy")
+	String roomAdminUserId;
 
 	@ApiModelProperty(name = "방 url", example = "/sadas123")
 	String conferenceRoomUrl;
