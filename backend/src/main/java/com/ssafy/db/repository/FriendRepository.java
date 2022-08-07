@@ -8,5 +8,5 @@ import com.ssafy.db.entity.User;
 
 @Repository
 public interface FriendRepository extends JpaRepository<Friend, Long>{
-	//User findUidByNickname(String nickname);
+	
 }

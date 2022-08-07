@@ -17,9 +17,9 @@ public class FriendRequest {
 	@ApiModelProperty(name = "친구 신청받은 사람 uid", example = "5")
 	int friendReceiverUid;
 	
-//	@ApiModelProperty(name = "친구 신청자 닉네임", example = "ssafy1")
-//	String friendRequesterNickname;
-//
-//	@ApiModelProperty(name = "친구 신청받은 사람 닉네임", example = "ssafy2")
-//	String friendReceiverNickname;
+	@ApiModelProperty(name = "친구 신청자 닉네임", example = "ssafy1")
+	String friendRequesterNickname;
+
+	@ApiModelProperty(name = "친구 신청받은 사람 닉네임", example = "ssafy2")
+	String friendReceiverNickname;
 }
