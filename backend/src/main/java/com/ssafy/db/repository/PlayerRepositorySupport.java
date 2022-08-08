@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.ssafy.api.response.TopicsWinnerRes;
 import com.ssafy.db.entity.Accusation;
 import com.ssafy.db.entity.GameCategoryTopic;
 import com.ssafy.db.entity.GameConferenceRoom;
@@ -251,7 +252,7 @@ public class PlayerRepositorySupport {
 	}
 
 	@Transactional
-	public User getRoundStart(int gameConferenceRoomUid) {
+	public TopicsWinnerRes getRoundStart(int gameConferenceRoomUid) {
 		Random random = new Random();
 		ArrayList<Player> playerList = new ArrayList();
 		ArrayList<GameCategoryTopic> topicList = new ArrayList();
@@ -346,9 +347,10 @@ public class PlayerRepositorySupport {
 		User randomKingUser = jpaQueryFactory.selectFrom(qUser).where(qUser.uid.eq(nextKing.getUsersUid()))
 				.fetchOne();
 		// 서버 로그 출력
+		User winner = null;
 		System.out.println("UID" + gameConferenceRoomUid + "번방의 의 왕이 " + randomKingUser.getNickname() + "으로 선정됨.");
 		if(jpaQueryFactory.select(qPlayer.kingCount).from(qPlayer).where(qPlayer.usersUid.eq(randomKingUser.getUid())).fetchOne()>=3) {
-			return randomKingUser;
+			winner = randomKingUser;
 		}
 		//팀 배정
 		playerList = new ArrayList();
@@ -421,7 +423,7 @@ public class PlayerRepositorySupport {
 		sb.append("\n");
 		System.out.println(sb);
 		
-		return null;
+		return TopicsWinnerRes.of(randomTopic, winner);
 	}
 
 	@Transactional

@@ -1,8 +1,7 @@
 package com.ssafy.api.service;
 
-import com.ssafy.db.entity.GameCategoryTopic;
+import com.ssafy.api.response.TopicsWinnerRes;
 import com.ssafy.db.entity.Player;
-import com.ssafy.db.entity.User;
 
 /**
  *	유저 관련 비즈니스 로직 처리를 위한 서비스 인터페이스 정의.
@@ -14,7 +13,7 @@ public interface GameService {
 	void makeRandomTeam(int gameConferenceRoomUid);
 	void gameStart(int gameConferenceRoomUid);
 	void changePenalty(int gameConferenceRoomUid, String userID, int penalty);
-	User getRoundStart(int gameConferenceRoomUid);
+	TopicsWinnerRes getRoundStart(int gameConferenceRoomUid);
 	Player getRoundEnd(int gameConferenceRoomUid, String winTeam);
 	void normalGameEnd(int gameConferenceRoomUid, int userUid);
 	void customGameEnd(int gameConferenceRoomUid);

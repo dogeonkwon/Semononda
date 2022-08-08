@@ -16,6 +16,7 @@ import com.ssafy.api.request.UserLoginPostReq;
 import com.ssafy.api.request.UserRegisterPostReq;
 import com.ssafy.api.response.GameCategoryTopicsRes;
 import com.ssafy.api.response.PlayerRes;
+import com.ssafy.api.response.TopicsWinnerRes;
 import com.ssafy.api.response.UserLoginPostRes;
 import com.ssafy.api.response.UserResponse;
 import com.ssafy.api.service.GameService;
@@ -144,10 +145,10 @@ public class GameController {
         @ApiResponse(code = 404, message = "사용자 없음"),
         @ApiResponse(code = 500, message = "서버 오류")
     })
-	public ResponseEntity<User> getRoundStart(
+	public ResponseEntity<TopicsWinnerRes> getRoundStart(
 			@RequestParam("gameConferenceRoomUid") @ApiParam(value="게임 컨퍼런스룸 Uid 정보", required = true) int gameConferenceRoomUid) {
 
-		User res = gameService.getRoundStart(gameConferenceRoomUid);
+		TopicsWinnerRes res = gameService.getRoundStart(gameConferenceRoomUid);
 		return ResponseEntity.status(200).body(res);
 	}
 	
