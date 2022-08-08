@@ -321,11 +321,13 @@ public class PlayerRepositorySupport {
 				winPlayerList.add(playerList.get(i));
 			}
 		}
+		System.out.println(winPlayerList.size());
 		for (int i = 0; i < winPlayerList.size(); i++) {
 			jpaQueryFactory.update(qPlayer).set(qPlayer.goldfinch, jpaQueryFactory.select(qPlayer.goldfinch)
-					.from(qPlayer).where(qPlayer.uid.eq(winPlayerList.get(i).getUid())).fetchOne() + 1).
-			set(qPlayer.totalGoldfinch, jpaQueryFactory.select(qPlayer.totalGoldfinch)
-							.from(qPlayer).where(qPlayer.uid.eq(winPlayerList.get(i).getUid())).fetchOne() + 1).execute();
+					.from(qPlayer).where(qPlayer.uid.eq(winPlayerList.get(i).getUid())).fetchOne() + 1)
+			.set(qPlayer.totalGoldfinch, jpaQueryFactory.select(qPlayer.totalGoldfinch)
+					.from(qPlayer).where(qPlayer.uid.eq(winPlayerList.get(i).getUid())).fetchOne() + 1)
+			.where(qPlayer.uid.eq(winPlayerList.get(i).getUid())).execute();
 		}
 		// 골드가 업데이트 되어서 다시 불러옴
 		playerList = (ArrayList<Player>) jpaQueryFactory.select(qPlayer).from(qPlayer)

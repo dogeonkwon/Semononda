@@ -164,7 +164,6 @@ public class GameController {
 			@RequestParam("winTeam") @ApiParam(value="승리팀 정보", required = true) String winTeam) {
 
 		Player winner = gameService.getRoundEnd(gameConferenceRoomUid, winTeam);
-		System.out.println(winner.getKingCount());
 		return ResponseEntity.status(200).body(PlayerRes.of(winner));
 	}
 	
