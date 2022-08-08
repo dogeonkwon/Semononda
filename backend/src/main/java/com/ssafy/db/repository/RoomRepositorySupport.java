@@ -68,12 +68,13 @@ public class RoomRepositorySupport {
 		return room;
 	}
 
-	public User findUserUidById(String id) {
-		System.err.println("support");
-		System.err.println(id);
+	public User findUserUidByNickname(String nickname) {
+		System.err.println("support, findUserUidByNickname");
+		System.err.println(nickname);
 		User user = jpaQueryFactory.select(Projections.fields(User.class, quser.uid.as("uid"))).from(quser)
-				.where(quser.id.eq(id)).fetchOne();
+				.where(quser.nickname.eq(nickname)).fetchOne();
 		System.err.println("들어오나?");
+		System.err.println("user : "+user.toString());
 		return user;
 	}
 
