@@ -36,9 +36,9 @@ public class RoomServiceImpl implements RoomService {
 		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 
 		// 유저 id 받아서 uid로 변경
-		System.err.println("id : " + roomRegisterInfo.getId());
-		User user = roomRepositorySupport.findUserUidById(roomRegisterInfo.getId());
-		System.err.println(user.getId());
+		System.err.println("nickname : " + roomRegisterInfo.getNickname());
+		User user = roomRepositorySupport.findUserUidByNickname(roomRegisterInfo.getNickname());
+		System.err.println("serviceimpl안 createRoom: "+user.getNickname());
 		// 랜덤 문자열 생성
 		Random random = new Random();
 		int length = random.nextInt(10) + 10;
@@ -75,6 +75,7 @@ public class RoomServiceImpl implements RoomService {
 		room.setCustomAnswerA(roomRegisterInfo.getCustomAnswerA());
 		room.setCustomAnswerB(roomRegisterInfo.getCustomAnswerB());
 		room.setGameStart(roomRegisterInfo.isGameStart());
+		room.setAdminNickname(roomRegisterInfo.getNickname());
 		roomRepository.save(room);
 		return room;
 
@@ -146,9 +147,9 @@ public class RoomServiceImpl implements RoomService {
 	}
 
 	@Override
-	public User findUserUidById(String id) {
+	public User findUserUidById(String nickname) {
 
-		return roomRepositorySupport.findUserUidById(id);
+		return roomRepositorySupport.findUserUidByNickname(nickname);
 	}
 
 }

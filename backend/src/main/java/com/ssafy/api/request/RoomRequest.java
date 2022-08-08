@@ -28,7 +28,7 @@ public class RoomRequest {
 	int uid;
 
 	@ApiModelProperty(name = "방장 id", example = "ssafy")
-	String id;
+	String nickname;
 	
 	@ApiModelProperty(name = "노말모드 인지 확인하는 변수", example = "True")
 	boolean normal;
