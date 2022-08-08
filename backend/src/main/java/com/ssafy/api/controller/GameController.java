@@ -16,6 +16,7 @@ import com.ssafy.api.request.UserLoginPostReq;
 import com.ssafy.api.request.UserRegisterPostReq;
 import com.ssafy.api.response.GameCategoryTopicsRes;
 import com.ssafy.api.response.PlayerRes;
+import com.ssafy.api.response.TopicsWinnerRes;
 import com.ssafy.api.response.UserLoginPostRes;
 import com.ssafy.api.response.UserResponse;
 import com.ssafy.api.service.GameService;
@@ -39,7 +40,7 @@ import springfox.documentation.annotations.ApiIgnore;
 @Api(value = "게임 API", tags = {"Game"})
 @RestController
 @RequestMapping("/api/game")
-public class GameController {
+public class GameController { 
 	
 	@Autowired
 	GameService gameService;
@@ -53,9 +54,9 @@ public class GameController {
         @ApiResponse(code = 500, message = "서버 오류")
     })
 	public ResponseEntity<PlayerRes> getPlayerInfo(
-			@RequestBody @ApiParam(value="아이디 정보", required = true) UserRequest idInfo) {
+			@RequestParam("userID") @ApiParam(value="플레이어 아이디", required = true) String userId) {
 
-		Player player = gameService.getPlayerByUserId(idInfo.getId());
+		Player player = gameService.getPlayerByUserId(userId);
 		return ResponseEntity.status(200).body(PlayerRes.of(player));
 	}
 	
@@ -68,9 +69,9 @@ public class GameController {
         @ApiResponse(code = 500, message = "서버 오류")
     })
 	public ResponseEntity<? extends BaseResponseBody> playerReady(
-			@RequestBody @ApiParam(value="아이디 정보", required = true) UserRequest idInfo) {
+			@RequestParam("userID") @ApiParam(value="플레이어 아이디", required = true) String userId) {
 
-		gameService.changePlayerReady(idInfo.getId());
+		gameService.changePlayerReady(userId);
 		return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
 	}
 	
@@ -144,11 +145,11 @@ public class GameController {
         @ApiResponse(code = 404, message = "사용자 없음"),
         @ApiResponse(code = 500, message = "서버 오류")
     })
-	public ResponseEntity<GameCategoryTopicsRes> getRoundStart(
+	public ResponseEntity<TopicsWinnerRes> getRoundStart(
 			@RequestParam("gameConferenceRoomUid") @ApiParam(value="게임 컨퍼런스룸 Uid 정보", required = true) int gameConferenceRoomUid) {
 
-		GameCategoryTopic topic = gameService.getRoundStart(gameConferenceRoomUid);
-		return ResponseEntity.status(200).body(GameCategoryTopicsRes.of(topic));
+		TopicsWinnerRes res = gameService.getRoundStart(gameConferenceRoomUid);
+		return ResponseEntity.status(200).body(res);
 	}
 	
 	@GetMapping("/normal/round-end")
@@ -226,6 +227,21 @@ public class GameController {
 			@RequestParam("gameConferenceRoomUid") @ApiParam(value="게임 컨퍼런스룸 Uid 정보", required = true) int gameConferenceRoomUid) {
 
 		gameService.join(userId, gameConferenceRoomUid);
+		return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
+	}
+	@PostMapping("/common/quit")
+	@ApiOperation(value = "방 나가기", notes = "유저 아이디와 컨퍼런스 룸의 UID를 통해 방에서 나간다.") 
+    @ApiResponses({
+        @ApiResponse(code = 200, message = "성공"),
+        @ApiResponse(code = 401, message = "인증 실패"),
+        @ApiResponse(code = 404, message = "사용자 없음"),
+        @ApiResponse(code = 500, message = "서버 오류")
+    })
+	public ResponseEntity<? extends BaseResponseBody> quit(
+			@RequestParam("userId") @ApiParam(value="게임 컨퍼런스룸 Uid 정보", required = true) String userId,
+			@RequestParam("gameConferenceRoomUid") @ApiParam(value="게임 컨퍼런스룸 Uid 정보", required = true) int gameConferenceRoomUid) {
+
+		gameService.quit(userId, gameConferenceRoomUid);
 		return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
 	}
 	

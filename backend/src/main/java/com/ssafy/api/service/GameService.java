@@ -1,6 +1,6 @@
 package com.ssafy.api.service;
 
-import com.ssafy.db.entity.GameCategoryTopic;
+import com.ssafy.api.response.TopicsWinnerRes;
 import com.ssafy.db.entity.Player;
 
 /**
@@ -13,10 +13,11 @@ public interface GameService {
 	void makeRandomTeam(int gameConferenceRoomUid);
 	void gameStart(int gameConferenceRoomUid);
 	void changePenalty(int gameConferenceRoomUid, String userID, int penalty);
-	GameCategoryTopic getRoundStart(int gameConferenceRoomUid);
+	TopicsWinnerRes getRoundStart(int gameConferenceRoomUid);
 	Player getRoundEnd(int gameConferenceRoomUid, String winTeam);
 	void normalGameEnd(int gameConferenceRoomUid, int userUid);
 	void customGameEnd(int gameConferenceRoomUid);
 	void accusation(int gameConferenceRoomUid, int attackerUid, int reporterUid, int accusationUid);
 	void join(String userId, int gameConferenceRoomUid);
+	void quit(String userId, int gameConferenceRoomUid);
 }

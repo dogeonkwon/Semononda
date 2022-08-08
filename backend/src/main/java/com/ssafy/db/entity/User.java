@@ -43,6 +43,7 @@ public class User extends BaseEntity{
     String nickname;
     String img;
     String description;
+
 	@Column(name="number_of_wins")
     int numberOfWins;
 	@Column(name="number_of_loses")
