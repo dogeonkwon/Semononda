@@ -480,14 +480,7 @@ public class PlayerRepositorySupport {
 	@Transactional
 	public void quit(String userId, int gameConferenceRoomUid) {
 		int userUid = jpaQueryFactory.select(qUser.uid).from(qUser).where(qUser.id.eq(userId)).fetchFirst();
-		Player player = new Player();
-		player.setGameConferenceRoomUid(gameConferenceRoomUid);
-		player.setUsersUid(userUid);
-		player.setTeam("A");
-		player.setRoleUid(2);
-		playerRepository.save(player);
-		jpaQueryFactory.delete(qPlayer).where(qPlayer.usersUid
-				.eq(userUid)).execute();
+		jpaQueryFactory.delete(qPlayer).where(qPlayer.usersUid.eq(userUid)).execute();
 	}
 
 
