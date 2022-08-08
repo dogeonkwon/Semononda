@@ -427,7 +427,7 @@ public class PlayerRepositorySupport {
 	}
 
 	@Transactional
-	public Player getRoundEnd(int gameConferenceRoomUid, String winTeam) {
+	public void getRoundEnd(int gameConferenceRoomUid, String winTeam) {
 		Random random = new Random();
 		ArrayList<Player> playerList = new ArrayList();
 		ArrayList<Player> winPlayerList = new ArrayList();
@@ -467,7 +467,6 @@ public class PlayerRepositorySupport {
 			jpaQueryFactory.update(qGameCategoryTopic).set(qGameCategoryTopic.teamBWinCount, thisTopic.getTeamBWinCount()+1)
 			.where(qGameCategoryTopic.uid.eq(topicUid)).execute();
 		}
-		return null;
 	}
 
 	@Transactional

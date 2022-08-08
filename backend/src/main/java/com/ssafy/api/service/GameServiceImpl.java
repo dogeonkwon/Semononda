@@ -64,9 +64,9 @@ public class GameServiceImpl implements GameService {
 	}
 
 	@Override
-	public Player getRoundEnd(int gameConferenceRoomUid, String winTeam) {
-		Player winner = playerRepositorySupport.getRoundEnd(gameConferenceRoomUid, winTeam);
-		return winner;
+	public void getRoundEnd(int gameConferenceRoomUid, String winTeam) {
+		playerRepositorySupport.getRoundEnd(gameConferenceRoomUid, winTeam);
+		return;
 	}
 
 	@Override
