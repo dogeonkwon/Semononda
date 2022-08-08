@@ -18,4 +18,5 @@ public interface GameService {
 	void normalGameEnd(int gameConferenceRoomUid, int userUid);
 	void customGameEnd(int gameConferenceRoomUid);
 	void accusation(int gameConferenceRoomUid, int attackerUid, int reporterUid, int accusationUid);
+	void join(String userId, int gameConferenceRoomUid);
 }

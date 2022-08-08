@@ -2,6 +2,8 @@ import React from "react";
 import { Link } from 'react-router-dom';
 import NavBar from "../../../common/navbar/NavBar";
 import './Custom.css';
+import styled from "styled-components";
+
 
 function Custom() {
 

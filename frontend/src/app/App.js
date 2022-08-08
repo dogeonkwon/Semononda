@@ -7,6 +7,7 @@ import Login from '../features/user/page/Login';
 import SignUp from '../features/user/page/SignUp';
 import Custom from '../features/custom/page/Custom';
 import Rank from '../features/rank/page/Rank';
+import RoomItem from '../features/rank/page/RoomItem';
 import MyPage from '../features/mypage/page/MyPage';
 import EditMyPage from '../features/mypage/page/MyPageEdit';
 import Help from '../features/help/page/Help';
@@ -25,6 +26,7 @@ function App() {
           <Route exact path="/signin" element={<SignUp/>}/>
           <Route exact path="/rank" element={<Rank/>}/>
           <Route exact path="/custom" element={<Custom/>}/>
+          <Route exact path="/roomitem" element={<RoomItem/>}/>
           <Route exact path="/profile" element={<MyPage/>}/>
           <Route exact path="/editprofile" element={<EditMyPage/>}/>
       	  <Route exact path="/game/:id" element={<Game />} />

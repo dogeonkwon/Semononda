@@ -55,9 +55,7 @@ export const login = createAsyncThunk(
   'LOGIN',
   async (loginInfo) => {
     try {
-      console.log("loginInfo", loginInfo)
       const response = await axios.post('/v1/auth/login', loginInfo);
-      console.log("response",response)
       const {
         data: { accessToken },
       } = response;
@@ -117,15 +115,13 @@ export const modifyUserInfo = createAsyncThunk(
 // 비밀번호 변경
 export const modifyPassword = createAsyncThunk(
   'MODIFY_PASSWORD',
-  async ({ newPassword }, { rejectWithValue }) => {
-    const data = {
-      changePassword: newPassword,
-    };
+  async (data) => {
     try {
-      const response = await axios.put('/api/user/password', data);
+      const response = await axios.put('/user/profile/password', data);
       return response;
     } catch (err) {
-      return rejectWithValue(err.response);
+      console.log("err",err);
+      return err.response;
     }
   }
 );

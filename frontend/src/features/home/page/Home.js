@@ -24,8 +24,7 @@ const Container = styled.div`
 const Section = styled.div`
     width: 100%;
     height: 50%;
-    float: left;
-    `
+    float: left;`
 
 //로고 영역
 const LogoWrapper = styled.div`
@@ -37,7 +36,6 @@ const LogoWrapper = styled.div`
   height: fit-content;
   margin: 0 auto;
   `
-  
 //로고 세부 영역
 const SecondLogoWrapper = styled.div`
   align-self: self-start;
@@ -65,7 +63,7 @@ const ArguementGroup = styled.div`
 
 //공식 경연 버튼
 const OfficialButton = styled.button`
-    font-family: JsaHON;
+    font-family: JSArirangHON;
     position: relative;
     border: none;
     min-width: 200px;
@@ -82,13 +80,10 @@ const OfficialButton = styled.button`
     font-weight: 500;
     transition: 0.3s;
     font-size: 40px;
-    &:hover {
-        transform: scale(1.2);
-      }
 `
 //자유 경연 버튼
 const FreeButton = styled.button`
-    font-family: JsaHON;
+    font-family: JSArirangHON;
     position: relative;
     border: none;
     min-width: 200px;
@@ -105,9 +100,6 @@ const FreeButton = styled.button`
     font-weight: 500;
     transition: 0.3s;
     font-size: 40px;
-    &:hover {
-        transform: scale(1.2);
-    }
 `
 
 
@@ -117,8 +109,9 @@ function home() {
     return (
         
             <Container>
-                <NavBar />
+                
                 <Section>
+                <NavBar />
                 <LogoWrapper>
                     <SecondLogoWrapper>
                         <Logo src={homelogo}></Logo>
