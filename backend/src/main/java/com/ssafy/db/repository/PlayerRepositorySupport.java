@@ -314,11 +314,13 @@ public class PlayerRepositorySupport {
 				twoCoinList.add(playerList.get(i));
 			}
 		}
+		boolean isRandomKing = true;
 		// 2개 이상 가지고 있는 플레이어가 존재할 경우
 		if (twoCoinList.size() != 0) {
 			// 그중에서 랜덤으로 왕을 선정
 			int randomIndex = random.nextInt(twoCoinList.size());
 			nextKing = twoCoinList.get(randomIndex);
+			isRandomKing = false;
 		} else { // 2개 이상 가지고 있는 플레이어가 없을 경우.
 			try {
 				playerList = (ArrayList<Player>) jpaQueryFactory.select(qPlayer).from(qPlayer)
@@ -340,9 +342,14 @@ public class PlayerRepositorySupport {
 		jpaQueryFactory.update(qPlayer).set(qPlayer.roleUid, 2)
 		.where(qPlayer.gameConferenceRoomUid.eq(gameConferenceRoomUid)).execute();
 		// 랜덤 왕 역할을 왕(1)으로 설정
-		jpaQueryFactory.update(qPlayer).set(qPlayer.roleUid, 1).set(qPlayer.goldfinch, 0)
-		.set(qPlayer.kingCount, nextKing.getKingCount()+1)
-		.where(qPlayer.usersUid.eq(nextKing.getUsersUid())).execute();
+		if(isRandomKing) {
+			jpaQueryFactory.update(qPlayer).set(qPlayer.roleUid, 1)
+			.where(qPlayer.usersUid.eq(nextKing.getUsersUid())).execute();
+		} else {
+			jpaQueryFactory.update(qPlayer).set(qPlayer.roleUid, 1).set(qPlayer.goldfinch, 0)
+			.set(qPlayer.kingCount, nextKing.getKingCount()+1)
+			.where(qPlayer.usersUid.eq(nextKing.getUsersUid())).execute();
+		}
 		// 랜덤 왕을 맡은 유저 정보
 		User randomKingUser = jpaQueryFactory.selectFrom(qUser).where(qUser.uid.eq(nextKing.getUsersUid()))
 				.fetchOne();
