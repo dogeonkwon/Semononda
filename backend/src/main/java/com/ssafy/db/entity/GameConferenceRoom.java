@@ -59,5 +59,8 @@ public class GameConferenceRoom extends BaseEntity{
 
 	@Column(name = "game_start")
 	boolean gameStart;
+	
+	@Column(name="admin_nickname")
+	String adminNickname;
 
 }
