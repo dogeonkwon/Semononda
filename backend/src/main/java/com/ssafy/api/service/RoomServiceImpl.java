@@ -75,6 +75,7 @@ public class RoomServiceImpl implements RoomService {
 		room.setCustomAnswerA(roomRegisterInfo.getCustomAnswerA());
 		room.setCustomAnswerB(roomRegisterInfo.getCustomAnswerB());
 		room.setGameStart(roomRegisterInfo.isGameStart());
+		room.setAdminNickname(roomRegisterInfo.getNickname());
 		roomRepository.save(room);
 		return room;
 
