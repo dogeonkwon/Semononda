@@ -14,12 +14,13 @@ import Help from '../features/help/page/Help';
 import Statistics from '../features/statistic/page/Statistics';
 import UserRank from '../features/userrank/page/UserRank';
 import NotFound from '../features/notfound/NotFound';
-// import NavBar from "../common/navbar/NavBar";
+import NavBar from "../common/navbar/NavBar";
 
 function App() {
   return (
     <Router>
-      <div>
+
+
         <Routes>
           <Route exact path="/" element={<Main/>}/>
           <Route exact path="/login" element={<Login/>}/>
@@ -35,7 +36,7 @@ function App() {
       	  <Route exact path="/userrank" element={<UserRank />} />
       	  <Route exact path="/*" element={<NotFound />} />
         </Routes>
-      </div>
+    
     </Router>
   );
 }

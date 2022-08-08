@@ -13,18 +13,24 @@ import * as RiIcons from 'react-icons/ri';
 import * as GoIcons from 'react-icons/go';
 import * as IoIcons from 'react-icons/io';
 import ProgressBar from 'react-bootstrap/ProgressBar';
-import { getToken, deleteToken } from '../../common/api/JWT-common';
-import { Dropdown, NavDropdown } from "react-bootstrap";
+import { getToken, deleteToken, getLoginInfoString } from '../../common/api/JWT-common';
+import { Dropdown } from "react-bootstrap";
+import { useSelector } from "react-redux";
 
 function NavBar() {
-
+  console.log("start")
   const history = useNavigate();
-  
+  const user = useSelector((state) => state.isLogin);
+  console.log(user);
   //로컬스토리지 
   let loginInfoString = window.localStorage.getItem("login_user");
+  console.log(loginInfoString);
   let loginInfo = JSON.parse(loginInfoString);
 
   const token = getToken();
+  const logInfo2 = getLoginInfoString();
+  console.log("token", token)
+  console.log("logInfo", logInfo2)
   useEffect(()=>{
     console.log(token);
   },[token]);

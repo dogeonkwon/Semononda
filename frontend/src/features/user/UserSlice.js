@@ -59,6 +59,8 @@ export const login = createAsyncThunk(
       const {
         data: { accessToken },
       } = response;
+      console.log(response);
+      
       saveToken(accessToken);
       return response;
     } catch (err) {
@@ -146,6 +148,7 @@ const initialState = {
   isNicknameChecked: false,
   isLoading: false,
   isIdChecked: false,
+  isLogin: false,
 };
 
 // slice
@@ -165,6 +168,16 @@ const userSlice = createSlice({
       state.isAdmin = false;
       console.log(state);
     },
+    setisLogin: (state)  => {
+      state.isLogin = true;
+    },
+    setisLogout: (state) => {
+      state.isLogin = false;
+    },
+    getisLogin: (state) => {
+      console.log(state.payload);
+      return state.isLogin;
+    }
   },
   extraReducers: {
     [signup.pending]: (state) => {
@@ -180,7 +193,6 @@ const userSlice = createSlice({
       state.isAuthenticated = true;
     },
     [login.rejected]: (state) => {
-      console.log("state",state);
       state.isAuthenticated = false;
     },
     [checkNickname.fulfilled]: (state) => {
@@ -205,5 +217,5 @@ const userSlice = createSlice({
   },
 });
 
-export const { setIdCheckedFasle, setNicknameCheckedFalse, resetUser } = userSlice.actions;
+export const { setIdCheckedFasle, setNicknameCheckedFalse, resetUser, setisLogin, setisLogout, getisLogin } = userSlice.actions;
 export default userSlice.reducer;

@@ -211,7 +211,7 @@ function MyPage() {
     setIsCheckpassword(false);
     setIsNewPassword(false);
   }
-  
+
   //로컬스토리지 
   let loginInfoString = window.localStorage.getItem("login_user");
   let loginInfo = JSON.parse(loginInfoString);
@@ -245,7 +245,7 @@ function MyPage() {
 
   return (
     <Container>
-      <Form style={{width: "50%", heigth:"fit-content", textalign:"center",padding:"1em", backgroundImage:`url(${userform_img})`, backgroundSize:"cover", margin: "0 auto", position:"relative", top:"4%"}}>
+      <Form style={{width: "50%", heigth:"100%", textalign:"center",padding:"1em", backgroundImage:`url(${userform_img})`, backgroundSize:"cover", margin: "0 auto", position:"relative", top:"4%"}}>
         <LogoWrapper>
           <LoginLogo src={mypage_img}></LoginLogo>
         </LogoWrapper>
@@ -282,7 +282,7 @@ function MyPage() {
         </ProfileInfoArea>
         </IdBox>
         <FormGroup style={{marginTop: "3em", marginBottom: "3em"}}>
-            <Button style={{marginBottom: "3em", width: "100%", backgroundColor:"#8C4D25", border:"0"}} onClick={onEditPage}>회원정보 수정</Button>
+            <Button style={{marginBottom: "1em", width: "100%", backgroundColor:"#8C4D25", border:"0"}} onClick={onEditPage}>회원정보 수정</Button>
             <Button style={{marginBottom: "1em", width: "100%", backgroundColor:"#CC8960",border:"0"}} onClick={onClickToggleModal}>비밀번호 변경</Button>
         </FormGroup>
         

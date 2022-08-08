@@ -297,7 +297,7 @@ function Signin() {
         </FormGroup>
 
         <FormGroup className='mb-3' controlId='formBasicNickname'>
-            <Form.Label style={{marginLeft: "10%"}}>별호</Form.Label>
+            <Form.Label style={{marginLeft: "10%"}}>별호</Form.Label>t 
             <FormGroup style={{display: "flex"}}>
                 <Form.Control style={{width: "60%", textalign:"left", marginLeft:"10%"}} name="nickname" type="text" placeholder="별호" value={nickname} onChange={onChangeNickname} />
                 {nickname.length === 0 ? <Button style={{marginLeft:"1em"}} onClick={onCheckNickname} disabled variant='secondary'>중복검사</Button>

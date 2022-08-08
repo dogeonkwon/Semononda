@@ -1,9 +1,9 @@
 import React, {useState} from 'react'
 import {Button, Form, FormGroup, FormLabel} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.css';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {Link, useNavigate}from 'react-router-dom'
-import {login, loadUser} from '../UserSlice';
+import {login, loadUser, setisLogin} from '../UserSlice';
 import styled from "styled-components";
 
 
@@ -81,11 +81,13 @@ function Login() {
   //로그인 버튼 누르면 실행되는 함수
   const onSubmit = (e) => {
     e.preventDefault();
-    
+    console.log("etarget",e.target.value);
+
     const data = {
       userId,
       password,
     };
+    console.log(data);
     dispatch(login(data))
     
     .then((response) => {
@@ -105,8 +107,10 @@ function Login() {
 
               window.localStorage.setItem('login_user',JSON.stringify(login_user));
             })
-
+          
+            setisLogin();
           history('/');
+          
         }else{
           if (response.payload === 400) {
             setErrorMessage('입력한 정보를 다시 확인해주세요😥');
