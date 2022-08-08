@@ -64,9 +64,9 @@ public class GameServiceImpl implements GameService {
 	}
 
 	@Override
-	public GameCategoryTopic getRoundStart(int gameConferenceRoomUid) {
-		GameCategoryTopic topic = playerRepositorySupport.getRoundStart(gameConferenceRoomUid);
-		return topic;
+	public User getRoundStart(int gameConferenceRoomUid) {
+		User winner = playerRepositorySupport.getRoundStart(gameConferenceRoomUid);
+		return winner;
 	}
 
 	@Override

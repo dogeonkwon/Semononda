@@ -144,11 +144,11 @@ public class GameController {
         @ApiResponse(code = 404, message = "사용자 없음"),
         @ApiResponse(code = 500, message = "서버 오류")
     })
-	public ResponseEntity<GameCategoryTopicsRes> getRoundStart(
+	public ResponseEntity<User> getRoundStart(
 			@RequestParam("gameConferenceRoomUid") @ApiParam(value="게임 컨퍼런스룸 Uid 정보", required = true) int gameConferenceRoomUid) {
 
-		GameCategoryTopic topic = gameService.getRoundStart(gameConferenceRoomUid);
-		return ResponseEntity.status(200).body(GameCategoryTopicsRes.of(topic));
+		User res = gameService.getRoundStart(gameConferenceRoomUid);
+		return ResponseEntity.status(200).body(res);
 	}
 	
 	@GetMapping("/normal/round-end")
