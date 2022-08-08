@@ -178,9 +178,9 @@ public class GameController {
     })
 	public ResponseEntity<? extends BaseResponseBody> normalGameEnd(
 			@RequestParam("gameConferenceRoomUid") @ApiParam(value="게임 컨퍼런스룸 Uid 정보", required = true) int gameConferenceRoomUid,
-			@RequestParam("userUid") @ApiParam(value="승리한 플레이어의 userUid", required = true) int userUid) {
+			@RequestParam("userId") @ApiParam(value="승리한 플레이어의 userId", required = true) String userId) {
 
-		gameService.normalGameEnd(gameConferenceRoomUid, userUid);
+		gameService.normalGameEnd(gameConferenceRoomUid, userId);
 		return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
 	}
 	@PostMapping("/custom/game-end")

@@ -477,7 +477,8 @@ public class PlayerRepositorySupport {
 	}
 
 	@Transactional
-	public void normalGameEnd(int gameConferenceRoomUid, int userUid) {
+	public void normalGameEnd(int gameConferenceRoomUid, String userId) {
+		int userUid = jpaQueryFactory.select(qUser.uid).from(qUser).where(qUser.id.eq(userId)).fetchFirst();
 		// 1. 게임 방의 game-start 상태를 false로 바꾼다.
 		jpaQueryFactory.update(qGameConferenceRoom).set(qGameConferenceRoom.gameStart, false)
 		.where(qGameConferenceRoom.uid.eq(gameConferenceRoomUid)).execute();
