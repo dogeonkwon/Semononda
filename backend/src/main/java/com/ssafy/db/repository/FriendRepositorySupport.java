@@ -25,7 +25,7 @@ public class FriendRepositorySupport {
 				.where(quser.nickname.eq(nickname)).fetchOne();
 		return user;
 	}
-
+ 
 //	public List<User> findUserUidByNickname(String nickname1, String nickname2) {
 //	System.err.println("여기는?");
 //	System.err.println(nickname1+" , "+nickname2);
