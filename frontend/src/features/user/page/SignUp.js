@@ -273,7 +273,7 @@ function Signin() {
   return (
     <Container >
 
-      <Form style={{ width:"40%", margin:"0 auto", top:"1em", position:"relative",padding:"1em", backgroundImage:`url(${userform_img})`, backgroundSize:"cover"}}>
+      <Form style={{ width:"40%", margin:"0 auto", top:"15%", position:"relative",padding:"1em", backgroundImage:`url(${userform_img})`, backgroundSize:"cover"}}>
         
         <LogoWrapper>
           <SingUpLogo src={signup_img}></SingUpLogo>

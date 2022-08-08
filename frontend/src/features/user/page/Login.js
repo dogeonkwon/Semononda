@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import {Link, useNavigate}from 'react-router-dom'
 import {login, loadUser, setisLogin} from '../UserSlice';
 import styled from "styled-components";
-
+import NavBar from '../../../common/navbar/NavBar';
 
 //이미지 파일
 import darkbase from "../../../assets/images/dark_base.PNG"
@@ -106,9 +106,9 @@ function Login() {
               }
 
               window.localStorage.setItem('login_user',JSON.stringify(login_user));
+              window.location.reload();
             })
           
-            setisLogin();
           history('/');
           
         }else{
@@ -126,6 +126,7 @@ function Login() {
 
   return (
     <Container>
+                
       <Form style={{width: "50%", textalign:"center",padding:"0.5em", backgroundImage:`url(${userform_img})`, backgroundSize:"cover", margin: "0 auto", position:"relative", top:"15%"}}>
         <LogoWrapper>
           <LoginLogo src={login_img}></LoginLogo>
@@ -140,10 +141,11 @@ function Login() {
             {userId.length > 0 && <span style={{animation:"motion 0.3s linear 0s infinite alternate", color:"red", marginLeft:"25%", marginTop:"1em"}}>{errorMessage}</span>}
         </FormGroup>
         <FormGroup style={{marginTop: "3em", marginBottom: "3em"}}>
-            <Button style={{marginBottom: "1em", marginLeft: "25%", width: "50%", backgroundColor:"#8C4D25", border:"0"}} type="submit" onClick={onSubmit}>로그인</Button>
+            <Link to={"/"}><Button style={{marginBottom: "1em", marginLeft: "25%", width: "50%", backgroundColor:"#8C4D25", border:"0"}} type="submit" onClick={onSubmit}>로그인</Button></Link>
             <StyledLink to={"/signin"}><Button style={{marginBottom: "1em", marginLeft: "25%", width: "50%", backgroundColor:"#CC8960", border:"0"}}>회원가입</Button></StyledLink>
         </FormGroup>
       </Form>
+     
     </Container>
     );
   }

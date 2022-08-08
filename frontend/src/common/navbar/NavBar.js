@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import './NavBar.css';
 //import { CgProfile } from "react-icons/cg";
@@ -15,26 +15,22 @@ import * as IoIcons from 'react-icons/io';
 import ProgressBar from 'react-bootstrap/ProgressBar';
 import { getToken, deleteToken, getLoginInfoString } from '../../common/api/JWT-common';
 import { Dropdown } from "react-bootstrap";
-import { useSelector } from "react-redux";
+
 
 function NavBar() {
-  console.log("start")
+  
   const history = useNavigate();
-  const user = useSelector((state) => state.isLogin);
-  console.log(user);
+  
   //로컬스토리지 
   let loginInfoString = window.localStorage.getItem("login_user");
-  console.log(loginInfoString);
   let loginInfo = JSON.parse(loginInfoString);
 
+  
   const token = getToken();
-  const logInfo2 = getLoginInfoString();
-  console.log("token", token)
-  console.log("logInfo", logInfo2)
   useEffect(()=>{
     console.log(token);
   },[token]);
-
+  
   const Logo = styled.img`
     width: 11vh;
     height: 11vh;

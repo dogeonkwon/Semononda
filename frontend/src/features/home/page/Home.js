@@ -18,7 +18,8 @@ const Container = styled.div`
     background-color: black;
     background-repeat: no-repeat;
     background-image: url(${homebase});
-    background-size: cover;`
+    background-size: cover;
+    overflow: hidden;`
 
 //Container 이분할
 const Section = styled.div`
@@ -109,9 +110,8 @@ function home() {
     return (
         
             <Container>
-                
+                <NavBar></NavBar>
                 <Section>
-                <NavBar />
                 <LogoWrapper>
                     <SecondLogoWrapper>
                         <Logo src={homelogo}></Logo>
