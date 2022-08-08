@@ -99,6 +99,12 @@ public class GameServiceImpl implements GameService {
 		return;
 	}
 
+	@Override
+	public void quit(String userId, int gameConferenceRoomUid) {
+		playerRepositorySupport.quit(userId, gameConferenceRoomUid);
+		return;
+	}
+
 	
 
 }
