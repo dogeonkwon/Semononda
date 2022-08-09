@@ -62,8 +62,7 @@ const Statistics = () => {
       <Container>
         <Form style={{width: "50%", textalign:"center",padding:"0.5em", backgroundImage:`url(${Statistics_form_img})`, backgroundSize:"cover", margin: "0 auto", position:"relative", top:"15%"}}>
         <LogoWrapper>
-            <h1>하하하</h1>
-            <h1>하하하</h1>
+            <h1>주제별통계</h1>
             </LogoWrapper>
         </Form>
       </Container>
