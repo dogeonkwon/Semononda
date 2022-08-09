@@ -5,6 +5,7 @@ import {Link, useNavigate}from 'react-router-dom'
 import styled from "styled-components";
 
 
+//merge conflict test
 //이미지 파일
 import light_base from "../../../assets/images/light_base.png"
 import Statistics_form_img from "../../../assets/images/Statistics_form_img.png"
