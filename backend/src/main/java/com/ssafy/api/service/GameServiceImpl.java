@@ -1,19 +1,13 @@
 package com.ssafy.api.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.ssafy.api.request.UserRegisterPostReq;
-import com.ssafy.db.entity.GameCategoryTopic;
+import com.ssafy.api.response.TopicsWinnerRes;
 import com.ssafy.db.entity.Player;
-import com.ssafy.db.entity.SelectedTopic;
-import com.ssafy.db.entity.User;
 import com.ssafy.db.repository.PlayerRepository;
 import com.ssafy.db.repository.PlayerRepositorySupport;
 import com.ssafy.db.repository.SelectedTopicRepository;
-import com.ssafy.db.repository.UserRepository;
-import com.ssafy.db.repository.UserRepositorySupport;
 
 /**
  *	유저 관련 비즈니스 로직 처리를 위한 서비스 구현 정의.
@@ -64,15 +58,15 @@ public class GameServiceImpl implements GameService {
 	}
 
 	@Override
-	public GameCategoryTopic getRoundStart(int gameConferenceRoomUid) {
-		GameCategoryTopic topic = playerRepositorySupport.getRoundStart(gameConferenceRoomUid);
-		return topic;
+	public TopicsWinnerRes getRoundStart(int gameConferenceRoomUid) {
+		TopicsWinnerRes res = playerRepositorySupport.getRoundStart(gameConferenceRoomUid);
+		return res;
 	}
 
 	@Override
-	public Player getRoundEnd(int gameConferenceRoomUid, String winTeam) {
-		Player winner = playerRepositorySupport.getRoundEnd(gameConferenceRoomUid, winTeam);
-		return winner;
+	public void getRoundEnd(int gameConferenceRoomUid, String winTeam) {
+		playerRepositorySupport.getRoundEnd(gameConferenceRoomUid, winTeam);
+		return;
 	}
 
 	@Override
@@ -89,8 +83,20 @@ public class GameServiceImpl implements GameService {
 
 	@Override
 	public void accusation(int gameConferenceRoomUid, int attackerUid, int reporterUid, int accusationUid) {
-		// TODO Auto-generated method stub
-		
+		playerRepositorySupport.accusation(gameConferenceRoomUid, attackerUid, reporterUid, accusationUid);
+		return;
+	}
+
+	@Override
+	public void join(String userId, int gameConferenceRoomUid) {
+		playerRepositorySupport.join(userId, gameConferenceRoomUid);
+		return;
+	}
+
+	@Override
+	public void quit(String userId, int gameConferenceRoomUid) {
+		playerRepositorySupport.quit(userId, gameConferenceRoomUid);
+		return;
 	}
 
 	

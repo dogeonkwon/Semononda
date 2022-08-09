@@ -16,12 +16,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 /**
  * 유저 모델 정의.
  */
 @Entity
 @Getter
 @Setter
+@ToString
 @Table(name="users")
 public class User extends BaseEntity{
 	
@@ -43,6 +45,7 @@ public class User extends BaseEntity{
     String nickname;
     String img;
     String description;
+
 	@Column(name="number_of_wins")
     int numberOfWins;
 	@Column(name="number_of_loses")

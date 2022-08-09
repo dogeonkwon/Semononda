@@ -1723,11 +1723,6 @@
   dependencies:
     "@sinonjs/commons" "^1.7.0"
 
-"@socket.io/component-emitter@~3.1.0":
-  "integrity" "sha512-+9jVqKhRSpsc591z5vX+X5Yyw+he/HCB4iQ/RYxw35CEPaY1gnsNE43nf9n9AaYjAQrTiI/mOwKUKdUs9vf7Xg=="
-  "resolved" "https://registry.npmjs.org/@socket.io/component-emitter/-/component-emitter-3.1.0.tgz"
-  "version" "3.1.0"
-
 "@surma/rollup-plugin-off-main-thread@^2.2.3":
   "integrity" "sha512-lR8q/9W7hZpMWweNiAKU7NQerBnzQQLvi8qnTDU/fxItPhtZVMbPV3lbCwjhIlNBe9Bbr5V+KHshvWmVSG9cxQ=="
   "resolved" "https://registry.npmjs.org/@surma/rollup-plugin-off-main-thread/-/rollup-plugin-off-main-thread-2.2.3.tgz"
@@ -2995,11 +2990,6 @@
   "resolved" "https://registry.npmjs.org/big.js/-/big.js-5.2.2.tgz"
   "version" "5.2.2"
 
-"bignumber.js@9.0.0":
-  "integrity" "sha512-t/OYhhJ2SD+YGBQcjY8GzzDHEk9f3nerxjtfa6tlMXfe7frs/WozhvCNoGvpM0P3bNf3Gq5ZRMlGr5f3r4/N8A=="
-  "resolved" "https://registry.npmjs.org/bignumber.js/-/bignumber.js-9.0.0.tgz"
-  "version" "9.0.0"
-
 "binary-extensions@^2.0.0":
   "integrity" "sha512-jDctJ/IVQbZoJykoeHbhXpOlNBqGNcwXJKJog42E5HDPUwQTSdjCHdihjj0DlnheQ7blbT6dHOafNAiS8ooQKA=="
   "resolved" "https://registry.npmjs.org/binary-extensions/-/binary-extensions-2.2.0.tgz"
@@ -4104,17 +4094,6 @@
   "integrity" "sha512-TPJXq8JqFaVYm2CWmPvnP2Iyo4ZSM7/QKcSmuMLDObfpH5fi7RUGmd/rTDf+rut/saiDiQEeVTNgAmJEdAOx0w=="
   "resolved" "https://registry.npmjs.org/encodeurl/-/encodeurl-1.0.2.tgz"
   "version" "1.0.2"
-
-"engine.io-client@~6.2.1":
-  "integrity" "sha512-8ZQmx0LQGRTYkHuogVZuGSpDqYZtCM/nv8zQ68VZ+JkOpazJ7ICdsSpaO6iXwvaU30oFg5QJOJWj8zWqhbKjkQ=="
-  "resolved" "https://registry.npmjs.org/engine.io-client/-/engine.io-client-6.2.2.tgz"
-  "version" "6.2.2"
-  dependencies:
-    "@socket.io/component-emitter" "~3.1.0"
-    "debug" "~4.3.1"
-    "engine.io-parser" "~5.0.3"
-    "ws" "~8.2.3"
-    "xmlhttprequest-ssl" "~2.0.0"
 
 "engine.io-parser@~5.0.3":
   "integrity" "sha512-+nVFp+5z1E3HcToEnO7ZIj3g+3k9389DvWtvJZz0T6/eOCPIyyxehFcedoYrZQrp0LgQbD9pPXhpMBKMd5QURg=="
@@ -6659,16 +6638,6 @@
     "dns-packet" "^5.2.2"
     "thunky" "^1.0.2"
 
-"mysql@^2.18.1":
-  "integrity" "sha512-Bca+gk2YWmqp2Uf6k5NFEurwY/0td0cpebAucFpY/3jhrwrVGuxU2uQFCHjU19SJfje0yQvi+rVWdq78hR5lig=="
-  "resolved" "https://registry.npmjs.org/mysql/-/mysql-2.18.1.tgz"
-  "version" "2.18.1"
-  dependencies:
-    "bignumber.js" "9.0.0"
-    "readable-stream" "2.3.7"
-    "safe-buffer" "5.1.2"
-    "sqlstring" "2.3.1"
-
 "nanoid@^3.3.4":
   "integrity" "sha512-MqBkQh/OHTS2egovRtLk45wEyNXwF+cokD+1YPf9u5VfJiRdAiRwB2froX5Co9Rh20xs4siNPm8naNotSD6RBw=="
   "resolved" "https://registry.npmjs.org/nanoid/-/nanoid-3.3.4.tgz"
@@ -8141,19 +8110,6 @@
     "string_decoder" "^1.1.1"
     "util-deprecate" "^1.0.1"
 
-"readable-stream@2.3.7":
-  "integrity" "sha512-Ebho8K4jIbHAxnuxi7o42OrZgF/ZTNcsZj6nRKyUmkhLFq8CHItp/fy6hQZuZmP/n3yZ9VBUbp4zz/mX8hmYPw=="
-  "resolved" "https://registry.npmjs.org/readable-stream/-/readable-stream-2.3.7.tgz"
-  "version" "2.3.7"
-  dependencies:
-    "core-util-is" "~1.0.0"
-    "inherits" "~2.0.3"
-    "isarray" "~1.0.0"
-    "process-nextick-args" "~2.0.0"
-    "safe-buffer" "~5.1.1"
-    "string_decoder" "~1.1.1"
-    "util-deprecate" "~1.0.1"
-
 "readdirp@~3.6.0":
   "integrity" "sha512-hOS089on8RduqdbhvQ5Z37A0ESjsqz6qnRcffsMU3495FuTdqSm+7bhJ29JvIOsBDEEnan5DPu9t3To9VRlMzA=="
   "resolved" "https://registry.npmjs.org/readdirp/-/readdirp-3.6.0.tgz"
@@ -8658,16 +8614,6 @@
   "resolved" "https://registry.npmjs.org/socket.io-adapter/-/socket.io-adapter-2.4.0.tgz"
   "version" "2.4.0"
 
-"socket.io-client@^4.5.1":
-  "integrity" "sha512-e6nLVgiRYatS+AHXnOnGi4ocOpubvOUCGhyWw8v+/FxW8saHkinG6Dfhi9TU0Kt/8mwJIAASxvw6eujQmjdZVA=="
-  "resolved" "https://registry.npmjs.org/socket.io-client/-/socket.io-client-4.5.1.tgz"
-  "version" "4.5.1"
-  dependencies:
-    "@socket.io/component-emitter" "~3.1.0"
-    "debug" "~4.3.2"
-    "engine.io-client" "~6.2.1"
-    "socket.io-parser" "~4.2.0"
-
 "socket.io-parser@~4.0.4":
   "integrity" "sha512-sNjbT9dX63nqUFIOv95tTVm6elyIU4RvB1m8dOeZt+IgWwcWklFDOdmGcfo3zSiRsnR/3pJkjY5lfoGqEe4Eig=="
   "resolved" "https://registry.npmjs.org/socket.io-parser/-/socket.io-parser-4.0.5.tgz"
@@ -8675,14 +8621,6 @@
   dependencies:
     "@types/component-emitter" "^1.2.10"
     "component-emitter" "~1.3.0"
-    "debug" "~4.3.1"
-
-"socket.io-parser@~4.2.0":
-  "integrity" "sha512-V4GrkLy+HeF1F/en3SpUaM+7XxYXpuMUWLGde1kSSh5nQMN4hLrbPIkD+otwh6q9R6NOQBN4AMaOZ2zVjui82g=="
-  "resolved" "https://registry.npmjs.org/socket.io-parser/-/socket.io-parser-4.2.1.tgz"
-  "version" "4.2.1"
-  dependencies:
-    "@socket.io/component-emitter" "~3.1.0"
     "debug" "~4.3.1"
 
 "socket.io@^4.5.1":
@@ -8790,11 +8728,6 @@
   "integrity" "sha512-D9cPgkvLlV3t3IzL0D0YLvGA9Ahk4PcvVwUbN0dSGr1aP0Nrt4AEnTUbuGvquEC0mA64Gqt1fzirlRs5ibXx8g=="
   "resolved" "https://registry.npmjs.org/sprintf-js/-/sprintf-js-1.0.3.tgz"
   "version" "1.0.3"
-
-"sqlstring@2.3.1":
-  "integrity" "sha512-ooAzh/7dxIG5+uDik1z/Rd1vli0+38izZhGzSa34FwR7IbelPWCCKSNIl8jlL/F7ERvy8CB2jNeM1E9i9mXMAQ=="
-  "resolved" "https://registry.npmjs.org/sqlstring/-/sqlstring-2.3.1.tgz"
-  "version" "2.3.1"
 
 "stable@^0.1.8":
   "integrity" "sha512-ji9qxRnOVfcuLDySj9qzhGSEFVobyt1kIOSkj1qZzYLzq7Tos/oUUWvotUPQLlrsidqsK6tBH89Bc9kL5zHA6w=="
@@ -9307,6 +9240,11 @@
   "integrity" "sha512-VrR/IiH00Z1tFP4vDGfwZ1esNqTiDMchBEXYY9kilT6wRGgFoCAlgkEUMHb1E3mB0FsfZhv756IF0+R+SFPfdg=="
   "resolved" "https://registry.npmjs.org/typeface-roboto/-/typeface-roboto-0.0.75.tgz"
   "version" "0.0.75"
+
+"typescript@^3.2.1 || ^4", "typescript@>= 2.7", "typescript@>=2.8.0 || >= 3.2.0-dev || >= 3.3.0-dev || >= 3.4.0-dev || >= 3.5.0-dev || >= 3.6.0-dev || >= 3.6.0-beta || >= 3.7.0-dev || >= 3.7.0-beta":
+  "integrity" "sha512-C0WQT0gezHuw6AdY1M2jxUO83Rjf0HP7Sk1DtXj6j1EwkQNZrHAg2XPWlq62oqEhYvONq5pkC2Y9oPljWToLmQ=="
+  "resolved" "https://registry.npmjs.org/typescript/-/typescript-4.7.4.tgz"
+  "version" "4.7.4"
 
 "unbox-primitive@^1.0.2":
   "integrity" "sha512-61pPlCD9h51VoreyJ0BReideM3MDKMKnh6+V9L08331ipq6Q8OFXZYiqP6n/tbHx4s5I9uRhcye6BrbkizkBDw=="
@@ -9926,11 +9864,6 @@
   "integrity" "sha512-JZnDKK8B0RCDw84FNdDAIpZK+JuJw+s7Lz8nksI7SIuU3UXJJslUthsi+uWBUYOwPFwW7W7PRLRfUKpxjtjFCw=="
   "resolved" "https://registry.npmjs.org/xmlchars/-/xmlchars-2.2.0.tgz"
   "version" "2.2.0"
-
-"xmlhttprequest-ssl@~2.0.0":
-  "integrity" "sha512-QKxVRxiRACQcVuQEYFsI1hhkrMlrXHPegbbd1yn9UHOmRxY+si12nQYzri3vbzt8VdTTRviqcKxcyllFas5z2A=="
-  "resolved" "https://registry.npmjs.org/xmlhttprequest-ssl/-/xmlhttprequest-ssl-2.0.0.tgz"
-  "version" "2.0.0"
 
 "xtend@^4.0.2":
   "integrity" "sha512-LKYU1iAXJXUgAXn9URjiu+MWhyUXHsvfp7mcuYm9dSUKK0/CjtrUwFAxD82/mCWbtLsGjFIad0wIsod4zrTAEQ=="

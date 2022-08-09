@@ -18,7 +18,7 @@ import com.ssafy.db.entity.Friend;
 public class QFriend extends EntityPathBase<Friend> {
 
 	private static final long serialVersionUID = 846542477L;
-
+	public static final QFriend friend = new QFriend("friend");
 	public final NumberPath<Integer> uid = createNumber("uid", Integer.class);
 
 	public final NumberPath<Integer> friendRequesterUid = createNumber("friendRequesterUid", Integer.class);

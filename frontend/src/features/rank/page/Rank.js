@@ -1,6 +1,4 @@
 import React, { useState, useEffect, useCallback } from "react";
-import styled from "styled-components";
-import love from "../../../assets/images/love.png"
 import NavBar from "../../../common/navbar/NavBar";
 import './Rank.css';
 import Pagination from "./Pagination";
@@ -10,72 +8,9 @@ import '../../../common/modal/Modal.css'
 import { useDispatch } from 'react-redux';
 import { useNavigate}from 'react-router-dom'
 import { roomcreate } from '../RankSlice';
-import { useSelector } from 'react-redux';
 
+import RoomList from "./RoomList";
 
-import Card from 'react-bootstrap/Card';
-import Col from 'react-bootstrap/Col';
-import Row from 'react-bootstrap/Row';
-import { useInsertionEffect } from "react";
-import axios from "axios";
-
-// const Layout = styled.div`
-//   display: flex;
-//   flex-direction: column;
-//   align-items: center;
-//   margin: 0 auto;
-//   background-size: cover;
-// `;
-
-
-// 드롭박스
-const OPTIONS = [
-	// { value: null, name: '개발자' },
-	{ value: '1', name: '개발자' },
-	{ value: '2', name: '극과극' },
-	{ value: '3', name: '교육' },
-	{ value: '4', name: '음식' },
-	{ value: '5', name: '연애' },
-	{ value: '6', name: '일상생활' },
-	{ value: '7', name: 'MBTI' },
-];
-
-
-const Select = styled.select`
-	// margin: 0;
-	// min-width: 0;
-	// display: block;
-	// width: 100%;
-	// padding: 8px 8px;
-	// font-size: inherit;
-	// line-height: inherit;
-	// border: 1px solid;
-	// border-radius: 4px;
-	// color: inherit;
-	// background-color: transparent;
-	}
-`;
-
-const SelectBox = (props) => {
-	const handleChange = (e) => {
-		// event handler
-		console.log(e.target.value);
-	};
-
-	return (
-		<Select onChange={handleChange}>
-			{props.options.map((option) => (
-				<option
-					key={option.value}
-					value={option.value}
-					defaultValue={props.defaultValue === option.value}
-				>
-					{option.name}
-				</option>
-			))}
-		</Select>
-	);
-};
 
 
 function Rank() {
@@ -83,58 +18,110 @@ function Rank() {
 	const dispatch = useDispatch();
     const history = useNavigate();
 
-
-	// 페이지네이션
-	const [posts, setPosts] = useState([]);
-	const [limit, setLimit] = useState(6);
-	const [page, setPage] = useState(1);
-	const offset = (page - 1) * limit;
-
-
 	//오류메시지 상태저장
-	const [roomMessage, setRoomMessage] = useState('')
+	// const [roomMessage, setRoomMessage] = useState('')
 
 
 	// 유효성 검사 상태 저장
-	const [isRoom, setIsRoom] = useState(false)
+	// const [isRoom, setIsRoom] = useState(false)
 
+
+
+	// 페이지네이션
+	const [currentPage, setCurrentPage] = useState(1);
+	const [postsPerPage, setPostsPerPage] = useState(2);
+
+	const indexOfLast = currentPage * postsPerPage;
+	const indexOfFirst = indexOfLast - postsPerPage;
+	const currentPosts = (rooms) => {
+		let currentPosts = 0;
+		currentPosts = rooms.slice(indexOfFirst, indexOfLast);
+		return currentPosts;
+	};
+
+
+	// api 주소
+	// axios1.get('/room/normal/list')
+	// fetch('http://localhost:8080/api/room/normal/list')
+
+
+	// api(검색창)
+	const [rooms, setRooms] = useState([]);
+	const [userInput, setUserInput] = useState("");
+
+	useEffect(() => {
+	fetch('http://localhost:8080/api/room/normal/list', {
+		method: "GET",
+	})
+	.then((res) => res.json())
+	.then((res) => {
+		setRooms(res);
+	});
+	}, []);
+
+
+	// 검색 창
+	// 엔터를 입력하였을 때 조건에 맞는 방을 보여줌
+	const handleKeyPress = (e) => {
+		if(e.key === 'Enter') {
+			setUserInput(e.target.value);
+		}
+	  }
+
+	// 검색 버튼을 눌렀을 때 조건에 맞는 방을 보여줌
+	const [message, setMessage] = useState('');
+
+	const handleChange = event => {
+	setMessage(event.target.value);
+	};
+
+	const handleClick = event => {
+	event.preventDefault();
+	setUserInput(message);
+	};
+
+	// 전달된 메시지를 필터링하여 방 목록을 보여줌
+	const filterRoom = rooms.filter((room) => {
+	return room.title.toLowerCase().includes(userInput.toLowerCase());
+	});
+
+
+
+	
+	// 방 생성
+	// 로컬 저장
+	let loginInfoString = window.localStorage.getItem("login_user");
+	let loginInfo = JSON.parse(loginInfoString);
 
 	//서버로 전달할 room객체
 	const [room, setRoom] = useState({
 		normal : "True",
+		nickname : loginInfo.nickname, // (roomAdminUserUid가 변경 되면 => oginInfo.id)
 		title : "",
 		gameCategoriesUid: "",
-		roomAdminUserUid : "20",	// (roomAdminUserUid가 변경 되면 => oginInfo.id)
-		conferenceRoomUrl : "www.naver.com",
-		gameCategoryTopicsUid : "1",
+		gameCategoryTopicsUid : "35",
 		})
 
 	//방 제목
     const onChangeTitle = (e) => {
-        //한글, 영어, 숫자 사용가능
-        const nicknameRegex = /([ㄱ-ㅎ|가-힣|0-9|a-z|A-Z])/
         const { name, value } = e.target;
+		console.log('전체 값', e.target)
+		console.log('타이틀 값', e.target.value)
         setRoom({
             ...room,
             [name]: value
         });
-        //30자 이내로 입력가능
-        if(!nicknameRegex.test(room.nickname) || e.target.value.length >30) {
-            setRoomMessage('30자 이내로 입력 가능합니다.')
-            setIsRoom(false)
-        } else {
-		}
 	}
 
-    //대분류(카테고리)
-    const onChangeGameCategoriesUid = (e) => {
-        const { name, value } = e.target;
+    //방 카테고리
+    const onSelectGameCategoriesUid = (e) => {
+		const value = e.target.value
+		console.log('카테고리', value)
         setRoom({
             ...room,
-            [name]: value
+            gameCategoriesUid: value
         });
     }
-
 
     //방 생성 눌렀을 때 호출되는 함수
     const onSubmit = (event) => {
@@ -142,10 +129,12 @@ function Rank() {
     //입력값 남겨두는 함수
     event.preventDefault()
 
-    if((room.title === '')){
-        alert('모든 정보를 입력해주세요');
-        console.log(room);
-    }else{
+    if(room.title === ''){
+        alert('제목을 입력해주세요');
+    } else if(room.gameCategoriesUid === 11) {
+		alert('카테고리를 다시 선택해주세요.')
+	}
+	else{
         // userInfo(UserSlice에 있음) => room
         dispatch(roomcreate(room))
         .then((response) => {
@@ -157,20 +146,12 @@ function Rank() {
                 history("/custom", {replace:true})
 				console.log('안된다', room);
             }
-            
 		})
-		console.log(room);
     }
   }
 
-	//로컬스토리지 
-	let roomInfoString = window.localStorage.getItem("roomAdminUserUid");
-	console.log('roomInfoString', roomInfoString)	// 이거 왜 안나오지...
-	let roomInfo = JSON.parse(roomInfoString);
-
-
 	//room 객체 바인딩
-	const { normal, gameCategoriesUid, roomAdminUserUid, title } = room;
+	const { title } = room;
 
 
 	// 모달 관련
@@ -189,96 +170,60 @@ function Rank() {
 	}
 
 
-	useEffect(() => {
-	  fetch("https://jsonplaceholder.typicode.com/posts")
-		.then((res) => res.json())
-		.then((data) => setPosts(data));
-	}, []);
-
 	return (
 		<div className="rank-base">
 		<NavBar />
 			<div className="layout container">
 			{/* 방 생성 화면(메인) */}
 			<main>
-				<div className="room_items">
-					<Row xs={1} md={2} className="g-4">
-						{Array.from({ length: 6 }).map((_, idx) => (
-							<Col>
-							<div className="room_item">
-								<img src={love} style={{width: "30%"}} />
-								<div className="room_button">
-									<button>방 제목 : </button>	{/* {roomInfo.title} */}
-									{/* <button onChange={handleDropProduct}>
-										{CATEGORY_DATA.map(el => {
-											return <option key={el.id}>{el.value}</option>;
-										})}
-									</button>	 */}
-									{/* {roomInfo.gameCategoriesUid} */}
-
-									{/* 드롭박스 2 */}
-									{/* <button onClick={e => setDropdownVisibility(!dropdownVisibility)}>
-										{
-											dropdownVisibility
-												? 'Close'
-												: '카테고리'
-										}
-									</button>
-									<Dropdown visibility={dropdownVisibility}>
-										<ul>
-											<li>개발자</li>
-											<li>극과극</li>
-											<li>교육</li>
-											<li>음식</li>
-											<li>연애</li>
-											<li>일상생활</li>
-											<li>MBTI</li>
-										</ul>
-									</Dropdown> */}
-
-
-									<button>카테고리 : </button>
-									<button>방장 : </button> {/* {roomInfo.roomAdminUserUid} */}
-									<button>입장</button>
-								</div>
-							</div>
-							</Col>
-						))}
-					</Row>
-				</div>
+				<RoomList key={rooms.uid} data={currentPosts(filterRoom)} />
 			</main>
-				
 			{/* 하단 */}
 			<footer>
 				{/* 페이지네이션 */}
 				<Pagination
-				total={posts.length}
-				limit={limit}
-				page={page}
-				setPage={setPage}
+					postsPerPage={postsPerPage}
+					totalPosts={rooms.length}
+					paginate={setCurrentPage}
 				/>
 				{/* 검색 및 방생성 */}
 				<div className="bottom">
 					{/* 검색 */}
 					<div className="search">
-					<input value="방이름을 입력해주세요."/>
-					<button>검색</button>
-					{/* 방생성 */}
+						<input
+							type="search"
+							className="search"
+							onKeyUp={handleKeyPress}
+							onChange={handleChange}
+							value={message}
+							autoComplete="off"
+							placeholder="방 제목을 입력해 주세요."
+						/>
+						<button onClick={handleClick}>검색</button>
 					</div>
+					{/* 방생성 */}
 					<Button className="create_room" onClick={onClickToggleModal}>방 생성</Button>
 					{isOpenModal&& (
 						<Modal onClickToggleModal={onClickToggleModal}>
 							<FormGroup className='mb-3' controlId='formBasicTitle'>
 								<Form.Label style={{marginLeft: "10%"}}>방 제목</Form.Label>
-								<Form.Control style={{width: "60%", textalign:"left", marginLeft:"10%"}} name='title' type='text' placeholder='방 제목' value={title} onChange={onChangeTitle}/>
+								<Form.Control style={{width: "60%", textalign:"left", marginLeft:"10%"}} name='title' type='text' placeholder='방 제목' value={title} onInput={onChangeTitle}/>
 							</FormGroup>
 
 							<FormGroup className='mb-3' controlId='formBasicCategory'>
 								<Form.Label style={{marginLeft: "10%"}}>카테고리</Form.Label>
 
 								{/* 드롭박스 */}
-								<SelectBox id="select_category" name="gameCategoriesUid" options={OPTIONS} value={gameCategoriesUid} onChange={onChangeGameCategoriesUid}></SelectBox>
-								{/* <Form.Control style={{width: "60%", textalign:"left", marginLeft:"10%"}} name="gameCategoriesUid" type="text" defaultValue="카테고리" onChange={onChangeGameCategoriesUid} /> */}
+								<Form.Select aria-label="Default select example" onClick={onSelectGameCategoriesUid}>
+									<option value="11">카테고리를 선택해주세요.</option>
+									<option value="2">일상생활</option>
+									<option value="3">음식</option>
+									<option value="4">개발자</option>
+									<option value="5">MBTI</option>
+									<option value="6">연애</option>
+									<option value="7">극과극</option>
+									<option value="8">교육</option>
+								</Form.Select>
 							</FormGroup>
 							<FormGroup style={{width:"80%", display:"flex", margin:"0 auto"}} >
 								<Button style={{marginBottom: "1em", width: "50%", backgroundColor:"#8C4D25", border:"0"}} type="submit" onClick={onSubmit} variant="primary">방 만들기</Button>

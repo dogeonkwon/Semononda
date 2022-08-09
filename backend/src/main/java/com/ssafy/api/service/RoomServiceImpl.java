@@ -2,12 +2,15 @@ package com.ssafy.api.service;
 
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ssafy.api.request.RoomRequest;
 import com.ssafy.db.entity.GameConferenceRoom;
+import com.ssafy.db.entity.User;
+import com.ssafy.db.repository.GameCategoryRepositorySupport;
 import com.ssafy.db.repository.RoomRepository;
 import com.ssafy.db.repository.RoomRepositorySupport;
 
@@ -32,11 +35,39 @@ public class RoomServiceImpl implements RoomService {
 		GameConferenceRoom room = new GameConferenceRoom();
 		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 
+		// 유저 id 받아서 uid로 변경
+		System.err.println("nickname : " + roomRegisterInfo.getNickname());
+		User user = roomRepositorySupport.findUserUidByNickname(roomRegisterInfo.getNickname());
+		System.err.println("serviceimpl안 createRoom: "+user.getNickname());
+		// 랜덤 문자열 생성
+		Random random = new Random();
+		int length = random.nextInt(10) + 10;
+
+		StringBuffer sb = new StringBuffer();
+		for (int i = 0; i < length; i++) {
+			int choice = random.nextInt(5);
+			switch (choice) {
+			case 0:
+				sb.append((char) ((int) random.nextInt(25) + 97));
+				break;
+			case 1:
+				sb.append((char) ((int) random.nextInt(25) + 65));
+				break;
+			case 2:
+				sb.append((char) ((int) random.nextInt(10) + 48));
+				break;
+			default:
+				break;
+			}
+		}
+		String url = sb.toString();
+
 		room.setNormal(roomRegisterInfo.isNormal());
 		room.setGameCategoriesUid(roomRegisterInfo.getGameCategoriesUid());
 		room.setGameCategoryTopicsUid(roomRegisterInfo.getGameCategoryTopicsUid());
-		room.setRoomAdminUserUid(roomRegisterInfo.getRoomAdminUserUid());
-		room.setConferenceRoomUrl(roomRegisterInfo.getConferenceRoomUrl());
+		// room.setRoomAdminUserUid(roomRegisterInfo.getRoomAdminUserUid());
+		room.setRoomAdminUserUid(user.getUid());
+		room.setConferenceRoomUrl(url);
 		room.setStartTime(timestamp);
 		room.setCustomPassword(roomRegisterInfo.getCustomPassword());
 		room.setTitle(roomRegisterInfo.getTitle());
@@ -44,7 +75,9 @@ public class RoomServiceImpl implements RoomService {
 		room.setCustomAnswerA(roomRegisterInfo.getCustomAnswerA());
 		room.setCustomAnswerB(roomRegisterInfo.getCustomAnswerB());
 		room.setGameStart(roomRegisterInfo.isGameStart());
-		return roomRepository.save(room);
+		room.setAdminNickname(roomRegisterInfo.getNickname());
+		roomRepository.save(room);
+		return room;
 
 	}
 
@@ -61,9 +94,10 @@ public class RoomServiceImpl implements RoomService {
 
 	@Override
 	public List<GameConferenceRoom> findNormalRoomlist() {
+		System.err.println("여기까지 오는가");
 		return roomRepositorySupport.findNormalRoomlist();
 	}
-	
+
 	@Override
 	public List<GameConferenceRoom> findCustomRoomlist() {
 		return roomRepositorySupport.findCustomRoomlist();
@@ -103,6 +137,19 @@ public class RoomServiceImpl implements RoomService {
 	public List<GameConferenceRoom> findCustomRoomByRoomTitle(String title) {
 		System.err.println("custom ServiceImpl title: " + title);
 		return roomRepositorySupport.findCustomRoomByTitle(title);
+	}
+
+	@Override
+	public GameConferenceRoom findRoomByUrl(String url) {
+		GameConferenceRoom room = new GameConferenceRoom();
+		room = roomRepositorySupport.findRoomByUrl(url);
+		return room;
+	}
+
+	@Override
+	public User findUserUidById(String nickname) {
+
+		return roomRepositorySupport.findUserUidByNickname(nickname);
 	}
 
 }

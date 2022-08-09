@@ -227,11 +227,11 @@ function Signin() {
     const onGoMain = (event) => {
         event.preventDefault();
         history("/");
-    }
 
+    }
     //가입버튼 눌렀을 때 호출되는 함수
     const onSubmit = (event) => {
-
+    
     //입력값 남겨두는 함수
     event.preventDefault()
 
@@ -239,8 +239,8 @@ function Signin() {
         alert('모든 정보를 입력해주세요');
         console.log(user);
     }else{
-        // userInfo(UserSlice에 있음) => user
         dispatch(signup(user))
+    
         .then((response) => {
             console.log("signin_response",response)
             if(response.payload.status === 200){
@@ -252,6 +252,18 @@ function Signin() {
             }
             
           })
+        //   .catch((err) => {
+        //     if (err.status === 400) {
+        //       toast.error('😥 입력하신 정보를 다시 확인해주세요');
+        //     } else if (err.status === 409) {
+        //       toast.error('😥 이미 로그인된 사용자입니다');
+        //     } else if (err.status === 401) {
+        //       toast.error('😥 아이디와 비밀번호를 다시 확인해주세요');
+        //       history.push('/login');
+        //     } else if (err.status === 500) {
+        //       history.push('/error');
+        //     }
+        //   });
         console.log(user);
     }
     

@@ -55,13 +55,16 @@ public class RoomResponse {
 
 	@ApiModelProperty(name = "게임이 진행중인 방인지 확인하는 변수", example = "true")
 	boolean gameStart;
+	
+	@ApiModelProperty(name = "방장 닉네임", example = "woodong")
+	String adminNickname;
 
 	public static RoomResponse of(Integer statusCode, String message, GameConferenceRoom room) {
 		if (room == null) {
 			return null;
 		} else {
 			RoomResponse res = new RoomResponse();
-			res.setUid(room.getGameCategoriesUid());
+			res.setUid(room.getUid());
 			res.setNormal(room.isNormal());
 			res.setGameCategoriesUid(room.getGameCategoriesUid());
 			res.setGameCategoryTopicsUid(room.getGameCategoryTopicsUid());
@@ -75,6 +78,7 @@ public class RoomResponse {
 			res.setCustomAnswerA(room.getCustomAnswerA());
 			res.setCustomAnswerB(room.getCustomAnswerB());
 			res.setGameStart(room.isGameStart());
+			res.setAdminNickname(room.getAdminNickname());
 
 			return res;
 		}
