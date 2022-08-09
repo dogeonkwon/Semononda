@@ -29,20 +29,20 @@ public class RoomRepositorySupport {
 
 		QGameConferenceRoom qRoom = QGameConferenceRoom.gameConferenceRoom;
 		List<GameConferenceRoom> rooms = jpaQueryFactory.select(qRoom).from(qRoom)
-				.where(qRoom.title.like("%" + word + "%")).fetch();
+				.where(qRoom.title.like("%" + word + "%")).orderBy(qRoom.startTime.desc()).fetch();
 		return rooms;
 	}
 
 	public List<GameConferenceRoom> findNormalRoomlist() {
 		System.err.println("여기는????????");
-		List<GameConferenceRoom> rooms = jpaQueryFactory.select(qRoom).from(qRoom).where(qRoom.normal.eq(true)).fetch();
+		List<GameConferenceRoom> rooms = jpaQueryFactory.select(qRoom).from(qRoom).where(qRoom.normal.eq(true)).orderBy(qRoom.startTime.desc()).fetch();
 		System.err.println("쿼리가 이상한가????????");
 		return rooms;
 	}
 
 	public List<GameConferenceRoom> findCustomRoomlist() {
 		List<GameConferenceRoom> rooms = jpaQueryFactory.select(qRoom).from(qRoom).where(qRoom.normal.eq(false))
-				.fetch();
+				.orderBy(qRoom.startTime.desc()).fetch();
 		return rooms;
 	}
 
@@ -50,7 +50,7 @@ public class RoomRepositorySupport {
 
 		QGameConferenceRoom qRoom = QGameConferenceRoom.gameConferenceRoom;
 		List<GameConferenceRoom> rooms = jpaQueryFactory.select(qRoom).from(qRoom)
-				.where(qRoom.title.like("%" + word + "%")).where(qRoom.normal.eq(true)).fetch();
+				.where(qRoom.title.like("%" + word + "%")).where(qRoom.normal.eq(true)).orderBy(qRoom.startTime.desc()).fetch();
 		return rooms;
 	}
 
@@ -58,7 +58,7 @@ public class RoomRepositorySupport {
 
 		QGameConferenceRoom qRoom = QGameConferenceRoom.gameConferenceRoom;
 		List<GameConferenceRoom> rooms = jpaQueryFactory.select(qRoom).from(qRoom)
-				.where(qRoom.title.like("%" + word + "%")).where(qRoom.normal.eq(false)).fetch();
+				.where(qRoom.title.like("%" + word + "%")).where(qRoom.normal.eq(false)).orderBy(qRoom.startTime.desc()).fetch();
 		return rooms;
 	}
 
