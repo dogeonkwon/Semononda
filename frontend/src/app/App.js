@@ -14,6 +14,8 @@ import Help from '../features/help/page/Help';
 import Statistics from '../features/statistic/page/Statistics';
 import UserRank from '../features/userrank/page/UserRank';
 import NotFound from '../features/notfound/NotFound';
+import News from '../features/news/page/News';
+import Gossip from '../features/gossip/page/Gossip';
 // import NavBar from "../common/navbar/NavBar";
 
 function App() {
@@ -33,6 +35,8 @@ function App() {
       	  <Route exact path="/help" element={<Help />} />
       	  <Route exact path="/statistics" element={<Statistics />} />
       	  <Route exact path="/userrank" element={<UserRank />} />
+          <Route exact path="/news" element={<News />} />
+          <Route exact path="/gossip" element={<Gossip />} />
       	  <Route exact path="/*" element={<NotFound />} />
         </Routes>
       </div>
