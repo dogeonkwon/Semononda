@@ -64,6 +64,11 @@ const Help = () => {
         <Form style={{width: "50%", textalign:"center",padding:"0.5em", backgroundImage:`url(${help_form_img})`, backgroundSize:"cover", margin: "0 auto", position:"relative", top:"15%"}}>
         <LogoWrapper>
             <h1>도움말</h1>
+            <h1>도움말</h1>
+            <h1>도움말</h1>
+            <h1>도움말</h1>
+            <h1>도움말</h1>
+            <h1>도움말</h1>
             </LogoWrapper>
         </Form>
       </Container>
