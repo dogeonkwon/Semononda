@@ -4,7 +4,7 @@
   }
   
   /* 공식경연 */
-  .formula{
+  /* .formula{
     font-family: JSArirangHON;
     position: relative;
     border: none;
@@ -23,6 +23,26 @@
     transition: 0.3s;
     font-size: 40px;
   }
+
+  #Custom .formula{
+    font-family: JSArirangHON;
+    position: relative;
+    border: none;
+    min-width: 200px;
+    min-height: 50px;
+    background: linear-gradient(
+        90deg,
+        rgb(143, 143, 152) 0%,
+        rgb(59, 54, 61) 100%
+    );
+    border-radius: 1000px;
+    color: rgb(255, 255, 255);
+    cursor: pointer;
+    box-shadow: 12px 12px 24px rgb(175, 175, 235);
+    font-weight: 500;
+    transition: 0.3s;
+    font-size: 40px;
+  } */
   
   
   .formula:hover {

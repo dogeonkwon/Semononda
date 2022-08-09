@@ -19,6 +19,7 @@ const Layout = styled.div`
 
 function Rank() {
 
+	const [isRank, setIsRank] = useState(true);
 	const [posts, setPosts] = useState([]);
 	const [limit, setLimit] = useState(6);
 	const [page, setPage] = useState(1);
@@ -32,7 +33,7 @@ function Rank() {
 
 	return (
 		<div className="rank-base">
-			<NavBar />
+			<NavBar isRank={isRank}/>
 			{/* 제목 */}
 			<header>
 				<button>공식경연 방 생성</button>

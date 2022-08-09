@@ -25,7 +25,9 @@ const Container = styled.div`
     background-color: black;
     background-repeat: no-repeat;
     background-image: url(${darkbase});
-    background-size: cover;`
+    background-size: cover;
+    overflow: scroll;
+    padding-bottom: 10%`
 
 //로고 영역
 const LogoWrapper = styled.div`
@@ -126,7 +128,7 @@ function Login() {
 
   return (
     <Container>
-                
+      <NavBar/>
       <Form style={{width: "50%", textalign:"center",padding:"0.5em", backgroundImage:`url(${userform_img})`, backgroundSize:"cover", margin: "0 auto", position:"relative", top:"15%"}}>
         <LogoWrapper>
           <LoginLogo src={login_img}></LoginLogo>

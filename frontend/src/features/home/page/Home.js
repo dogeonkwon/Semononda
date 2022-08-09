@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import 'bootstrap/dist/css/bootstrap.css';
 import styled from "styled-components";
 import {Link} from "react-router-dom";
@@ -105,12 +105,14 @@ const FreeButton = styled.button`
 
 
 
-function home() {
+function Home() {
     
+    const [isHome, setIsHome] = useState(true);
+
     return (
         
             <Container>
-                <NavBar></NavBar>
+                <NavBar isHome={isHome}></NavBar>
                 <Section>
                 <LogoWrapper>
                     <SecondLogoWrapper>
@@ -130,4 +132,4 @@ function home() {
     );
 }
 
-export default home;
+export default Home;

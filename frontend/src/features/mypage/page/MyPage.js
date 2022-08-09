@@ -7,6 +7,7 @@ import styled from "styled-components";
 import '../../../common/modal/Modal.css';
 import './MyPage.css';
 import { modifyPassword } from '../../user/UserSlice';
+import NavBar from '../../../common/navbar/NavBar';
 
 //이미지 파일
 import infobase from "../../../assets/images/dark_base.PNG";
@@ -30,8 +31,9 @@ const Container = styled.div`
     background-color: black;
     background-repeat: no-repeat;
     background-image: url(${infobase});
-    background-size: cover;`
-
+    background-size: cover;
+    overflow: scroll;
+    padding-bottom: 10%`
 
 //로고 영역
 const LogoWrapper = styled.div`
@@ -245,6 +247,7 @@ function MyPage() {
 
   return (
     <Container>
+      <NavBar></NavBar>
       <Form style={{width: "50%", heigth:"100%", textalign:"center",padding:"1em", backgroundImage:`url(${userform_img})`, backgroundSize:"cover", margin: "0 auto", position:"relative", top:"4%"}}>
         <LogoWrapper>
           <LoginLogo src={mypage_img}></LoginLogo>

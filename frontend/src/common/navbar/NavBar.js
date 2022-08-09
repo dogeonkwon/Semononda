@@ -16,9 +16,85 @@ import ProgressBar from 'react-bootstrap/ProgressBar';
 import { getToken, deleteToken, getLoginInfoString } from '../../common/api/JWT-common';
 import { Dropdown } from "react-bootstrap";
 
+const FormulaButton1 = styled.button`
+font-family: JSArirangHON;
+    position: relative;
+    border: none;
+    min-width: 200px;
+    min-height: 50px;
+    background: linear-gradient(
+        90deg,
+        rgb(70, 70, 185) 0%,
+        rgb(40, 40, 220) 100%
+        );
+        border-radius: 1000px;
+    color: rgb(255, 255, 255);
+    cursor: pointer;
+    box-shadow: 12px 12px 24px rgb(175, 175, 235);
+    font-weight: 500;
+    transition: 0.3s;
+    font-size: 40px;
+`
+const FormulaButton2 = styled.button`
+font-family: JSArirangHON;
+    position: relative;
+    border: none;
+    min-width: 200px;
+    min-height: 50px;
+    background: linear-gradient(
+        90deg,
+        rgb(143, 143, 152) 0%,
+        rgb(59, 54, 61) 100%
+        );
+        border-radius: 1000px;
+    color: rgb(255, 255, 255);
+    cursor: pointer;
+    box-shadow: 12px 12px 24px rgb(175, 175, 235);
+    font-weight: 500;
+    transition: 0.3s;
+    font-size: 40px;
+`
+const CustomButton1 = styled.button`
+font-family: JSArirangHON;
+    position: relative;
+    border: none;
+    min-width: 200px;
+    min-height: 50px;
+    background: linear-gradient(
+      90deg,
+      rgb(65, 165, 65) 0%,
+      rgb(50, 135, 45) 100%
+      );
+      border-radius: 1000px;
+      color: rgb(255, 255, 255);
+      cursor: pointer;
+      box-shadow: 12px 12px 24px rgb(180, 235, 170);
+      font-weight: 500;
+      transition: 0.3s;
+      font-size: 40px;
+`
+const CustomButton2 = styled.button`
+font-family: JSArirangHON;
+    position: relative;
+    border: none;
+    min-width: 200px;
+    min-height: 50px;
+    background: linear-gradient(
+        90deg,
+        rgb(143, 143, 152) 0%,
+        rgb(59, 54, 61) 100%
+        );
+        border-radius: 1000px;
+    color: rgb(255, 255, 255);
+    cursor: pointer;
+    box-shadow: 12px 12px 24px rgb(175, 175, 235);
+    font-weight: 500;
+    transition: 0.3s;
+    font-size: 40px;
+`
 
-function NavBar() {
-  
+function NavBar(props) {
+
   const history = useNavigate();
   
   //로컬스토리지 
@@ -47,12 +123,26 @@ function NavBar() {
   return (
     <>
       {[false].map((expand) => (
-        <Navbar key={expand} expand={expand} className="navbar mb-3" style={{width:"100%", justifyContent:"space-between", textAlign:"center"}}>
-          <Container >
+        <Navbar key={expand} expand={expand} className="navbar mb-3" style={{width:"100%", textAlign:"center"}}>
+          <Container style={{alignItems:"center"}}>
             <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${expand}`} />
-              <Link to="/rank"><button className="formula">공식경연</button></Link>  
+            {props.isHome ?  
+            ( <Link to="/"><Logo className="logo" src={logo} /></Link> )
+            :
+            (
+              <div style={{display:"flex", alignItems:"center", width:"60%", justifyContent:"space-between"}}>
+              {props.isCustom ?
+              <Link to="/rank"><FormulaButton2 className="formula">공식경연</FormulaButton2></Link> 
+              : <Link to="/rank"><FormulaButton1 className="formula">공식경연</FormulaButton1></Link>  
+              }
               <Link to="/"><Logo className="logo" src={logo} /></Link>
-              <Link to="/custom"><button className="custom">자유경연</button></Link>
+              {props.isRank ?
+              <Link to="/custom"><CustomButton2 className="custom">자유경연</CustomButton2></Link>
+              : <Link to="/custom"><CustomButton1 className="custom">자유경연</CustomButton1></Link>
+              }
+              </div>
+            )
+            }
               {token ?
                (
                   <Dropdown align={"start"}>   
