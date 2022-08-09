@@ -477,7 +477,8 @@ public class PlayerRepositorySupport {
 	}
 
 	@Transactional
-	public void normalGameEnd(int gameConferenceRoomUid, int userUid) {
+	public void normalGameEnd(int gameConferenceRoomUid, String userId) {
+		int userUid = jpaQueryFactory.select(qUser.uid).from(qUser).where(qUser.id.eq(userId)).fetchFirst();
 		// 1. 게임 방의 game-start 상태를 false로 바꾼다.
 		jpaQueryFactory.update(qGameConferenceRoom).set(qGameConferenceRoom.gameStart, false)
 		.where(qGameConferenceRoom.uid.eq(gameConferenceRoomUid)).execute();
@@ -512,21 +513,22 @@ public class PlayerRepositorySupport {
 			gameRecordRepository.save(gameRecord);
 		}
 		// 4. 모든 플레이어의 게임 정보를 초기화한다.
-		for(int i=0; i<playerList.size(); i++) {
-			jpaQueryFactory.update(qPlayer)
-			.set(qPlayer.accusationCount, 0)
-			.set(qPlayer.goldfinch, 0)
-			.set(qPlayer.isCamOff, false)
-			.set(qPlayer.isChangeVoice, false)
-			.set(qPlayer.isMuted, false)
-			.set(qPlayer.kingCount, 0)
-			.set(qPlayer.randomKing, false)
-			.set(qPlayer.readyState, false)
-			.set(qPlayer.roleUid, 2)
-			.set(qPlayer.team, "A")
-			.set(qPlayer.totalGoldfinch, 0)
-			.execute();
-		}
+//		for(int i=0; i<playerList.size(); i++) {
+//			jpaQueryFactory.update(qPlayer)
+//			.set(qPlayer.accusationCount, 0)
+//			.set(qPlayer.goldfinch, 0)
+//			.set(qPlayer.isCamOff, false)
+//			.set(qPlayer.isChangeVoice, false)
+//			.set(qPlayer.isMuted, false)
+//			.set(qPlayer.kingCount, 0)
+//			.set(qPlayer.randomKing, false)
+//			.set(qPlayer.readyState, false)
+//			.set(qPlayer.roleUid, 2)
+//			.set(qPlayer.team, "A")
+//			.set(qPlayer.totalGoldfinch, 0)
+//			.execute();
+//		}
+		jpaQueryFactory.delete(qPlayer).where(qPlayer.gameConferenceRoomUid.eq(gameConferenceRoomUid));
 		// 5. 해당 방의 conference uid를 가지고 있는 selected topic을 삭제한다.
 		jpaQueryFactory.delete(qSelectedTopic).where(qSelectedTopic.gameConferenceRoomUid
 				.eq(gameConferenceRoomUid)).execute();
