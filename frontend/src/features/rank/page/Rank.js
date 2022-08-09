@@ -53,7 +53,6 @@ const Select = styled.select`
 	// border-radius: 4px;
 	// color: inherit;
 	// background-color: transparent;
-	}
 `;
 
 const SelectBox = (props) => {

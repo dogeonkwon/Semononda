@@ -50,7 +50,8 @@ function NavBar() {
           <Container >
           <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${expand}`}>
               <GiIcons.GiHamburgerMenu color="ghostwhite" size="30px"/>
-            </Navbar.Toggle>              <Link to="/rank"><button className="formula">공식경연</button></Link>  
+            </Navbar.Toggle>
+                          <Link to="/rank"><button className="formula">공식경연</button></Link>  
               <Link to="/"><Logo className="logo" src={logo} /></Link>
               <Link to="/custom"><button className="custom">자유경연</button></Link>
               {token ?
