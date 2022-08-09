@@ -19,7 +19,8 @@ const Container = styled.div`
     background-repeat: no-repeat;
     background-image: url(${homebase});
     background-size: cover;
-    overflow: hidden;`
+    overflow: hidden;
+    padding-top: 3em`
 
 //Container 이분할
 const Section = styled.div`

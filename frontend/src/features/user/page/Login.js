@@ -1,9 +1,9 @@
 import React, {useState} from 'react'
 import {Button, Form, FormGroup, FormLabel} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.css';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import {Link, useNavigate}from 'react-router-dom'
-import {login, loadUser, setisLogin} from '../UserSlice';
+import {login, loadUser} from '../UserSlice';
 import styled from "styled-components";
 import NavBar from '../../../common/navbar/NavBar';
 
@@ -27,8 +27,9 @@ const Container = styled.div`
     background-image: url(${darkbase});
     background-size: cover;
     overflow: scroll;
-    padding-bottom: 10%`
-
+    padding-bottom: 10%;
+    padding-top: 3em;
+`
 //로고 영역
 const LogoWrapper = styled.div`
   display: flex;

@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState,useEffect} from 'react'
 import {Button, Form, FormGroup} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.css';
 import { useDispatch } from 'react-redux';
@@ -17,7 +17,7 @@ const Container = styled.div`
     display: block;
     position: relative;
     width: 100%;
-    height: 100vh;
+    height: 100%;
     max-width: 100%;
     max-height: 100%;
     background: center;
@@ -25,8 +25,10 @@ const Container = styled.div`
     background-repeat: no-repeat;
     background-image: url(${dark_base});
     background-size: cover;
-    overflow: scroll;
-    padding-bottom: 10%`
+    //overflow: scroll;
+    padding-top: 10%;
+    padding-bottom:10%;
+    `
 
 //로고 영역
 const LogoWrapper = styled.div`
@@ -273,7 +275,7 @@ function Signin() {
 
   //회원가입 폼
   return (
-    <Container >
+    <Container id="Container" >
     
       <NavBar/>
       <Form style={{ width:"40%", margin:"0 auto", top:"15%", position:"relative",padding:"1em", backgroundImage:`url(${userform_img})`, backgroundSize:"cover"}}>

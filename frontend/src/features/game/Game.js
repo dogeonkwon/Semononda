@@ -5,6 +5,7 @@ import ready from '../../assets/images/ready.png'
 import ready_ok from '../../assets/images/ready_ok.png'
 import start from '../../assets/images/start.png'
 import axios from 'axios';
+import axios1 from '../../common/api/http-common';
 import { OpenVidu } from 'openvidu-browser';
 import React, { Component, createRef } from 'react';
 import UserVideoComponent from './UserVideoComponent'
@@ -13,6 +14,7 @@ import { useParams } from 'react-router-dom';
 import $ from 'jquery'; 
 import _ from 'lodash';
 import Button from 'react-bootstrap/Button';
+import { connect } from 'react-redux'
 
 const OPENVIDU_SERVER_URL = 'https://' + window.location.hostname + ':4443';
 const OPENVIDU_SERVER_SECRET = 'MY_SECRET';
@@ -30,7 +32,7 @@ class Game extends Component {
     super(props);
     this.state = {
         mySessionId: this.props.params.id,
-        myUserName: 'Participant' + Math.floor(Math.random() * 100),
+        myUserName: undefined,
         session: undefined,
         mainStreamManager: undefined,
         publisher: undefined,
@@ -46,6 +48,7 @@ class Game extends Component {
         coin : 0,
         kingCount : 0,
         kingList: [],
+        token: undefined,
     };
 
     this.joinSession = this.joinSession.bind(this);
@@ -60,11 +63,27 @@ class Game extends Component {
     this.sendmessageByEnter = this.sendmessageByEnter.bind(this);
     this.handleChatMessageChange = this.handleChatMessageChange.bind(this);
     this.readyClick = this.readyClick.bind(this);
+
   }
 
   componentDidMount() {
     window.addEventListener('beforeunload', this.onbeforeunload);
-    this.joinSession();
+    setTimeout(()=> {
+      let loginInfoString = window.sessionStorage.getItem("login_user");
+      let loginInfo = JSON.parse(loginInfoString)
+      let token = window.sessionStorage.getItem('token')
+      this.setState({
+        token,
+        myUserName : loginInfo.name,
+      })
+      // curl -X POST "http://localhost:8081/api/game/common/join?gameConferenceRoomUid=3&userId=ehddn52521" -H "accept: */*" -d ""
+      axios1.post(`/game/common/join?gameConferenceRoomUid=${this.state.mySessionId}&userId=${loginInfo.id}`).then((response) => {
+        console.log(response)
+      }).catch((err) => {
+        console.log(err)
+      })
+      this.joinSession();
+    }, 500);
   }
 
   componentWillUnmount() {
@@ -623,21 +642,29 @@ class Game extends Component {
     })
   }
 
-  choiceA() {
+  async choiceA() {
     const mySession = this.state.session
     
     mySession.signal({
       to:[],
       type:'choice-a'
     })
+    await mySession.signal({
+      to:[],
+      type:'countcoin',
+    })
   }
 
-  choiceB() {
+  async choiceB() {
     const mySession = this.state.session
     
     mySession.signal({
       to:[],
       type:'choice-b'
+    })
+    await mySession.signal({
+      to:[],
+      type:'countcoin',
     })
   }
 
@@ -647,14 +674,14 @@ class Game extends Component {
       to: [],
       type:'countcoin',
     })
-
-    console.log(this.state.kingList)
   }
 
   render(){
     const messages = this.state.messages;
     const sub1 = this.state.subscribers.slice(0,3)
     const sub2 = this.state.subscribers.slice(3,6)
+    // let loginInfoString = window.sessionStorage.getItem("login_user");
+    // let loginInfo = JSON.parse(loginInfoString)
 
     console.log(this.state.subscribers)
     return (
@@ -756,7 +783,7 @@ class Game extends Component {
             ):(this.state.isReady === false ?
               <img className="ready-icon" alt="ready" src={ready} onClick={() => this.readyClick()}/>
               :<img className="ready-icon" alt="ready" src={ready_ok} onClick={() => this.readyClick()}/>)}
-            <img className="icon" alt="invite" src={invite} onClick={() => this.countCoin()}/>
+            <img className="icon" alt="invite" src={invite} onClick= {() => console.log(this.props)}/>
             <img className="icon" alt="exit" src={exit} onClick={() => this.updateHost()}/>
           </div>
         </div>
@@ -828,5 +855,12 @@ class Game extends Component {
   }
 };
 
+const mapStateToProps = (state) => ({
+  user : state.user
+})
+
+const mapDispatchToProps = (dispatch) => {
+  return {};
+};
 const HOCTaskDetail = withRouter(Game)
-export default HOCTaskDetail;
+export default connect(mapStateToProps, mapDispatchToProps)(HOCTaskDetail);

@@ -12,12 +12,13 @@ import * as BiIcons from 'react-icons/bi';
 import * as RiIcons from 'react-icons/ri';
 import * as GoIcons from 'react-icons/go';
 import * as IoIcons from 'react-icons/io';
+import * as GiIcons from 'react-icons/gi';
 import ProgressBar from 'react-bootstrap/ProgressBar';
-import { getToken, deleteToken, getLoginInfoString } from '../../common/api/JWT-common';
+import { getToken, deleteToken } from '../../common/api/JWT-common';
 import { Dropdown } from "react-bootstrap";
 
 const FormulaButton1 = styled.button`
-font-family: JSArirangHON;
+  font-family: JSArirangHON;
     position: relative;
     border: none;
     min-width: 200px;
@@ -95,6 +96,22 @@ font-family: JSArirangHON;
 
 function NavBar(props) {
 
+  const [scrollPosition, setScrollPosition] = useState(window.scrollY);
+
+  const updateScroll = () => {
+      const back = document.getElementById("Navbar");
+      const homeheight = document.getElementById("Container").clientHeight;
+      const opcity = 0 + (scrollPosition/homeheight)*5;
+      setScrollPosition(window.scrollY || document.documentElement.scrollTop);
+      back.style.backgroundColor = `rgb(255,255,255,${opcity})`;
+
+  }
+
+  useEffect(()=>{
+      window.addEventListener('scroll', updateScroll);
+  });
+
+
   const history = useNavigate();
   
   //로컬스토리지 
@@ -123,9 +140,11 @@ function NavBar(props) {
   return (
     <>
       {[false].map((expand) => (
-        <Navbar key={expand} expand={expand} className="navbar mb-3" style={{width:"100%", textAlign:"center"}}>
+        <Navbar id="Navbar" key={expand} expand={expand} className="navbar mb-3" style={{width:"100%", textAlign:"center", position:"fixed", top:"0", zIndex:"2"}}>
           <Container style={{alignItems:"center"}}>
-            <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${expand}`} />
+          <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${expand}`}>
+              <GiIcons.GiHamburgerMenu color="ghostwhite" size="30px"/>
+            </Navbar.Toggle>
             {props.isHome ?  
             ( <Link to="/"><Logo className="logo" src={logo} /></Link> )
             :
@@ -176,7 +195,7 @@ function NavBar(props) {
               <Offcanvas.Body>
                 <Nav className="side-text justify-content-center flex-grow-1 pe-3">
                   <Nav.Link href="/news"><BiIcons.BiNews />  소식</Nav.Link>
-                  <Nav.Link href="/rank"><RiIcons.RiArrowUpDownLine />  신하 순위</Nav.Link>
+                  <Nav.Link href="/userrank"><RiIcons.RiArrowUpDownLine />  신하 순위</Nav.Link>
                   <Nav.Link href="/statistics"><GoIcons.GoGraph />  주제별 통계</Nav.Link>
                   <Nav.Link href="/gossip"><GoIcons.GoCommentDiscussion />  저잣거리</Nav.Link>
                   <Nav.Link href="/help"><IoIcons.IoMdHelpCircle />  도움말</Nav.Link>

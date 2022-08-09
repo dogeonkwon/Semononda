@@ -21,10 +21,10 @@ import Modal from "../../../common/modal/Modal";
 //메인페이지 배경화면 Container
 
 const Container = styled.div`
-    display: block;
+      display: block;
     position: relative;
     width: 100%;  
-    height: 100vh;
+    height: 100%;
     max-width: 100%;
     max-height: 100%;
     background: center;
@@ -32,8 +32,9 @@ const Container = styled.div`
     background-repeat: no-repeat;
     background-image: url(${infobase});
     background-size: cover;
-    overflow: scroll;
-    padding-bottom: 10%`
+    padding-bottom: 10%;
+    padding-top: 10%;
+    `
 
 //로고 영역
 const LogoWrapper = styled.div`
@@ -246,9 +247,9 @@ function MyPage() {
   }
 
   return (
-    <Container>
+    <Container id="Container">
       <NavBar></NavBar>
-      <Form style={{width: "50%", heigth:"100%", textalign:"center",padding:"1em", backgroundImage:`url(${userform_img})`, backgroundSize:"cover", margin: "0 auto", position:"relative", top:"4%"}}>
+      <Form style={{width: "50%", heigth:"100%", textalign:"center",padding:"1em", backgroundImage:`url(${userform_img})`, backgroundSize:"cover", margin: "0 auto", position:"relative", top:"15%"}}>
         <LogoWrapper>
           <LoginLogo src={mypage_img}></LoginLogo>
         </LogoWrapper>

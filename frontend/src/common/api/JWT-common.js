@@ -1,4 +1,4 @@
-export const saveToken = (token) => {
+  export const saveToken = (token) => {
     window.localStorage.setItem('token', token);
   };
   export const getToken = () => {
@@ -6,7 +6,4 @@ export const saveToken = (token) => {
   };
   export const deleteToken = () => {
     window.localStorage.removeItem('token');
-  };
-  export const getLoginInfoString = async () => {
-    await window.localStorage.getItem("login_user")
   };

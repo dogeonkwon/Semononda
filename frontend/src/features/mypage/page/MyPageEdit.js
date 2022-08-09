@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux';
 import { useNavigate }from 'react-router-dom'
 import styled from "styled-components";
 import {modifyUserInfo} from "../../user/UserSlice";
+import NavBar from '../../../common/navbar/NavBar';
 
 //이미지 파일
 import infobase from "../../../assets/images/dark_base.PNG"
@@ -18,15 +19,17 @@ const Container = styled.div`
     display: block;
     position: relative;
     width: 100%;  
-    height: 100vh;
+    height: 100%;
     max-width: 100%;
     max-height: 100%;
     background: center;
     background-color: black;
     background-repeat: no-repeat;
     background-image: url(${infobase});
-    background-size: cover;`
-
+    background-size: cover;
+    padding-bottom: 10%;
+    padding-top: 10%;
+    `
 
 //로고 영역
 const LogoWrapper = styled.div`
@@ -127,8 +130,9 @@ function MyPage() {
     }
 
   return (
-    <Container>
-      <Form style={{width: "50%", heigth:"100%", textalign:"center",padding:"1em", backgroundImage:`url(${userform_img})`, backgroundSize:"cover", margin: "0 auto", position:"relative", top:"4%"}}>
+    <Container id='Container'>
+      <NavBar/>
+      <Form style={{width: "50%", heigth:"100%", textalign:"center",padding:"1em", backgroundImage:`url(${userform_img})`, backgroundSize:"cover", margin: "0 auto", position:"relative", top:"15%"}}>
         <LogoWrapper>
           <LoginLogo src={mypage_img}></LoginLogo>
         </LogoWrapper>
