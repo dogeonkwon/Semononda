@@ -21,7 +21,6 @@ import Gossip from '../features/gossip/page/Gossip';
 function App() {
   return (
     <Router>
-      <div>
         <Routes>
           <Route exact path="/" element={<Main/>}/>
           <Route exact path="/login" element={<Login/>}/>
@@ -39,7 +38,6 @@ function App() {
           <Route exact path="/gossip" element={<Gossip />} />
       	  <Route exact path="/*" element={<NotFound />} />
         </Routes>
-      </div>
     </Router>
   );
 }

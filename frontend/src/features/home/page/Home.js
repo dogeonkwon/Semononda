@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useState} from "react";
 import 'bootstrap/dist/css/bootstrap.css';
 import styled from "styled-components";
 import {Link} from "react-router-dom";
@@ -18,7 +18,10 @@ const Container = styled.div`
     background-color: black;
     background-repeat: no-repeat;
     background-image: url(${homebase});
-    background-size: cover;`
+    background-size: cover; 
+    padding-top:10%;
+    padding-bottom:10%
+    `
 
 //Container 이분할
 const Section = styled.div`
@@ -104,14 +107,15 @@ const FreeButton = styled.button`
 
 
 
-function home() {
+function Home() {
+    const isHome =true;
     
     return (
         
-            <Container>
+            <Container id="Container">
                 
+            <NavBar isHome={isHome}/>
                 <Section>
-                <NavBar />
                 <LogoWrapper>
                     <SecondLogoWrapper>
                         <Logo src={homelogo}></Logo>
@@ -130,4 +134,4 @@ function home() {
     );
 }
 
-export default home;
+export default Home;

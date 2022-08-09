@@ -82,6 +82,8 @@ function Rank() {
 	const dispatch = useDispatch();
     const history = useNavigate();
 
+	//랭크모드 선택했다는 상태값
+	const isRank = true;
 
 	// 페이지네이션
 	const [posts, setPosts] = useState([]);
@@ -195,8 +197,8 @@ function Rank() {
 	}, []);
 
 	return (
-		<div className="rank-base">
-		<NavBar />
+		<div id='Container' className="rank-base">
+		<NavBar isRank={isRank}/>
 			<div className="layout container">
 			{/* 방 생성 화면(메인) */}
 			<main>
