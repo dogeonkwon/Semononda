@@ -15,6 +15,8 @@ import RoomList from "./RoomList";
 
 function Rank() {
 
+	const isRank = true;
+
 	const dispatch = useDispatch();
     const history = useNavigate();
 
@@ -172,7 +174,7 @@ function Rank() {
 
 	return (
 		<div className="rank-base">
-		<NavBar />
+		<NavBar isRank={isRank}/>
 			<div className="layout container">
 			{/* 방 생성 화면(메인) */}
 			<main>
