@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 import {Link, useNavigate}from 'react-router-dom'
 import {login, loadUser} from '../UserSlice';
 import styled from "styled-components";
-
+import NavBar from '../../../common/navbar/NavBar';
 
 //이미지 파일
 import darkbase from "../../../assets/images/dark_base.PNG"
@@ -25,7 +25,9 @@ const Container = styled.div`
     background-color: black;
     background-repeat: no-repeat;
     background-image: url(${darkbase});
-    background-size: cover;`
+    background-size: cover;
+    padding-top: 13%;
+    padding-bottom: 10%`
 
 //로고 영역
 const LogoWrapper = styled.div`
@@ -102,7 +104,7 @@ function Login() {
                 phonenumber: response_user.phonenumber,
                 description: response_user.description,
               }
-
+              window.location.reload();
               window.localStorage.setItem('login_user',JSON.stringify(login_user));
             })
 
@@ -121,8 +123,9 @@ function Login() {
   }
 
   return (
-    <Container>
-      <Form style={{width: "50%", textalign:"center",padding:"0.5em", backgroundImage:`url(${userform_img})`, backgroundSize:"cover", margin: "0 auto", position:"relative", top:"15%"}}>
+    <Container id='Container'>
+      <NavBar/>
+      <Form style={{width: "50%", textalign:"center",padding:"0.5em", backgroundImage:`url(${userform_img})`, backgroundSize:"cover", margin: "0 auto", position:"relative"}}>
         <LogoWrapper>
           <LoginLogo src={login_img}></LoginLogo>
         </LogoWrapper>

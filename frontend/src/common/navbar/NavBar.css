@@ -4,54 +4,26 @@
   }
   
   /* 공식경연 */
-  .formula{
-    font-family: JSArirangHON;
-    position: relative;
-    border: none;
-    min-width: 200px;
-    min-height: 50px;
+  .formula:hover {
+    transform: scale(1.2);
     background: linear-gradient(
         90deg,
         rgb(70, 70, 185) 0%,
         rgb(40, 40, 220) 100%
     );
-    border-radius: 1000px;
-    color: rgb(255, 255, 255);
-    cursor: pointer;
     box-shadow: 12px 12px 24px rgb(175, 175, 235);
-    font-weight: 500;
-    transition: 0.3s;
-    font-size: 40px;
-  }
-  
-  
-  .formula:hover {
-    transform: scale(1.2);
   }
   
   
   /* 자유경연 */
-  .custom{
-    font-family: JSArirangHON;
-    position: relative;
-    border: none;
-    min-width: 200px;
-    min-height: 50px;
+    .custom:hover {
+    transform: scale(1.2);
     background: linear-gradient(
       90deg,
       rgb(65, 165, 65) 0%,
       rgb(50, 135, 45) 100%
       );
-      border-radius: 1000px;
-      color: rgb(255, 255, 255);
-      cursor: pointer;
       box-shadow: 12px 12px 24px rgb(180, 235, 170);
-      font-weight: 500;
-      transition: 0.3s;
-      font-size: 40px;
-    }
-    .custom:hover {
-    transform: scale(1.2);
   }
     
     /* 로그인 버튼 */

@@ -3,11 +3,11 @@ import {Button, Form, FormGroup, FormLabel} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.css';
 import {Link, useNavigate}from 'react-router-dom'
 import styled from "styled-components";
-import NavBar from "../../../common/navbar/NavBar";
+import NavBar from '../../../common/navbar/NavBar';
 
 //이미지 파일
 import light_base from "../../../assets/images/light_base.png"
-import userRank_from_img from "../../../assets/images/userRank_from_img.png"
+import Statistics_form_img from "../../../assets/images/Statistics_form_img.png"
 import login_img from "../../../assets/images/login_img.png"
 
 
@@ -24,8 +24,8 @@ const Container = styled.div`
     background-repeat: no-repeat;
     background-image: url(${light_base});
     background-size: cover;
-    padding-top: 10%;
-    padding-bottom: 10%`
+    padding-top:10%;
+    padding-bottom:10%`
 
 //로고 영역
 const LogoWrapper = styled.div`
@@ -57,29 +57,19 @@ const StyledLink = styled(Link)`
 `
 
 
-const UserRank = () => {
 
-    /**Form img사이즈 수정해야함 */
-    return (
-      <Container id="Container">
-        <NavBar />
-          <Form style={{width: "50%", textalign:"center",padding:"0.5em", backgroundImage:`url(${userRank_from_img})`, backgroundSize:"cover", margin: "0 auto", position:"relative", top:"15%"}}>
-          <LogoWrapper>
-              <h1>저잣거리</h1>
-              <h1>저잣거리</h1>
-              <h1>저잣거리</h1>
-              <h1>저잣거리</h1>
-              <h1>저잣거리</h1>
-              <h1>저잣거리</h1>
-              <h1>저잣거리</h1>
-              <h1>저잣거리</h1>
-              <h1>저잣거리</h1>
-              <h1>저잣거리</h1>
-              </LogoWrapper>
-          </Form>
-        </Container>
-        );
-      }
+const News = () => {
     
+    return (
+      <Container id='Container'>
+        <NavBar/>
+        <Form style={{width: "50%", textalign:"center",padding:"0.5em", backgroundImage:`url(${Statistics_form_img})`, backgroundSize:"cover", margin: "0 auto", position:"relative", top:"15%"}}>
+        <LogoWrapper>
+            <h1>소식</h1>
+            </LogoWrapper>
+        </Form>
+      </Container>
+      );
+    }
   
-export default UserRank;
+export default News;

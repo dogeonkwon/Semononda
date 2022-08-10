@@ -4,12 +4,12 @@ import NavBar from "../../../common/navbar/NavBar";
 import './Custom.css';
 import styled from "styled-components";
 
-
 function Custom() {
+	const isCustom = true;
 
 	return (
-		<div className="rank-base">
-			<NavBar className="navbar" />
+		<div id="Container" className="custom-base">
+			<NavBar className="navbar" isCustom={isCustom}/>
 			<h1>자유경연!</h1>
 		</div>
 	);

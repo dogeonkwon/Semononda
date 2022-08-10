@@ -2,22 +2,18 @@ import React from "react";
 import styled from "styled-components";
 
 const PageUl = styled.ul`
-  float: left;
-  list-style: none;
+  display: flex;
   text-align: center;
+  justify-content: center;
   border-radius: 3px;
-  color: white;
-  padding: 1px;
-  border-top: 3px solid #186ead;
-  border-bottom: 3px solid #186ead;
-  background-color: rgba(0, 0, 0, 0.4);
+  margin: 1rem;
 `;
 
 const PageLi = styled.li`
   display: inline-block;
-  font-size: 17px;
-  font-weight: 600;
-  padding: 5px;
+  margin: 1rem;
+  font-size: 30px;
+  font-weight: 1000;
   border-radius: 5px;
   width: 25px;
   &:hover {
@@ -36,7 +32,6 @@ const PageSpan = styled.span`
   &:focus::after {
     border-radius: 100%;
     color: white;
-    background-color: #263a6c;
   }
 `;
 
@@ -51,7 +46,7 @@ const Pagination = ({ postsPerPage, totalPosts, paginate }) => {
         <PageUl className="pagination">
           {pageNumbers.map((number) => (
             <PageLi key={number} className="page-item">
-              <PageSpan onClick={() => paginate(number)} className="page-link">
+              <PageSpan onClick={() => paginate(number)} className="pagenation">
                 {number}
               </PageSpan>
             </PageLi>

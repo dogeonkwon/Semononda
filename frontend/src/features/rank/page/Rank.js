@@ -14,7 +14,7 @@ import RoomList from "./RoomList";
 
 
 function Rank() {
-
+	const isRank = true;
 	const dispatch = useDispatch();
     const history = useNavigate();
 
@@ -29,7 +29,7 @@ function Rank() {
 
 	// 페이지네이션
 	const [currentPage, setCurrentPage] = useState(1);
-	const [postsPerPage, setPostsPerPage] = useState(2);
+	const [postsPerPage, setPostsPerPage] = useState(6);
 
 	const indexOfLast = currentPage * postsPerPage;
 	const indexOfFirst = indexOfLast - postsPerPage;
@@ -172,7 +172,7 @@ function Rank() {
 
 	return (
 		<div className="rank-base">
-		<NavBar />
+		<NavBar className="navbar" isRank={isRank}/>
 			<div className="layout container">
 			{/* 방 생성 화면(메인) */}
 			<main>
@@ -189,7 +189,8 @@ function Rank() {
 				{/* 검색 및 방생성 */}
 				<div className="bottom">
 					{/* 검색 */}
-					<div className="search">
+
+					<div className="search_base">
 						<input
 							type="search"
 							className="search"
@@ -202,7 +203,7 @@ function Rank() {
 						<button onClick={handleClick}>검색</button>
 					</div>
 					{/* 방생성 */}
-					<Button className="create_room" onClick={onClickToggleModal}>방 생성</Button>
+					<button className="create_room" onClick={onClickToggleModal}>방 생성</button>
 					{isOpenModal&& (
 						<Modal onClickToggleModal={onClickToggleModal}>
 							<FormGroup className='mb-3' controlId='formBasicTitle'>

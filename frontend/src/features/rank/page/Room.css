@@ -1,18 +1,38 @@
-.room_item {
+.gameroom {
     display: flex;
-    align-items: center;
-    justify-content: space-around;
-    background-color: wheat;
-    padding: 1rem;
-    margin: 1rem;
-    /* border-radius: 10% / 50%; */
+    justify-content: center ;
+    flex-flow: wrap;
+    background-color: rgb(226, 189, 161);
+    /* background-image: url("../../../assets/images/red_room.png"); */
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100%;
+    background-position: center;
+    width: 80%;
 }
 
-.room_info {
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-    background-color: wheat;
-    flex-flow: wrap;
-    padding: 1rem;
+.image {
+    padding: 2rem;
+}
+
+.body {
+    margin: 2rem;
+}
+
+.enter {
+    background: #dcdcdc;
+    display: block;
+    position: relative;
+    float: left;
+    width: 120px;
+    padding: 0;
+    margin: 10px 20px 10px 0;
+    font-weight: 600;
+    text-align: center;
+    line-height: 50px;
+    color: rgb(0, 0, 0);
+    border-radius: 5px;
+    transition: all 0.2s ;
+    margin: 1rem;
+    font-size: 2rem;
 }

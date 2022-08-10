@@ -70,8 +70,8 @@ public class GameServiceImpl implements GameService {
 	}
 
 	@Override
-	public void normalGameEnd(int gameConferenceRoomUid, int userUid) {
-		playerRepositorySupport.normalGameEnd(gameConferenceRoomUid, userUid);
+	public void normalGameEnd(int gameConferenceRoomUid, String userId) {
+		playerRepositorySupport.normalGameEnd(gameConferenceRoomUid, userId);
 		return;
 	}
 
