@@ -22,6 +22,7 @@ const LogoAndButtonArea = styled.div`
   align-items: center;
   width: 60%;
   justify-content: space-between;
+  position: relative;
 `
 
 const SelectedFormulaButton = styled.button`

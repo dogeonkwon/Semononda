@@ -1,8 +1,13 @@
 import React from "react";
-import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import './Room.css';
-import red_room from '../../../assets/images/red_room.png'
+import daily_life from '../../../assets/images/food.png'
+import food from '../../../assets/images/food.png'
+import developer from '../../../assets/images/developer.png'
+import mbti from '../../../assets/images/mbti.png'
+import love from '../../../assets/images/love.png'
+import opposite from '../../../assets/images/opposite.png'
+import education from '../../../assets/images/education.png'
 
 const Catgory = [
     "더미",
@@ -20,13 +25,13 @@ const Catgory = [
 const Logo = [
     "더미",
     "더미데이터",
-    "daily_life",
-    "food",
-    "computer",
-    "mbti",
-    "love",
-   "opposite",
-    "education",
+    daily_life,
+    food,
+    developer,
+    mbti,
+    love,
+    opposite,
+    education,
 ];
 
 
@@ -34,25 +39,22 @@ function Room(props) {
     const { title, gameCategoriesUid, adminNickname} = props;
 
     return (
-        // <Card>
-            <div className="gameroom">
-                <div className="image">
-                    <Card.Img style={{ width: '10rem' }} variant="top" src={`${Logo[gameCategoriesUid]}.png`} />
-                </div>
-                <div className="body">
-                    <Card.Body>
-                        <Card.Title>{title}</Card.Title>
-                        <Card.Title>
-                            방 카테고리 : {Catgory[gameCategoriesUid]}
-                        </Card.Title>
-                        <Card.Title>
-                            주최자 : {adminNickname}
-                        </Card.Title>
-                        <button className="enter">입장하기</button>
-                    </Card.Body>
-                </div>
+        <div className="gameroom">
+            <div className="image">
+                <Card.Img style={{ width: '6rem' }} src={`${Logo[gameCategoriesUid]}`} />
             </div>
-        // </Card>
+            <div className="body">
+                <Card.Body>
+                    <Card.Title>
+                        <h4>{title}</h4>
+                    </Card.Title>
+                    <Card.Title>
+                        <span>주최자 : {adminNickname}</span>
+                    </Card.Title>
+                    <button className="enter">입장하기</button>
+                </Card.Body>
+            </div>
+        </div>
     );
 }
 

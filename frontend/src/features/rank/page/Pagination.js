@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import './Rank.css';
 
 const PageUl = styled.ul`
   display: flex;
@@ -15,7 +16,7 @@ const PageLi = styled.li`
   font-size: 30px;
   font-weight: 1000;
   border-radius: 5px;
-  width: 25px;
+  width: 20px;
   &:hover {
     cursor: pointer;
     color: white;
@@ -35,9 +36,9 @@ const PageSpan = styled.span`
   }
 `;
 
-const Pagination = ({ postsPerPage, totalPosts, paginate }) => {
+const Pagination = ({ roomsPerPage, totalRooms, paginate }) => {
   const pageNumbers = [];
-  for (let i = 1; i <= Math.ceil(totalPosts / postsPerPage); i++) {
+  for (let i = 1; i <= Math.ceil(totalRooms / roomsPerPage); i++) {
     pageNumbers.push(i);
   }
   return (
@@ -46,7 +47,7 @@ const Pagination = ({ postsPerPage, totalPosts, paginate }) => {
         <PageUl className="pagination">
           {pageNumbers.map((number) => (
             <PageLi key={number} className="page-item">
-              <PageSpan onClick={() => paginate(number)} className="pagenation">
+              <PageSpan onClick={() => paginate(number)} className="page">
                 {number}
               </PageSpan>
             </PageLi>

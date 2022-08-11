@@ -1,22 +1,54 @@
+/* 랭크게임방 파란색 배경 */
+.rank_base {
+    background-image: url("../../../assets/images/rank_base.png");
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    height: 55vh;
+    width: 50%;
+    display: flex;
+    background-size: cover;
+    align-items: center;
+    justify-content: center;
+    align-items: center;
+    border-radius: 2%;
+}
+
+
+/* 랭크 방 누런색 배경 */
+.col {
+    display: flex;
+    background-image: url("../../../assets/images/room_background2.png");
+    height: 40%;
+    width: 100%;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    justify-content: center ;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
 .gameroom {
     display: flex;
-    justify-content: center ;
-    flex-flow: wrap;
-    background-color: rgb(226, 189, 161);
-    /* background-image: url("../../../assets/images/red_room.png"); */
+    justify-content: center;
+    align-items: center;
+    background-size: contain;
     background-repeat: no-repeat;
-    background-size: cover;
-    height: 100%;
     background-position: center;
-    width: 80%;
+    /* margin-top: 1rem;
+    margin-bottom: 1rem; */
+    height: 100%;
+    width: 100%;
 }
 
 .image {
-    padding: 2rem;
+    padding-left: 2rem;
 }
 
 .body {
     margin: 2rem;
+    padding-right: 2rem;
 }
 
 .enter {
@@ -24,15 +56,20 @@
     display: block;
     position: relative;
     float: left;
-    width: 120px;
+    width: 100px;
     padding: 0;
     margin: 10px 20px 10px 0;
-    font-weight: 600;
+    font-weight: 500;
     text-align: center;
-    line-height: 50px;
+    line-height: 30px;
     color: rgb(0, 0, 0);
     border-radius: 5px;
     transition: all 0.2s ;
-    margin: 1rem;
-    font-size: 2rem;
+    /* margin: 1rem; */
+    font-size: 1.5rem;
 }
+
+.enter:hover {
+    scale: 1.1;
+}
+
