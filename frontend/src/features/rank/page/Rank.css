@@ -1,4 +1,5 @@
-.rank-base {
+/* 랭크방 어두운 뒷배경 */
+.rank_base {
     background-image: url("../../../assets/images/dark_base.PNG");
     background-size: cover;
     background-position: center;
@@ -9,10 +10,9 @@
     justify-content: center;
 }
 
-.layout-container {
+.layout_container {
   display: block;
   padding-top: 9%;
-  /* padding-bottom: 8%; */
 }
 
 .main {
@@ -42,16 +42,28 @@
   text-align: center;
   line-height: 150%;
   color: rgb(0, 0, 0);
-  border-radius: 8%;
+  /* border-radius: 8%; */
   transition: all 0.2s ;
   margin: 5rem;
-  /* margin-left: 20%; */
   font-size: 2rem;
   box-shadow: 0px 0px 0px 0px #585f5c;
 }
 
 .create_room:hover {
   scale: 1.2;
+}
+
+/* modal창 외부화면 */
+.Modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 
@@ -74,6 +86,10 @@
   border: 2;
   outline: rgb(0, 0, 0);
 }
+
+
+
+
 
 /* 드롭다운 1 */
 @keyframes slide-fade-in-dropdown-animation {
