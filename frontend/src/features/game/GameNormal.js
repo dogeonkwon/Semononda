@@ -7,6 +7,8 @@ import exit from '../../assets/images/exit.png'
 import ready from '../../assets/images/ready.png'
 import ready_ok from '../../assets/images/ready_ok.png'
 import start from '../../assets/images/start.png'
+import title from '../../assets/images/title.png'
+import redRoom from '../../assets/images/red_room.png'
 
 // 컴포넌트
 import axios1 from '../../common/api/http-common';
@@ -21,8 +23,8 @@ import $ from 'jquery';
 import Button from 'react-bootstrap/Button';
 import { connect } from 'react-redux'
 
-const OPENVIDU_SERVER_URL = 'https://' + window.location.hostname + ':4443';
-const OPENVIDU_SERVER_SECRET = 'MY_SECRET';
+const OPENVIDU_SERVER_URL = 'https://i7e103.p.ssafy.io:8082';
+const OPENVIDU_SERVER_SECRET = 'SMND';
 
 // url parameter 사용을 위한 HOC
 function withRouter(Component) {
@@ -76,9 +78,9 @@ class Game extends Component {
     window.addEventListener('beforeunload', this.onbeforeunload);
     setTimeout(()=> {
       // storage에서 login한 user 정보 가져오기
-      let loginInfoString = window.sessionStorage.getItem("login_user");
+      let loginInfoString = window.localStorage.getItem("login_user");
       let loginInfo = JSON.parse(loginInfoString)
-      let token = window.sessionStorage.getItem('token')
+      let token = window.localStorage.getItem('token')
       this.setState({
         token,
         myUserName : loginInfo.name,
@@ -721,6 +723,9 @@ class Game extends Component {
           </div>
           <div className="titlediv">
             <div className="title">
+              {/* <div className='temp'> */}
+              {/* <img className="titleImg" src={title}></img> */}
+              {/* </div> */}
               <div className="titlecontent">
                 <p className="subject">안건</p>
                 <p className="subjectcontent">남녀사이엔 친구가 존재하는가.</p>
@@ -766,8 +771,37 @@ class Game extends Component {
           ))}
         </div>
         <div className="chatdiv">
+        <div className="infobg">
+            <div className="infobox">
+                <h1>정보창입니다.</h1>
+                {/* {this.state.readyState === 'start' ? (
+                this.state.isKing === true? (
+                  <div className='buttondiv'>
+                    <Button className="button" variant="danger" onClick={() => this.choiceA()}>가. </Button>{' '}
+                    <Button className="button" variant="warning" onClick={() => this.choiceB()}>나. </Button>
+                  </div>
+                ) : (this.state.servant === '가' ? 
+                  <div className="servantdiv">
+                    <p>가. 진영</p>
+                    <div className="servantinfo">
+                      <p>코인 : {this.state.coin}개</p>
+                      <p>왕 : {this.state.kingCount}회</p>
+                    </div>
+                  </div>
+                 : (this.state.servant ==='나' ?
+                 <div className="servantdiv">
+                  <p>나. 진영</p>
+                  <div className="servantinfo">
+                   <p>코인 : {this.state.coin}개</p>
+                   <p>왕 : {this.state.kingCount}회</p>
+                  </div>
+                 </div>
+                 : null))
+              ): null} */}
+            </div>
+          </div>
           <div className="chatbg"> 
-            <div className="chatbox">
+
               <div className="chatbox__messages" ref="chatoutput">
                 {/* {this.displayElements} */}
                 <Messages messages={messages} />
@@ -781,14 +815,13 @@ class Game extends Component {
                   onKeyPress={this.sendmessageByEnter}
                   value={this.state.message}
                 />
-                <p
-                  className="chat chatbox__send--footer"
-                  onClick={this.sendmessageByClick}
-                >
-                  보내기
-                </p>
+                <button
+                  className="chat_send"
+                  onClick={this.sendmessageByClick}>
+                    입력
+                </button>
               </div>
-            </div>
+ 
           </div>
           <div className="icons">
             {this.state.isHost === true ? (
@@ -796,7 +829,6 @@ class Game extends Component {
             ):(this.state.isReady === false ?
               <img className="ready-icon" alt="ready" src={ready} onClick={() => this.readyClick()}/>
               :<img className="ready-icon" alt="ready" src={ready_ok} onClick={() => this.readyClick()}/>)}
-            <img className="icon" alt="invite" src={invite} onClick= {() => this.gameset()}/>
             <img className="icon" alt="exit" src={exit} onClick={() => this.updateHost()}/>
           </div>
         </div>
