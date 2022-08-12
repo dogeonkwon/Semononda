@@ -726,13 +726,20 @@ class Game extends Component {
               {/* <div className='temp'> */}
               {/* <img className="titleImg" src={title}></img> */}
               {/* </div> */}
+
               <div className="titlecontent">
                 <p className="subject">안건</p>
-                <p className="subjectcontent">남녀사이엔 친구가 존재하는가.</p>
-                <p className="subjecta">가. 남녀사이엔 친구가 존재 한다.</p>
-                <p className="subjectb">나. 아니다. 남녀사이에 친구가 왠 말이냐</p>
+                <p className="subjecttopic">남녀사이엔 친구가 존재하는가.</p>
               </div>
-              {this.state.readyState === 'start' ? (
+              <div className='subjectcontent'>
+                <div className="subjectdetaila">
+                  <p className="subjectdetailcontent">그렇다. 남녀사이엔 친구가 존재 한다.</p>
+                </div>
+                <div className='subjectdetailb'>
+                  <p className="subjectdetailcontent">아니다. 남녀사이에 친구가 왠 말이냐</p>
+                </div>
+              </div>
+              {/* {this.state.readyState === 'start' ? (
                 this.state.isKing === true? (
                   <div className='buttondiv'>
                     <Button className="button" variant="danger" onClick={() => this.choiceA()}>가. </Button>{' '}
@@ -755,7 +762,7 @@ class Game extends Component {
                   </div>
                  </div>
                  : null))
-              ): null}
+              ): null} */}
             </div>
           </div>
         </div>
