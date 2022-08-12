@@ -1,5 +1,7 @@
 package com.ssafy.api.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -8,6 +10,7 @@ import com.ssafy.db.entity.Player;
 import com.ssafy.db.repository.PlayerRepository;
 import com.ssafy.db.repository.PlayerRepositorySupport;
 import com.ssafy.db.repository.SelectedTopicRepository;
+import com.ssafy.api.response.ReadyRes;
 
 /**
  *	유저 관련 비즈니스 로직 처리를 위한 서비스 구현 정의.
@@ -36,9 +39,8 @@ public class GameServiceImpl implements GameService {
 	}
 
 	@Override
-	public void gameStart(int gameConferenceRoomUid) {
-		playerRepositorySupport.gameStart(gameConferenceRoomUid);
-		return;
+	public List<ReadyRes> gameStart(int gameConferenceRoomUid) {
+		return playerRepositorySupport.gameStart(gameConferenceRoomUid);
 	}
 	@Override
 	public void changePenalty(int gameConferenceRoomUid, String userID, int penalty) {

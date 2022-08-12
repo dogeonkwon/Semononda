@@ -1,5 +1,7 @@
 package com.ssafy.api.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -16,6 +18,7 @@ import com.ssafy.api.request.UserLoginPostReq;
 import com.ssafy.api.request.UserRegisterPostReq;
 import com.ssafy.api.response.GameCategoryTopicsRes;
 import com.ssafy.api.response.PlayerRes;
+import com.ssafy.api.response.ReadyRes;
 import com.ssafy.api.response.TopicsWinnerRes;
 import com.ssafy.api.response.UserLoginPostRes;
 import com.ssafy.api.response.UserResponse;
@@ -76,18 +79,17 @@ public class GameController {
 	}
 	
 	@PostMapping("/common/game-start")
-	@ApiOperation(value = "게임 시작", notes = "게임 컨퍼런스 룸이 <strong>게임 중</strong>상태로 전환된다.") 
+	@ApiOperation(value = "게임 시작", notes = "모두 준비된 상태라면 게임 컨퍼런스 룸이 <strong>게임 중</strong>상태로 전환된다. 모두 준비되지 않았을 때는 게임 중 상태의 변화는 없고 플레이어 준비 상태 정보를 리턴한다.") 
     @ApiResponses({
         @ApiResponse(code = 200, message = "성공"),
         @ApiResponse(code = 401, message = "인증 실패"),
         @ApiResponse(code = 404, message = "사용자 없음"),
         @ApiResponse(code = 500, message = "서버 오류")
     })
-	public ResponseEntity<? extends BaseResponseBody> gameStart(
+	public ResponseEntity<List<ReadyRes>> gameStart(
 			@RequestParam("gameConferenceRoomUid") @ApiParam(value="게임 컨퍼런스룸 Uid 정보", required = true) int gameConferenceRoomUid) {
-
-		gameService.gameStart(gameConferenceRoomUid);
-		return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
+		List<ReadyRes> readyRes =	gameService.gameStart(gameConferenceRoomUid);
+		return ResponseEntity.status(200).body(readyRes);
 	}
 	
 	@PostMapping("/common/penalty")

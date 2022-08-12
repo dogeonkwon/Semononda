@@ -1,5 +1,8 @@
 package com.ssafy.api.service;
 
+import java.util.List;
+
+import com.ssafy.api.response.ReadyRes;
 import com.ssafy.api.response.TopicsWinnerRes;
 import com.ssafy.db.entity.Player;
 
@@ -11,7 +14,7 @@ public interface GameService {
 	void changePlayerReady(String userId);
 	void makeRandomKing(int gameConferenceRoomUid);
 	void makeRandomTeam(int gameConferenceRoomUid);
-	void gameStart(int gameConferenceRoomUid);
+	List<ReadyRes> gameStart(int gameConferenceRoomUid);
 	void changePenalty(int gameConferenceRoomUid, String userID, int penalty);
 	TopicsWinnerRes getRoundStart(int gameConferenceRoomUid);
 	void getRoundEnd(int gameConferenceRoomUid, String winTeam);
