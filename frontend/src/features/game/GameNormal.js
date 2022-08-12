@@ -2,19 +2,16 @@
 import './Game.css';
 
 // img파일
-import invite from '../../assets/images/invite.png'
 import exit from '../../assets/images/exit.png'
 import ready from '../../assets/images/ready.png'
 import ready_ok from '../../assets/images/ready_ok.png'
 import start from '../../assets/images/start.png'
-import title from '../../assets/images/title.png'
-import redRoom from '../../assets/images/red_room.png'
 
 // 컴포넌트
 import axios1 from '../../common/api/http-common';
 import UserVideoComponent from './UserVideoComponent'
 import Messages from './Messages'
-
+import Timer from './Timer'
 import axios from 'axios';
 import { OpenVidu } from 'openvidu-browser';
 import React, { Component, createRef } from 'react';
@@ -39,7 +36,7 @@ class Game extends Component {
   constructor(props) {
     super(props);
     this.state = {
-        mySessionId: 'normal'+this.props.params.id,
+        mySessionId: this.props.params.id,
         myUserName: undefined,
         session: undefined,
         mainStreamManager: undefined,
@@ -70,7 +67,7 @@ class Game extends Component {
     this.sendmessageByEnter = this.sendmessageByEnter.bind(this);
     this.handleChatMessageChange = this.handleChatMessageChange.bind(this);
     this.readyClick = this.readyClick.bind(this);
-
+    this.myref = React.createRef();
   }
 
   // 처음 방을 들어갔을 때 실행
@@ -101,7 +98,7 @@ class Game extends Component {
   // 방을 떠날 때 실행
   componentWillUnmount() {
     setTimeout(() => {
-      let loginInfoString = window.sessionStorage.getItem("login_user");
+      let loginInfoString = window.localStorage.getItem("login_user");
       let loginInfo = JSON.parse(loginInfoString)
       axios1.post(`/game/common/quit?gameConferenceRoomUid=${this.state.mySessionId}&userId=${loginInfo.id}`).then((response) => {
         console.log(response)
@@ -207,7 +204,7 @@ class Game extends Component {
               mySession.on('streamDestroyed', (event) => {
                 this.updateHost().then((clientData) => {
                   const host = JSON.parse(clientData).clientData;
-
+                  console.log('호스트' + host)
                   mySession.signal({
                     data: host,
                     to: [],
@@ -247,6 +244,9 @@ class Game extends Component {
               })
 
               mySession.on('signal:topic-choice', (event) =>{
+                this.setState({
+                  readyState: 'start',
+                })
                 const topics = event.data.split('***')
                 const title = document.querySelector('.subjectcontent')
                 const suba = document.querySelector('.subjecta')
@@ -254,16 +254,14 @@ class Game extends Component {
                 title.innerText = topics[0]
                 suba.innerText = '가. ' + topics[1]
                 subb.innerText = '나. ' + topics[2]
-                alert(`주제가 공개되었습니다.`)
-                this.setState({
-                  readyState: 'start',
-                })
+                this.timeSet()
+                alert('주제가 공개되었습니다.')
               })
 
               // 플레이어 정보 갱신
               mySession.on('signal:check-yourposition', (event) => {
                 // http://localhost:8081/api/game/common/player-info?userID=rkdqudtn1
-                let loginInfoString = window.sessionStorage.getItem("login_user");
+                let loginInfoString = window.localStorage.getItem("login_user");
                 let loginInfo = JSON.parse(loginInfoString)
                 axios1.get(`/game/common/player-info?userID=${loginInfo.id}`).then((response) => {
                   console.log(response.data)
@@ -276,6 +274,7 @@ class Game extends Component {
                     this.setState({
                       isKing: true,
                       servant: undefined,
+                      timeOut:true,
                     })
                   } else {
                     if (response.data.team === "A") {
@@ -283,12 +282,14 @@ class Game extends Component {
                       this.setState({
                         isKing: false,
                         servant: '가',
+                        timeOut:true,
                       })
                     } else{
                       alert('당신은 나. 입니다.')
                       this.setState({
                         isKing: false,
                         servant: '나',
+                        timeOut:true,
                       })
                     }
                   }
@@ -302,13 +303,23 @@ class Game extends Component {
                 this.setState({
                   isKing: false,
                   servant: undefined,
-                })
+                  timeOut: false,
+                }).then(() => this.timeEnd())
               })
 
               mySession.on('signal:choice-b', ()=> {
                 alert('왕이 나. 를 선택하였습니다.')
                 this.setState({
                   isKing:false,
+                  servant: undefined,
+                  timeOut: false,
+                }).then(() =>this.timeEnd())
+              })
+
+              mySession.on('signal:time-out', (event) =>{
+                alert('왕이 시간 내 선택을 하지 못하였습니다. 왕을제외한 모든 플레이어가 코인을 하나씩 받습니다.')
+                this.setState({
+                  isKing: false,
                   servant: undefined,
                 })
               })
@@ -317,6 +328,7 @@ class Game extends Component {
                 alert(`승자는 ${event.data}님 입니다.`)
                 window.location.href = 'http://localhost:3000'
               })
+
 
               // --- 4) Connect to the session with a valid user token ---
             
@@ -491,7 +503,7 @@ class Game extends Component {
   readyClick() {
     const mySession = this.state.session;
     setTimeout(()=> {
-      let loginInfoString = window.sessionStorage.getItem("login_user");
+      let loginInfoString = window.localStorage.getItem("login_user");
       let loginInfo = JSON.parse(loginInfoString)
       // http://localhost:8081/api/game/common/ready?userID=rkdqudtn3 
       axios1.post(`/game/common/ready?userID=${loginInfo.id}`).then((response) => {
@@ -522,8 +534,8 @@ class Game extends Component {
     return new Promise((resolve, reject) => {
       $.ajax({
         type: 'GET',
-        // https://YOUR_OPENVIDUSERVER_IP/openvidu/api/sessions/SESSION_ID/connection
-        url: `https://${window.location.hostname}:4443/openvidu/api/sessions/${
+        // https://i7e103.p.ssafy.io:8082
+        url: `https://i7e103.p.ssafy.io:8082/openvidu/api/sessions/${
           this.state.mySessionId
         }/connection`,
         
@@ -696,11 +708,57 @@ class Game extends Component {
     })
   }
 
+  timeSet() {
+    this.myref?.current.resetTimer(); 
+  }
+
+  timeEnd() {
+    this.myref?.current.endTimer();
+  }
+  
+  timeOver() { 
+    if (this.state.isKing) {
+      axios1.post(`/game/normal/time-out?gameConferenceRoomUid=${this.state.mySessionId}`)
+      const mySession = this.state.session
+
+      mySession.signal({
+        to: [],
+        type: 'time-out'
+      }).then(() => {
+        axios1.post(`/game/normal/round-start?gameConferenceRoomUid=${this.state.mySessionId}`).then((response) =>{
+        console.log(response.data)
+        const mySession = this.state.session
+        if ( response.data.userId === null) {
+          const topicData = `${response.data.topic}***${response.data.answerA}***${response.data.answerB}`
+          mySession.signal({
+            data: topicData,
+            to: [],
+            type: 'topic-choice',
+          }).then(() =>  {
+            const mySession = this.state.session
+            mySession.signal({
+              to: [],
+              type: 'check-yourposition'
+            })
+          })
+        } else {
+          axios1.post(`/game/normal/game-end?gameConferenceRoomUid=${this.state.mySessionId}&userId=${response.data.userId}`).then(() => {
+            mySession.signal({
+              data: response.data.userNickname,
+              to: [],
+              type: 'winner'
+            })
+          })
+        }
+      })
+    })}
+  }
+
   render(){
     const messages = this.state.messages;
     const sub1 = this.state.subscribers.slice(0,3)
     const sub2 = this.state.subscribers.slice(3,6)
-    // let loginInfoString = window.sessionStorage.getItem("login_user");
+    // let loginInfoString = window.localStorage.getItem("login_user");
     // let loginInfo = JSON.parse(loginInfoString)
 
     console.log(this.state.subscribers)
@@ -723,9 +781,6 @@ class Game extends Component {
           </div>
           <div className="titlediv">
             <div className="title">
-              {/* <div className='temp'> */}
-              {/* <img className="titleImg" src={title}></img> */}
-              {/* </div> */}
 
               <div className="titlecontent">
                 <p className="subject">안건</p>
@@ -733,36 +788,12 @@ class Game extends Component {
               </div>
               <div className='subjectcontent'>
                 <div className="subjectdetaila">
-                  <p className="subjectdetailcontent">그렇다. 남녀사이엔 친구가 존재 한다.</p>
+                  <p className="subjectdetailcontent subjecta">그렇다. 남녀사이엔 친구가 존재 한다.</p>
                 </div>
                 <div className='subjectdetailb'>
-                  <p className="subjectdetailcontent">아니다. 남녀사이에 친구가 왠 말이냐</p>
+                  <p className="subjectdetailcontent subjectb">아니다. 남녀사이에 친구가 왠 말이냐</p>
                 </div>
               </div>
-              {/* {this.state.readyState === 'start' ? (
-                this.state.isKing === true? (
-                  <div className='buttondiv'>
-                    <Button className="button" variant="danger" onClick={() => this.choiceA()}>가. </Button>{' '}
-                    <Button className="button" variant="warning" onClick={() => this.choiceB()}>나. </Button>
-                  </div>
-                ) : (this.state.servant === '가' ? 
-                  <div className="servantdiv">
-                    <p>가. 진영</p>
-                    <div className="servantinfo">
-                      <p>코인 : {this.state.coin}개</p>
-                      <p>왕 : {this.state.kingCount}회</p>
-                    </div>
-                  </div>
-                 : (this.state.servant ==='나' ?
-                 <div className="servantdiv">
-                  <p>나. 진영</p>
-                  <div className="servantinfo">
-                   <p>코인 : {this.state.coin}개</p>
-                   <p>왕 : {this.state.kingCount}회</p>
-                  </div>
-                 </div>
-                 : null))
-              ): null} */}
             </div>
           </div>
         </div>
@@ -779,16 +810,21 @@ class Game extends Component {
         </div>
         <div className="chatdiv">
         <div className="infobg">
+            <div className="infoHeadDiv">
+              <h1>게임진행</h1>
+            </div>
+            <div className="timerDiv">
+              <Timer ref={this.myref} timeOver={this.timeOver.bind(this)} state={this.state}></Timer>
+            </div>
             <div className="infobox">
-                <h1>정보창입니다.</h1>
-                {/* {this.state.readyState === 'start' ? (
+                {this.state.readyState === 'start' ? (
                 this.state.isKing === true? (
                   <div className='buttondiv'>
-                    <Button className="button" variant="danger" onClick={() => this.choiceA()}>가. </Button>{' '}
-                    <Button className="button" variant="warning" onClick={() => this.choiceB()}>나. </Button>
+                    <Button className="button" style={{fontSize:"50px"}} variant="danger" onClick={() => this.choiceA()}>가. </Button>{' '}
+                    <Button className="button" style={{fontSize:"50px"}} variant="primary" onClick={() => this.choiceB()}>나. </Button>
                   </div>
                 ) : (this.state.servant === '가' ? 
-                  <div className="servantdiv">
+                  <div className="servantdiv"> 
                     <p>가. 진영</p>
                     <div className="servantinfo">
                       <p>코인 : {this.state.coin}개</p>
@@ -804,7 +840,7 @@ class Game extends Component {
                   </div>
                  </div>
                  : null))
-              ): null} */}
+              ): null}
             </div>
           </div>
           <div className="chatbg"> 

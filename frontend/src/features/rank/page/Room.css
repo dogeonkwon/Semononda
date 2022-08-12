@@ -1,18 +1,73 @@
-.room_item {
+/* 랭크게임방 파란색 배경 */
+.rankroom_base {
+    background-image: url("../../../assets/images/rank_base.png");
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    height: 55vh;
+    width: 50%;
     display: flex;
+    background-size: cover;
     align-items: center;
-    justify-content: space-around;
-    background-color: wheat;
-    padding: 1rem;
-    margin: 1rem;
-    /* border-radius: 10% / 50%; */
+    justify-content: center;
+    align-items: center;
+    border-radius: 2%;
 }
 
-.room_info {
+
+/* 랭크 방 누런색 배경 */
+.col {
     display: flex;
+    background-image: url("../../../assets/images/room_background2.png");
+    height: 40%;
+    width: 100%;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    justify-content: center ;
     align-items: center;
-    justify-content: space-around;
-    background-color: wheat;
-    flex-flow: wrap;
-    padding: 1rem;
+    margin-bottom: 1rem;
 }
+
+.gameroom {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 100%;
+    width: 100%;
+}
+
+.image {
+    padding-left: 2rem;
+}
+
+.body {
+    margin: 2rem;
+    padding-right: 2rem;
+}
+
+.enter {
+    background: #dcdcdc;
+    display: block;
+    position: relative;
+    float: left;
+    width: 100px;
+    padding: 0;
+    margin: 10px 20px 10px 0;
+    font-weight: 500;
+    text-align: center;
+    line-height: 30px;
+    color: rgb(0, 0, 0);
+    border-radius: 5px;
+    transition: all 0.2s ;
+    /* margin: 1rem; */
+    font-size: 1.5rem;
+}
+
+.enter:hover {
+    scale: 1.1;
+}
+
