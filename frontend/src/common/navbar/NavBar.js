@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import './NavBar.css';
 //import { CgProfile } from "react-icons/cg";
-import logo from '../../assets/images/logo.png';
+import homelogo2 from '../../assets/images/logo.png';
 import styled from "styled-components";
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
@@ -12,9 +12,9 @@ import * as BiIcons from 'react-icons/bi';
 import * as RiIcons from 'react-icons/ri';
 import * as GoIcons from 'react-icons/go';
 import * as IoIcons from 'react-icons/io';
-import * as GrIcons from 'react-icons/gr';
+import * as GiIcons from 'react-icons/gi';
 import ProgressBar from 'react-bootstrap/ProgressBar';
-import { getToken, deleteToken } from '../../common/api/JWT-common';
+import { getToken, deleteToken, saveToken } from '../../common/api/JWT-common';
 import { Dropdown, NavDropdown } from "react-bootstrap";
 
 const LogoAndButtonArea = styled.div`
@@ -22,7 +22,6 @@ const LogoAndButtonArea = styled.div`
   align-items: center;
   width: 60%;
   justify-content: space-between;
-  position: relative;
 `
 
 const SelectedFormulaButton = styled.button`
@@ -85,7 +84,7 @@ const SelectedCustomButton = styled.button`
       font-size: 40px;
 `
 const UnselectedCustomButton = styled.button`
- font-family: JSArirangHON;
+    font-family: JsaHON;
     position: relative;
     border: none;
     min-width: 200px;
@@ -123,9 +122,9 @@ function NavBar(props) {
     //Scroll에 따른 Navbar 색변경
     const opcity = 0 + (window.scrollY/document.getElementById("header_nav").clientHeight)*0.4;
     document.getElementById('header_nav').style.backgroundColor =`rgb(255,255,255,${opcity}`;
-
+    
     //Scroll에 따른 HamburgerButton 색 변경
-    if(opcity===0){
+    if(opcity === 0){
       document.getElementById('HamburgerMenu').style.color=`ghostwhite`
     }else{
       document.getElementById('HamburgerMenu').style.color=`rgb(0,0,0,${opcity})`
@@ -137,16 +136,14 @@ function NavBar(props) {
   let loginInfo = JSON.parse(loginInfoString);
   
   const token = getToken();
-  useEffect(()=>{
-    console.log(token);
-  },[token]);
+
 
   const Logo = styled.img`
     width: 11vh;
     height: 11vh;
   `
-  const logoutHandler = () => {
-    deleteToken();
+  const logoutHandler = async () => {
+    await saveToken("");
     window.localStorage.removeItem("login_user");
     history('/');
   }
@@ -159,25 +156,25 @@ function NavBar(props) {
       {[false].map((expand) => (
         <Navbar id="header_nav" key={expand} expand={expand} className="navbar mb-3" style={{zIndex:"2",position:"fixed", top:"0",width:"100%", textAlign:"center"}}>
           <Container>
-          <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${expand}`} style={{border:"none"}}>
-              <GrIcons.GrMenu id="HamburgerMenu" color="ghostwhite" size="30px" />
+          <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${expand}`} style={{border:"0"}}>
+              <GiIcons.GiHamburgerMenu id="HamburgerMenu" color="ghostwhite" size="30px" />
           </Navbar.Toggle>
           {props.isHome ?
-              (<Link to="/"><Logo className="logo" src={logo} /></Link>)
+              (<Link to="/"><Logo className="logo" src={homelogo2} /></Link>)
               :
             (
             <LogoAndButtonArea>
               {props.isRank ? 
               (<div style={{display: "contents", alignItems: "center",  width: "60%", justifyContent: "space-between"}}>
               <Link to="/rank"><SelectedFormulaButton className="formula">공식경연</SelectedFormulaButton></Link>  
-              <Link to="/"><Logo className="logo" src={logo} /></Link>
+              <Link to="/"><Logo className="logo" src={homelogo2} /></Link>
               <Link to="/custom"><UnselectedCustomButton className="custom">자유경연</UnselectedCustomButton></Link>
               </div>)
               :( props.isCustom ?
                 (
                 <div style={{display: "contents", alignItems: "center",  width: "60%", justifyContent: "space-between"}}>
                 <Link to="/rank"><UnselectedFormulaButton className="formula">공식경연</UnselectedFormulaButton></Link>  
-                <Link to="/"><Logo className="logo" src={logo} /></Link>
+                <Link to="/"><Logo className="logo" src={homelogo2} /></Link>
                 <Link to="/custom"><SelectedCustomButton className="custom">자유경연</SelectedCustomButton></Link>
                 </div>
                 )
@@ -185,7 +182,7 @@ function NavBar(props) {
                 (
                   <div style={{display: "contents", alignItems: "center",  width: "60%", justifyContent: "space-between"}}>
                 <Link to="/rank"><SelectedFormulaButton className="formula">공식경연</SelectedFormulaButton></Link>  
-                <Link to="/"><Logo className="logo" src={logo} /></Link>
+                <Link to="/"><Logo className="logo" src={homelogo2} /></Link>
                 <Link to="/custom"><SelectedCustomButton className="custom">자유경연</SelectedCustomButton></Link>
               </div>
                 )
@@ -220,7 +217,7 @@ function NavBar(props) {
               
               <Offcanvas.Header closeButton>
                 <Offcanvas.Title id={`offcanvasNavbarLabel-expand-${expand}`}>
-                <Link to="/"><Logo className="logoImg logo justify-content-center" src={logo} /></Link>
+                <Link to="/"><Logo className="logoImg logo justify-content-center" src={homelogo2} /></Link>
                 </Offcanvas.Title>
               </Offcanvas.Header>
               <ProgressBar variant="secondary" now={100} className="m-3"/>

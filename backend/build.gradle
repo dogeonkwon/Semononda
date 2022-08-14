@@ -28,6 +28,7 @@ plugins {
     id 'java'
     id 'idea'
     id 'org.springframework.boot' version "${springBootVer}"
+    id "base"
 }
 
 apply plugin: 'io.spring.dependency-management'
@@ -65,12 +66,12 @@ configurations {
     args = ['install']
 }*/
 
-task webpack(type: NpmTask, dependsOn: 'npmInstall') {
-    args = ['run','build']
-}
+// task webpack(type: NpmTask, dependsOn: 'npmInstall') {
+//     args = ['run','build']
+// }
 
 // processResources is a Java task. Run the webpack bundling before this task using the 'build' task in the package.json
-processResources.dependsOn 'webpack'
+// processResources.dependsOn 'webpack'
 
 //set build time and inject value to application.properties
 def buildTime() {
@@ -104,11 +105,6 @@ querydsl {
     library = "com.querydsl:querydsl-apt"
     jpa = true
     querydslSourcesDir = querydslDir
-}
-
-// 이 부분이 추가. 
-tasks.withType(JavaCompile) {
-    options.annotationProcessorGeneratedSourcesDirectory = file(querydslDir)
 }
 
 sourceSets {
@@ -195,6 +191,11 @@ test {
     useJUnitPlatform()
 }
 
+bootJar{
+    mainClassName = 'com.ssafy.GroupCallApplication'
+}
 
-
-
+bootRun {
+    String activeProfile = System.properties['spring.profiles.active']
+    systemProperty "spring.profiles.active", activeProfile
+}

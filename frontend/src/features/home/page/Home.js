@@ -5,9 +5,10 @@ import {Link} from "react-router-dom";
 import homebase from "../../../assets/images/homebase.png"
 import homelogo from "../../../assets/images/homelogo.png"
 import NavBar from "../../../common/navbar/NavBar";
-
+import'../../../common/navbar/NavBar.css'
 //메인페이지 배경화면 Container
 const Container = styled.div`
+    font-family: JsaHON;
     display: block;
     position: relative;
     width: 100%;
@@ -42,7 +43,7 @@ const LogoWrapper = styled.div`
 //로고 세부 영역
 const SecondLogoWrapper = styled.div`
   align-self: self-start;
-  margin-top: 3em;`
+  margin-top: -1em;`
 
 //로고 이미지
 const Logo = styled.img`
@@ -55,18 +56,18 @@ const Logo = styled.img`
 
 //논쟁 시작 버튼 영역
 const ArguementGroup = styled.div`
-  display: flex;
-  margin: 0 auto;
-  width: 40%;
-  justify-content: space-between;
-  position: absolute;
-  bottom: 3em;
-  left: 30%;
+    display: flex;
+    margin: 0 auto;
+    width: 40%;
+    justify-content: space-between;
+    position: absolute;
+    bottom: 3em;
+    left: 30%;
 `
 
 //공식 경연 버튼
 const OfficialButton = styled.button`
-    font-family: JSArirangHON;
+    font-family: JsaHON;
     position: relative;
     border: none;
     min-width: 200px;
@@ -86,23 +87,23 @@ const OfficialButton = styled.button`
 `
 //자유 경연 버튼
 const FreeButton = styled.button`
-    font-family: JSArirangHON;
+    font-family: JsaHON;
     position: relative;
     border: none;
     min-width: 200px;
     min-height: 50px;
     background: linear-gradient(
-        90deg,
-        rgb(65, 165, 65) 0%,
-        rgb(50, 135, 45) 100%
-    );
-    border-radius: 1000px;
-    color: rgb(255, 255, 255);
-    cursor: pointer;
-    box-shadow: 12px 12px 24px rgb(180, 235, 170);
-    font-weight: 500;
-    transition: 0.3s;
-    font-size: 40px;
+      90deg,
+      rgb(65, 165, 65) 0%,
+      rgb(50, 135, 45) 100%
+      );
+      border-radius: 1000px;
+      color: rgb(255, 255, 255);
+      cursor: pointer;
+      box-shadow: 12px 12px 24px rgb(180, 235, 170);
+      font-weight: 500;
+      transition: 0.3s;
+      font-size: 40px;
 `
 
 
@@ -125,8 +126,8 @@ function Home() {
 
                 <Section>
                 <ArguementGroup>
-                    <Link to="/rank"><OfficialButton>공식 경연</OfficialButton></Link>
-                    <Link to="/custom"><FreeButton>자유 경연</FreeButton></Link>
+                    <Link to="/rank"><OfficialButton className="formula">공식 경연</OfficialButton></Link>
+                    <Link to="/custom"><FreeButton className="custom">자유 경연</FreeButton></Link>
                 </ArguementGroup>
                 </Section>
 

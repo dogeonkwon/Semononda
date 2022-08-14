@@ -6,7 +6,7 @@ import '../custom_modal.css'
 import Pagination from "./cusPagination";
 import { useDispatch } from 'react-redux';
 import { useNavigate}from 'react-router-dom'
-import { roomcreate } from '../customSlice';
+import { cus_roomcreate } from '../customSlice';
 import RoomList from "./cusRoomList";
 import './Custom.css';
 
@@ -40,7 +40,7 @@ function Custom() {
 	const [userInput, setUserInput] = useState("");
 
 	useEffect(() => {
-	fetch('http://localhost:8080/api/room/custom/list', {
+	fetch('https://i7e103.p.ssafy.io/api/room/custom/list', {
 		method: "GET",
 	})
 	.then((res) => res.json())
@@ -123,7 +123,7 @@ function Custom() {
 	}
 	else{
         // userInfo(UserSlice에 있음) => room
-        dispatch(roomcreate(room))
+        dispatch(cus_roomcreate(room))
         .then((response) => {
             console.log("create_response",response)
             if(response.payload.status === 200){
@@ -186,7 +186,7 @@ function Custom() {
 	
 								<FormGroup className='room_category mb-5' controlId='formBasicCategory'>
 									<Form.Label style={{marginLeft: "10%"}}>비밀번호</Form.Label>
-            						<Form.Control style={{width: "50%", textalign:"center", margin:"0 auto", marginBottom:"0.5em"}} name="password" type="password" placeholder="비밀번호" value={password} onChange={onPasswordHandler}/>
+            						<Form.Control style={{width: "50%", textalign:"center", margin:"0 auto", marginBottom:"0.5em"}} name="password" type="password" placeholder="비밀번호" value={title} onChange={onPasswordHandler}/>
 								</FormGroup>
 								<FormGroup style={{width:"80%", display:"flex", margin:"0 auto"}} >
 									<Button style={{marginBottom: "1em", width: "50%", backgroundColor:"#8C4D25", border:"0", fontSize: "1.3rem"}} type="submit" onClick={onSubmit} variant="primary">방 생성</Button>
