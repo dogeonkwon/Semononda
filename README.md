@@ -1,11 +1,12 @@
 # 세모논다(semononda)
 
-![대표이미지](/uploads/42ddec1e61815997776b55aab7ee4356/대표이미지.PNG)
+![대표이미지](https://user-images.githubusercontent.com/99178653/187210792-d736596e-8488-47d3-9b0f-d6dfd58c5ced.PNG)
 
 ## 링크 : [세모논다 홈페이지](http://i7e103.p.ssafy.io/)
 
 ## 소개 영상 : [소개 영상 링크]()
-</br>
+
+
 
 ## 📘 프로젝트 진행 기간
 
@@ -271,11 +272,11 @@ backend
 
 ---
 
-|   Name   | 강병수           | 권도건                  | 정찬우           | 김동우                        | 김유정                          | 박찬호                             |
-| :------: | ---------------- | ----------------------- | ---------------- | ----------------------------- | ------------------------------- | ---------------------------------- |
-| Profile  | ![수정됨_강병수](/uploads/bde4fa6461206cf753719b81733a4fbb/수정됨_강병수.png)       | ![수정됨_권도건](/uploads/09fdbe825d04c4387e17c9b6689ead28/수정됨_권도건.png)             | ![수정됨_정찬우](/uploads/c7510981972a4d4054e743cf32fb1d4f/수정됨_정찬우.png)       |![수정됨_김동우](/uploads/0f0d4a2aa204674c0048df4f4526deef/수정됨_김동우.png)                   | ![수정됨_김유정](/uploads/9574b6ad296e106610c20d6cc7829d01/수정됨_김유정.png)                      | ![수정됨_박찬호](/uploads/c2dd4f83519246e53c553f5d6e7921ab/수정됨_박찬호.png)                  |
-| Position | Frontend & UI/UX | 팀장 & Frontend & UI/UX | Frontend & UI/UX | Backend Develop & CI/CD & UCC | Backend Develop & CI/CD & UI/UX | Backend Develop & CI/CD & openVidu |
-|   Git    | [kang-byung-soo](https://github.com/kang-byung-soo)           | [doogun](https://github.com/doogun)                  | [jeong-chan](https://github.com/jeong-chan)           | [ehddn5252](https://github.com/ehddn5252)                        | [yujeonge](https://github.com/yujeonge)                          | [taurus429](https://github.com/taurus429)                             |
+|   Name   | 강병수                                                       | 권도건                                                       | 정찬우                                                       | 김동우                                                       | 김유정                                                       | 박찬호                                                       |
+| :------: | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| Profile  | ![수정됨_강병수](https://user-images.githubusercontent.com/99178653/187210832-cf776770-472e-4c83-835f-23a3840a0f9c.png) | ![수정됨_권도건](https://user-images.githubusercontent.com/99178653/187210875-24696691-640c-45f4-8595-c8bfbd4d2d78.png) | ![수정됨_정찬우](https://user-images.githubusercontent.com/99178653/187210882-9b5acab5-6bb0-49ac-bbb0-557841d39667.png) | ![수정됨_김동우](https://user-images.githubusercontent.com/99178653/187210889-09f1c09a-062f-4f4f-b14b-6d5370d0d671.png) | ![수정됨_김유정](https://user-images.githubusercontent.com/99178653/187210916-5b4f8cf2-5533-476e-a58c-e13eb2cb6337.png) | ![수정됨_박찬호](https://user-images.githubusercontent.com/99178653/187210911-00221ca2-6ffa-487f-ab4e-731d3fc3ad04.png) |
+| Position | Frontend & UI/UX                                             | 팀장 & Frontend & UI/UX                                      | Frontend & UI/UX                                             | Backend Develop & CI/CD & UCC                                | Backend Develop & CI/CD & UI/UX                              | Backend Develop & CI/CD & openVidu                           |
+|   Git    | [kang-byung-soo](https://github.com/kang-byung-soo)          | [doogun](https://github.com/doogun)                          | [jeong-chan](https://github.com/jeong-chan)                  | [ehddn5252](https://github.com/ehddn5252)                    | [yujeonge](https://github.com/yujeonge)                      | [taurus429](https://github.com/taurus429)                    |
 
 ## ✔ 설계 산출물
 
@@ -283,19 +284,25 @@ backend
 
 - [설계 문서](https://docs.google.com/spreadsheets/d/1Szz6Hn31rGLiAI0DS68rMQKO8MfN0WhXfXgDKB41ufs/edit#gid=0)
   - 요구사항 정의서
-  ![요구사항](/uploads/9a903ce73bd8d8b3d111a28bf906adae/요구사항.PNG)
+  ![요구사항](https://user-images.githubusercontent.com/99178653/187211119-f5e0ab59-06f7-4ec6-961b-bfe9df26a231.PNG)
   - IA 구성도
-![IA구성도](/uploads/fc1ce97de742b19ce9d6654483dff4a4/IA구성도.PNG)
+  ![IA구성도](https://user-images.githubusercontent.com/99178653/187211046-32060057-804a-4bcf-bf50-9d8f79bd90f0.PNG)
   - API 명세서
-  ![API명세서](/uploads/5dd798ffddf73f0b006fa8d72f53a2b3/API명세서.PNG)
+  ![API명세서](https://user-images.githubusercontent.com/99178653/187211051-9d83a077-a78b-44b0-a29e-89d0a805d780.PNG)
+  
+  
+  
 - [디자인&컨셉기획](https://www.figma.com/file/RXpNubjb9F9pGdmKwbLVOk/%EC%84%B8%EB%AA%A8%EB%85%BC%EB%8B%A4?node-id=0%3A1)
-![와이어프레임](/uploads/22d8f44404acbeafc8ff5824385d1c4a/와이어프레임.PNG)
+  ![와이어프레임](https://user-images.githubusercontent.com/99178653/187211057-934abeff-ade4-4f43-bd95-24627d985cec.PNG)
+
 - 플로우 차트
-![Untitled__7_](/uploads/d68decf8f1a0821a8ceeaf1a8b3f68d3/Untitled__7_.png)
+  ![Untitled__7_](https://user-images.githubusercontent.com/99178653/187211086-dedfd221-5ad9-4ff7-b84c-edf025107eb1.png)
+
 - 사이트 맵
-![Untitled__6_](/uploads/6544f16762ee195fe62d4185ff4eb3ec/Untitled__6_.png)
+  ![Untitled__6_](https://user-images.githubusercontent.com/99178653/187211082-f380c579-9c30-40f9-9e31-9555fe8e5d3b.png)
+
 - ERD
-![20220722_Database_structure](/uploads/d40ae1250a746f67a5892408c7e15f23/20220722_Database_structure.png)
+![20220722_Database_structure](https://user-images.githubusercontent.com/99178653/187211083-b7e5a5e8-1138-4028-add4-2ce05c471179.png)
 
 ## ✔ 프로젝트 결과물
 ---
@@ -312,18 +319,18 @@ backend
 
 1. 우측 상단 Session 클릭
 
-![Untitled](/uploads/1eedf99fdf1bf9a42893566843ae2e58/Untitled.png)
+![Untitled](https://user-images.githubusercontent.com/99178653/187211469-4e890978-4ff8-4314-aa66-453242313442.png)
 
 1. SSH 클릭 후 정보 입력
 - 입력 정보
-    
+  
     Remote host : [i7e103.p.ssafy.io](http://i7e103.p.ssafy.io/)
     
     Specify username : ubuntu
     
     User Private Key : 다운받은 pem파일
 
-![Untitled__1_](/uploads/816bd6f64bafc065f4cfa8a0378aa3d8/Untitled__1_.png)
+![Untitled__1_](https://user-images.githubusercontent.com/99178653/187211473-301bdb55-c895-452b-a6a1-0c0945b24555.png)
 
 
 #### 방화벽 설정
@@ -334,7 +341,7 @@ backend
 # 현재 방화벽 상태 확인 방법 입니다.
 $ sudo ufw status
 ```
-![Untitled__2_](/uploads/ab7dd89e2647419916c46114442eac8e/Untitled__2_.png)
+![Untitled__2_](https://user-images.githubusercontent.com/99178653/187211477-1f3bd05b-a916-4d2d-8fc2-002bb081b90e.png)
 
 ```
 # Port 설명입니다.
@@ -400,11 +407,11 @@ $ sudo apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plug
 3306 MySQL을 위한 포트
 ```
 
-![Untitled__3_](/uploads/d5ba25b5fce1ca13d07eb1f1019b9fd7/Untitled__3_.png)
+![Untitled__3_](https://user-images.githubusercontent.com/99178653/187211482-530ca49f-f6cb-4f9c-8108-4e1cd105cce6.png)
 
 #### **Filezilla로 다운로드 한 Docker 이미지를 업로드**
 
-![Untitled__4_](/uploads/0c7e6ca3fe48c47fe5e0b4cff54f2610/Untitled__4_.png)
+![Untitled__4_](https://user-images.githubusercontent.com/99178653/187211458-d7ed595d-c46e-4d6b-a5db-e1e053215d72.png)
 
 #### **터미널로 EC2 접근 & Docker Desktop 설치**
 
@@ -428,7 +435,7 @@ $ curl https://s3-eu-west-1.amazonaws.com/aws.openvidu.io/install_openvidu_lates
 $ cd openvidu
 $ nano .env  #해당 명령어를 입력하면 설정파일이 열림
 ```
-![Untitled__5_](/uploads/edeea2dfd42ce19f8d7222c992f98e02/Untitled__5_.png)
+![Untitled__5_](https://user-images.githubusercontent.com/99178653/187211465-0aac7b1f-86ed-462c-a247-700da9d8ad16.png)
 
 ```
 #수정해야 할 항목입니다.
@@ -453,41 +460,34 @@ LETSENCRYPT_EMAIL=원하는 이메일 주소
 ---
 
 ### 메인화면
-![이미지_2](/uploads/512fd0f38a750f589f20f252ead9c1bf/이미지_2.png)
+![이미지_2](https://user-images.githubusercontent.com/99178653/187211653-4825f2a9-aa05-415d-a744-f0cb71885fa1.png)
 ### 회원가입
-![이미지_12](/uploads/507dc6deb0259e788c272f7b7ea0b060/이미지_12.png)
+![이미지_12](https://user-images.githubusercontent.com/99178653/187211655-7793f88b-a93e-483d-8ab5-d4c70de7bc01.png)
 ### 개인정보창
-![이미지_3](/uploads/a6d72b16f912459e71811537082d73bb/이미지_3.png)
+![이미지_3](https://user-images.githubusercontent.com/99178653/187211659-9838227e-f4e2-412d-a7ae-57bd5f179264.png)
 ### 개인정보 수정
-![이미지_4](/uploads/e9f08aa3d1a4492caf680f93bb375675/이미지_4.png)
+![이미지_4](https://user-images.githubusercontent.com/99178653/187211671-7c912709-9273-42f1-bcf2-5a50deb3aaaa.png)
 ### 비밀번호 수정
-![이미지_5](/uploads/7c3b62773173eb21792c4513568f22ab/이미지_5.png)
+![이미지_5](https://user-images.githubusercontent.com/99178653/187211638-e98289cb-1dd0-4260-ba8d-7e579d96e0be.png)
 ### 자유경연방 생성
-![이미지_6](/uploads/cf00fae1cd415f7a7f0c7d14746e82bf/이미지_6.png)
-![이미지_7](/uploads/ce249423248443b7bad0fb88cf6bfb22/이미지_7.png)
+![이미지_6](https://user-images.githubusercontent.com/99178653/187211644-38e50688-cbbe-4157-8f16-41725401ec01.png)
+![이미지_7](https://user-images.githubusercontent.com/99178653/187211647-33149e9c-ad99-492f-b0fb-fbc4701f7a2a.png)
+
 ### 자유경연방 목록
-![이미지_8](/uploads/3a44befc2b5814d625702ae23b76043a/이미지_8.png)
+![이미지_8](https://user-images.githubusercontent.com/99178653/187211650-fd87ddba-146b-4f5a-bc6e-410cbdd2de89.png)
 ### 공식경연방 생성
-![이미지_9](/uploads/f130cb9c15d61460fc03bcf248459cce/이미지_9.png)
+![이미지_9](https://user-images.githubusercontent.com/99178653/187211651-8981095a-17d6-4ccb-b699-f5828ea52f6a.png)
 ### 공식경연방 목록
-![이미지_2](/uploads/79712d5e56e39757a88f2abf25e1afc4/이미지_2.png)
+![이미지_2 (1)](https://user-images.githubusercontent.com/99178653/187211849-215cb3a7-7057-4022-b6d0-dc82f013f0e8.png)
 ### 공식경연 게임 화면
-![KakaoTalk_20220819_112203643](/uploads/5839c8b4c3497d4a85de04cda1c4b688/KakaoTalk_20220819_112203643.gif)
+![KakaoTalk_20220819_112203643](https://user-images.githubusercontent.com/99178653/187211855-6dfa1d30-a24d-4738-974e-4d3f5167da17.gif)
 ### 신하 순위
-![이미지_10](/uploads/1e79fced083bee7e5635e843de9f5501/이미지_10.png)
+![이미지_10](https://user-images.githubusercontent.com/99178653/187211865-eac7b673-3aca-4bc1-a1c0-237436d9c613.png)
 ### 주제별 통계
-![KakaoTalk_20220819_110339445](/uploads/7735d44f07533e9cbeffb7168dd61f0a/KakaoTalk_20220819_110339445.png)
+![KakaoTalk_20220819_110339445](https://user-images.githubusercontent.com/99178653/187211867-fa729d55-8a35-4285-8509-d5ae0ac5df25.png)
 ### 도움말
-![KakaoTalk_20220819_115521761](/uploads/853a845119518986e4a89f2da15c8cd6/KakaoTalk_20220819_115521761.png)
+![KakaoTalk_20220819_115521761](https://user-images.githubusercontent.com/99178653/187211871-525f5d02-4f76-4965-87f0-6edab202d4f5.png)
 
-![KakaoTalk_20220819_115507748](/uploads/a7fbbc0162f1387bfeff59f53bfc71cd/KakaoTalk_20220819_115507748.png)
-
-
-
-
-
-
-
-
+![KakaoTalk_20220819_115507748](https://user-images.githubusercontent.com/99178653/187211874-2625de0b-a71f-4683-acf9-da561fffa486.png)
 
 
